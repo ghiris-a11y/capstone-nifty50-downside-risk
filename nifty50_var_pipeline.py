@@ -358,13 +358,22 @@ def _ticker_paths(by_dir, t):
     return {k: os.path.join(by_dir, f"{safe}__{k}.csv") for k in ("backtest", "regime", "dm")}
 
 
+def _ticker_done(paths):
+    """A ticker counts as done only if all three files exist and hold rows (an interrupted write or a
+    crash can leave empty or NUL-filled files, which must be recomputed, not merged)."""
+    try:
+        return all(os.path.exists(p) and len(pd.read_csv(p)) > 0 for p in paths.values())
+    except Exception:
+        return False
+
+
 def process_ticker(t, groups, start, test_end, frozen_dir, by_dir, resume=True):
     """Run one ticker and write its three per-ticker files (resumable; safe in a worker process)."""
     import time
     global FROZEN_DIR
     FROZEN_DIR = frozen_dir
     paths = _ticker_paths(by_dir, t)
-    if resume and all(os.path.exists(p) for p in paths.values()):
+    if resume and _ticker_done(paths):
         return t, "skipped", 0.0, ""
     t0 = time.time()
     try:
@@ -433,7 +442,10 @@ def main():
             print(f"[{stamp()}] {k}/{len(tickers)} {t}: {status} ({secs:.0f} s){' ' + err if err else ''}", flush=True)
             if status == "failed":
                 failures.append((t, err))
-        done = [t for t in tickers if all(os.path.exists(p) for p in _ticker_paths(by_dir, t).values())]
+        done = [t for t in tickers if _ticker_done(_ticker_paths(by_dir, t))]
+        missing = [t for t in tickers if t not in done]
+        if missing:
+            print(f"[{stamp()}] WARNING: no valid results for {len(missing)} tickers: {missing}", flush=True)
         if not done:
             raise SystemExit(f"No ticker produced results; failures: {failures}")
         for t in done:
