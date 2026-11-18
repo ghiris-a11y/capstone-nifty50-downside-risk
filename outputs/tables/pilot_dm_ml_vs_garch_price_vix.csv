@@ -1,0 +1,4 @@
+ml_model,ml_better,garch_better,no_diff
+MLP,0,0,18
+RandomForest,0,0,18
+XGBoost,0,18,0

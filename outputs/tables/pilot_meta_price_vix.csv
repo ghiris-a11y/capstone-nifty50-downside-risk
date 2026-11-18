@@ -1,0 +1,2 @@
+tickers,features,data_start,test_start,test_last_date,test_days_per_stock,train_end,val_end,refit_days,seed,pipeline_runtime_s
+"RELIANCE.NS,HDFCBANK.NS,INFY.NS",price+vix,2015-01-01,2024-01-01,2026-11-17,709,2021-12-31,2023-12-31,20,42,75.2

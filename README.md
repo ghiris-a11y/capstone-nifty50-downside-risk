@@ -8,6 +8,8 @@ MBA Business Analytics capstone (ITM Skills University). It compares GARCH, EGAR
 | Validation | 2022 – 2023 |
 | Test | 2024-01-01 – Nov 2026 (includes the 7 Oct 2026 RBI repo hike to 5.50%) |
 
+Dashboard (planned, GitHub Pages): https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/
+
 Project rules are in [CLAUDE.md](CLAUDE.md). The phased work plan is in [PROJECT_PLAN.md](PROJECT_PLAN.md).
 
 ## Setup (Windows)

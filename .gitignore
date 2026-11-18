@@ -29,3 +29,9 @@ report/template/*
 .claude/settings.local.json
 Thumbs.db
 desktop.ini
+
+# Pilot / data files not for the public repo
+outputs/demo/
+data/processed/pilot_snapshot/*.parquet
+report/pilot_pitch.docx
+report/pilot_pitch.pdf
