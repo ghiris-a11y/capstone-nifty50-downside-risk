@@ -663,3 +663,134 @@ run_utc,ticker,level,new_rows,message
 2026-11-18 10:50:48,INR=X,info,0,skipped today's row (2026-11-18): market data not final before 16:30 IST
 2026-11-18 10:50:48,INR=X,info,0,overlap check passed on 5 days
 2026-11-18 10:50:48,INR=X,ok,0,stored 2050 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ADANIPORTS.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ADANIPORTS.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ADANIPORTS.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,APOLLOHOSP.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,APOLLOHOSP.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,APOLLOHOSP.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ASIANPAINT.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ASIANPAINT.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ASIANPAINT.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,AXISBANK.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,AXISBANK.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,AXISBANK.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,BAJAJ-AUTO.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,BAJAJ-AUTO.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,BAJAJ-AUTO.NS,error,0,stored 1943 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,BAJFINANCE.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,BAJFINANCE.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,BAJFINANCE.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,BAJAJFINSV.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,BAJAJFINSV.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,BAJAJFINSV.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,BEL.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,BEL.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,BEL.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,BHARTIARTL.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,BHARTIARTL.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,BHARTIARTL.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,CIPLA.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,CIPLA.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,CIPLA.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,COALINDIA.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,COALINDIA.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,COALINDIA.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,DRREDDY.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,DRREDDY.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,DRREDDY.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,EICHERMOT.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,EICHERMOT.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,EICHERMOT.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,GRASIM.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,GRASIM.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,GRASIM.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,HCLTECH.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,HCLTECH.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,HCLTECH.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,HDFCBANK.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,HDFCBANK.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,HDFCBANK.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,HINDALCO.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,HINDALCO.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,HINDALCO.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,HINDUNILVR.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,HINDUNILVR.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,HINDUNILVR.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ICICIBANK.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ICICIBANK.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ICICIBANK.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,INFY.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,INFY.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,INFY.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ITC.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ITC.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ITC.NS,error,0,stored 1945 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,JSWSTEEL.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,JSWSTEEL.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,JSWSTEEL.NS,error,0,stored 1941 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,KOTAKBANK.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,KOTAKBANK.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,KOTAKBANK.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,LT.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,LT.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,LT.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,M&M.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,M&M.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,M&M.NS,error,0,stored 1943 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,MARUTI.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,MARUTI.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,MARUTI.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,NESTLEIND.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,NESTLEIND.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,NESTLEIND.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,NTPC.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,NTPC.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,NTPC.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ONGC.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ONGC.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ONGC.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,POWERGRID.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,POWERGRID.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,POWERGRID.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,RELIANCE.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,RELIANCE.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,RELIANCE.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,SBIN.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,SBIN.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,SBIN.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,SHRIRAMFIN.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,SHRIRAMFIN.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,SHRIRAMFIN.NS,error,0,stored 1943 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,SUNPHARMA.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,SUNPHARMA.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,SUNPHARMA.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,TATACONSUM.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,TATACONSUM.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,TATACONSUM.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,TATASTEEL.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,TATASTEEL.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,TATASTEEL.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,TCS.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,TCS.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,TCS.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,TECHM.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,TECHM.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,TECHM.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,TITAN.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,TITAN.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,TITAN.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,ULTRACEMCO.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,ULTRACEMCO.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,ULTRACEMCO.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,WIPRO.NS,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,WIPRO.NS,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,WIPRO.NS,error,0,stored 1944 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,^NSEI,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,^NSEI,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,^NSEI,error,0,stored 1942 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,^INDIAVIX,info,0,overlap check passed on 5 days
+2026-11-18 21:30:19,^INDIAVIX,error,0,null prices on 2026-11-18
+2026-11-18 21:30:19,^INDIAVIX,error,0,stored 1926 rows to 2026-11-17; appended 0
+2026-11-18 21:30:19,INR=X,info,1,overlap check passed on 5 days
+2026-11-18 21:30:19,INR=X,ok,1,stored 2050 rows to 2026-11-17; appended 1
