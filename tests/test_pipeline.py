@@ -35,3 +35,18 @@ def test_kupiec_accepts_exact_nominal_rate():
     h = pd.Series([1] * 5 + [0] * 495)
     _, pval = p.kupiec(h, 0.01)
     assert pval > 0.05
+
+
+def test_xgboost_quantile_calibration_on_seeded_demo_data():
+    """Regression test for the xgb_quantile column bug (VaR read from the 0.1*alpha quantile)."""
+    ret, vix, macro = p.demo_data()  # seed 42
+    X = p.build_features(ret, vix, macro, None, "price+vix+macro")
+    data = pd.concat([X, ret.rename("y")], axis=1).dropna()
+    X, y = data.drop(columns="y"), data["y"]
+    fc = p.xgb_quantile(X, y)
+    bounds = {0.05: (0.03, 0.07), 0.01: (0.003, 0.025)}
+    for a, (var, es) in fc.items():
+        rate = float((y.reindex(var.index) < -var).mean())
+        lo, hi = bounds[a]
+        assert lo <= rate <= hi, f"alpha={a}: exception rate {rate:.4f} outside [{lo}, {hi}]"
+        assert (es.reindex(var.index) >= var).all(), f"alpha={a}: ES below VaR"

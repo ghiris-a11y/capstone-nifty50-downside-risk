@@ -153,16 +153,20 @@ def figures(tag, t1, daily, figdir, focus="RELIANCE.NS"):
     fig = go.Figure()
     fig.add_scatter(x=base["date"], y=base["ret"] * 100, mode="lines", name="Actual daily return",
                     line=dict(color="#4d4d4d", width=1))
-    symbols = {"GJR-t": "triangle-down", "XGBoost": "x"}
+    # breach markers: open cross for XGBoost underneath, larger filled triangle for GJR-t on top,
+    # so days on which both models breach show both markers
+    markers = {"XGBoost": dict(symbol="x-thin-open", size=13, color=COLOURS["XGBoost"],
+                               line=dict(width=2.5, color=COLOURS["XGBoost"])),
+               "GJR-t": dict(symbol="triangle-down", size=11, color=COLOURS["GJR-t"],
+                             line=dict(width=1, color="white"))}
     for m in show:
         s = d[d["model"] == m]
         fig.add_scatter(x=s["date"], y=-s["var"] * 100, mode="lines", name=f"{m} 99% VaR (as return)",
                         line=dict(color=COLOURS[m], width=1.8))
-        b = s[s["exception"] == 1]
+    for m in ("XGBoost", "GJR-t"):
+        b = d[(d["model"] == m) & (d["exception"] == 1)]
         fig.add_scatter(x=b["date"], y=b["ret"] * 100, mode="markers",
-                        name=f"{m} breach ({len(b)})",
-                        marker=dict(color=COLOURS[m], size=10, symbol=symbols[m],
-                                    line=dict(width=1, color="black")))
+                        name=f"{m} breach ({len(b)})", marker=markers[m])
     fig.add_vline(x=pd.Timestamp(HIKE_DATE).timestamp() * 1000, line_dash="dash", line_color="#b8860b",
                   line_width=2.5, layer="above",
                   annotation_text="RBI repo hike to 5.50% (7 Oct 2026)", annotation_position="top left")

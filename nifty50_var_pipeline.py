@@ -185,8 +185,8 @@ def xgb_quantile(X, y):
             preds.append(m.predict(X[te]))
         P = np.sort(np.array(preds).T, axis=1)  # no quantile crossing
         idx = X.index[te]
-        var = pd.Series(-P[:, np.where(np.array(lv) == a)[0][0]], idx)
-        es = pd.Series(-P[:, 1:].mean(axis=1), idx)  # mean of tail quantiles approximates ES
+        var = pd.Series(-P[:, -1], idx)  # level-a quantile is the largest of the sorted lower-tail quantiles
+        es = pd.Series(-P[:, :-1].mean(axis=1), idx)  # mean of quantiles at 0.1a..0.9a approximates ES
         out[a] = (np.maximum(var, 1e-6), np.maximum(es, var))
     return out
 

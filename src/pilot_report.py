@@ -125,6 +125,65 @@ def post_md(D):
                          f"Exceptions 99% (of {obs})": out[0.01].astype(int).astype(str) + " (" + rate[0.01].map(pct) + ")"})
 
 
+def xgb_text(x, dm, n):
+    """XGBoost observation; direction and wording follow the numbers."""
+    e5, e1 = x.loc[0.05, "exc_rate"], x.loc[0.01, "exc_rate"]
+    if e5 > 0.05 and e1 > 0.01:
+        verdict = "XGBoost breached more often than nominal at both levels (VaR too low, i.e. too aggressive)"
+        biz = "In business terms, it would set capital and margins too low."
+    elif e5 < 0.05 and e1 < 0.01:
+        verdict = "XGBoost breached less often than nominal at both levels (VaR too high, i.e. too cautious)"
+        biz = "In business terms, it would set capital and margins too high."
+    else:
+        verdict = "XGBoost was on different sides of nominal at the two levels"
+        biz = ""
+    d = dm.loc["XGBoost"]
+    pairs = int(d.sum())
+    if d["garch_better"] == 0 and d["ml_better"] == 0:
+        dm_txt = (f"On the 95% joint VaR-ES loss (FZ0), Diebold-Mariano found no significant difference from any "
+                  f"GARCH model ({int(d['no_diff'])} of {pairs} pairs).")
+    else:
+        dm_txt = (f"On the 95% joint VaR-ES loss (FZ0), Diebold-Mariano found GARCH significantly better in "
+                  f"{int(d['garch_better'])}, XGBoost better in {int(d['ml_better'])} and no difference in "
+                  f"{int(d['no_diff'])} of {pairs} pairs.")
+    return (f"{verdict}: {pct(e5)} at 95% (nominal 5%) and {pct(e1)} at 99% (nominal 1%). It passed Kupiec in "
+            f"{share(x.loc[0.05, 'pass_kupiec'], n)} stocks at 95% and {share(x.loc[0.01, 'pass_kupiec'], n)} at 99%, "
+            f"with a Basel Green share of {pct(x.loc[0.01, 'green99'], 0)}. {dm_txt} {biz}").strip()
+
+
+def corrections(D, tag):
+    """Old (bugged) vs new XGBoost figures, read from outputs/tables/superseded/."""
+    sup = os.path.join(ROOT, "outputs", "tables", "superseded")
+    old_p = os.path.join(sup, f"xgb_bug_summary_{tag}.csv")
+    if not os.path.exists(old_p):
+        return None
+    old = pd.read_csv(old_p).set_index(["model", "alpha"]).loc["XGBoost"]
+    new = D["summ"].set_index(["model", "alpha"]).loc["XGBoost"]
+    n = D["n_tickers"]
+    rows = []
+    for col, lab, f in [("exc_rate", "Exception rate", pct), ("pass_kupiec", "Kupiec pass", lambda v: share(v, n)),
+                        ("pass_cc", "Christoffersen CC pass", lambda v: share(v, n)),
+                        ("fz0", "Mean FZ0", lambda v: f"{v:.4f}"), ("es_ratio", "Actual/expected ES", lambda v: f"{v:.4f}")]:
+        for a in (0.05, 0.01):
+            rows.append({"XGBoost metric": f"{lab} {int((1 - a) * 100)}%", "Before fix": f(old.loc[a, col]),
+                         "After fix": f(new.loc[a, col])})
+    rows.append({"XGBoost metric": "Basel Green share 99%", "Before fix": pct(old.loc[0.01, "green99"], 0),
+                 "After fix": pct(new.loc[0.01, "green99"], 0)})
+    od = pd.read_csv(os.path.join(sup, f"xgb_bug_pilot_dm_ml_vs_garch_{tag}.csv")).set_index("ml_model").loc["XGBoost"]
+    nd = D["dm"].loc["XGBoost"]
+    rows.append({"XGBoost metric": "DM pairs where GARCH significantly better", "Before fix": int(od["garch_better"]),
+                 "After fix": int(nd["garch_better"])})
+    other_changed = []
+    oth = pd.read_csv(old_p).set_index(["model", "alpha"]).drop(index="XGBoost", level="model")
+    nth = D["summ"].set_index(["model", "alpha"]).drop(index="XGBoost", level="model")[list(oth.columns)]
+    nth.index = pd.MultiIndex.from_tuples([(str(m), a) for m, a in nth.index], names=oth.index.names)
+    if (oth.fillna(-9).sort_index() != nth.fillna(-9).sort_index()).to_numpy().any():
+        other_changed.append("non-XGBoost summary rows")
+    ofz = pd.read_csv(os.path.join(sup, f"xgb_bug_pilot_fz0_by_vix_quartile_{tag}.csv"), index_col=0)
+    best_changed = ofz["Q4 stressed"].idxmin() != D["fz"]["Q4 stressed"].idxmin()
+    return pd.DataFrame(rows), other_changed, best_changed
+
+
 def observations(D, F):
     n = D["n_tickers"]
     tm = "; ".join(f"{m} {pct(e)}" for m, e, _, _ in F["t_models_99"])
@@ -138,13 +197,7 @@ def observations(D, F):
         f"Fat tails matter at 99%. The Student-t GARCH models had 99% exception rates closest to the nominal 1% "
         f"({tm}), passed Kupiec in {', '.join(tk)} stocks and had a Basel Green share of {', '.join(tg)}. "
         f"The Normal versions breached more often ({nm}); their Green share was {', '.join(ng)}.",
-        f"XGBoost was far too conservative. Its exception rate was {pct(x.loc[0.05, 'exc_rate'])} at 95% (nominal 5%) "
-        f"and {pct(x.loc[0.01, 'exc_rate'])} at 99% (nominal 1%), and it passed Kupiec at 95% in "
-        f"{share(x.loc[0.05, 'pass_kupiec'], n)} stocks. On the 95% joint VaR-ES loss (FZ0), the Diebold-Mariano test "
-        f"found GARCH significantly better than XGBoost in {int(dm.loc['XGBoost', 'garch_better'])} of {pairs} "
-        f"GARCH-stock pairs (5% level). Its Basel Green share was {pct(x.loc[0.01, 'green99'], 0)} only because "
-        f"the traffic light penalises too many breaches, not too few. In business terms, it would set capital "
-        f"and margins too high.",
+        xgb_text(x, dm, n),
         f"MLP and Random Forest were not significantly different from any GARCH model on 95% FZ0 "
         f"(Diebold-Mariano: no significant difference in {int(dm.loc['MLP', 'no_diff'])} of {int(dm.loc['MLP'].sum())} "
         f"pairs for MLP and {int(dm.loc['RandomForest', 'no_diff'])} of {int(dm.loc['RandomForest'].sum())} for Random Forest). "
@@ -164,6 +217,12 @@ def observations(D, F):
     return obs
 
 
+def es_bias(dist, alpha=0.05):
+    b = pd.read_csv(os.path.join(ROOT, "outputs", "tables", "xgb_es_approx_bias.csv"))
+    v = b[(b.distribution == dist) & (b.alpha == alpha)]["understatement_pct"].iloc[0]
+    return f"{v:.1f}% at 95%"
+
+
 def problems(D, F):
     n = D["n_tickers"]
     dr = D["dropped"]
@@ -179,15 +238,45 @@ def problems(D, F):
         "which changed a few XGBoost and Random Forest exceptions between otherwise identical runs. The pilot "
         "now reads one hashed snapshot (data/processed/pilot_snapshot/manifest.csv); the full study must use "
         "the frozen snapshot in data/frozen/.",
-        f"Largest one-day move in the pilot test window: {t} on {d}, log return {pct(r)}. It is below the "
-        f"20% quarantine threshold but should be checked against the NSE bhavcopy before the full run.",
-        f"Exception rates far from nominal: XGBoost ({pct(x.loc[0.05, 'exc_rate'])} at 95%, "
-        f"{pct(x.loc[0.01, 'exc_rate'])} at 99%). Its tail-quantile set-up needs review before the full run.",
+        f"Largest one-day move in the pilot test window: {t} on {d}, log return {pct(r)}. Checked by the student "
+        f"against press reports (a results-day rally); it is kept in the data as a genuine tail event.",
+        "Models failing Kupiec in every stock: " + (", ".join(
+            f"{m} at {int((1 - a) * 100)}% ({pct(v)} exceptions)" for (m, a), v in
+            D["summ"].set_index(["model", "alpha"]).query("pass_kupiec == 0")["exc_rate"].items()) or "none") + ".",
+        f"ES approximation: XGBoost's ES is the mean of 5 tail quantiles. Even with exact quantiles this understates "
+        f"true ES by {es_bias('normal')} for a Normal tail and {es_bias('t(4)')} for Student-t(4) "
+        f"(outputs/tables/xgb_es_approx_bias.csv). XGBoost's realised/expected ES ratio is "
+        f"{x.loc[0.05, 'es_ratio']:.4f} at 95% and {x.loc[0.01, 'es_ratio']:.4f} at 99%; the ratio is measured only on "
+        f"breach days and is pulled down when VaR is too shallow, so it should not be read as proof of accurate ES.",
         f"GARCH fits: {D['fit_failures']} failed fits were logged in the pilot runs.",
         f"Basel Green share is computed from only {F['basel_windows']} non-overlapping 250-day windows per stock, "
         "so each stock can only score 0%, 50% or 100%.",
         "Macro variables (repo rate, CPI, IIP) are not in the pilot because the official series are not yet "
         "filled in; the pilot uses price + India VIX features.",
+    ]
+
+
+def corrections_md(D, tag):
+    c = corrections(D, tag)
+    if c is None:
+        return []
+    tbl, other_changed, best_changed = c
+    return [
+        "## Corrections",
+        "An earlier version of this summary (git commit 97517a4) reported XGBoost as far too cautious. That result "
+        "came from a bug in `xgb_quantile`: after sorting the fitted quantiles in ascending order, the code read "
+        "the first column (the 0.1*alpha quantile) as VaR, and the ES average included the alpha quantile. The fix "
+        "reads the last sorted column as VaR and averages the other five for ES. The pilot was rerun from the same "
+        "hashed snapshot with the same settings.", "",
+        md_table(tbl), "",
+        "What changed:",
+        "- Observation 2 (XGBoost) is rewritten. The earlier claims that XGBoost was too conservative and that "
+        "GARCH was significantly better in all 18 Diebold-Mariano comparisons are withdrawn.",
+        "- The XGBoost rows in the results, VIX-quartile and post-hike tables, and the XGBoost line in Figures 1 and 2.",
+        "- Problems found: the XGBoost item is replaced by a data-driven list of models failing Kupiec in every stock.",
+        f"- Unchanged: {'none - check' if other_changed else 'every GARCH, HistSim250, Random Forest and MLP number (verified identical to the earlier run)'}; "
+        f"the best model by mean FZ0 and the lowest-loss model in the highest VIX quartile "
+        f"{'CHANGED' if best_changed else 'are the same as before'}.", "",
     ]
 
 
@@ -205,8 +294,11 @@ def write_md(D, F, path, tag):
         f"- Models: GARCH, EGARCH, GJR-GARCH (Normal and Student-t, refit every {m['refit_days']} days); XGBoost (quantile), "
         "Random Forest and MLP (volatility + filtered historical simulation); benchmark: rolling 250-day historical simulation",
         f"- Seed {m['seed']}; pipeline runtime for 3 stocks: {m['pipeline_runtime_s']} s", "",
+        *corrections_md(D, tag),
         "## Results by model (mean over the 3 stocks)",
-        "Pass counts are the number of stocks with p > 0.05. Basel zones apply to 99% VaR only. Lower pinball and FZ0 are better.", "",
+        "Pass counts are the number of stocks with p > 0.05. Basel zones apply to 99% VaR only. Lower pinball and FZ0 are better. "
+        "Read Kupiec and the Basel share together: the traffic light only penalises too many breaches, so a model "
+        "that breaches far too rarely can still score 100% Green.", "",
         md_table(results_table(D)), "",
         "## Mean FZ0 loss at 95% by India VIX quartile (previous day's VIX; lower is better)", "",
         md_table(regime_md(D)), "",
