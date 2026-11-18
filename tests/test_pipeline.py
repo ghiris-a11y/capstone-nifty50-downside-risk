@@ -50,3 +50,22 @@ def test_xgboost_quantile_calibration_on_seeded_demo_data():
         lo, hi = bounds[a]
         assert lo <= rate <= hi, f"alpha={a}: exception rate {rate:.4f} outside [{lo}, {hi}]"
         assert (es.reindex(var.index) >= var).all(), f"alpha={a}: ES below VaR"
+
+
+def test_frozen_loader_respects_end_and_drops_placeholders(tmp_path, monkeypatch):
+    idx = pd.bdate_range("2024-01-01", periods=10)
+    df = pd.DataFrame({"Open": 100.0, "High": 101.0, "Low": 99.0, "Close": np.linspace(100, 109, 10),
+                       "Volume": [1000] * 4 + [0] + [1000] * 5}, index=idx)
+    df.index.name = "Date"
+    df.to_parquet(tmp_path / "TEST.NS.parquet")
+    monkeypatch.chdir(tmp_path)  # dropped-row log goes to tmp_path/data/logs
+    monkeypatch.setattr(p, "FROZEN_DIR", str(tmp_path))
+    out = p.load_prices("TEST.NS", "2024-01-01", str(idx[8].date()))
+    assert out.index.max() == idx[7]              # end date is exclusive
+    assert idx[4] not in out.index and len(out) == 7  # zero-volume row dropped
+    assert (tmp_path / "data" / "logs" / "dropped_rows.csv").exists()
+
+
+def test_universe_is_balanced_panel_size():
+    uni = pd.read_csv(Path(__file__).resolve().parents[1] / "config" / "universe.csv")
+    assert 40 <= len(uni) <= 45 and uni["ticker"].is_unique

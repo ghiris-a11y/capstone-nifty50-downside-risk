@@ -33,14 +33,22 @@ TEST_START = "2024-01-01"
 REFIT = 20
 SEED = 42
 OUT = "outputs"
+FROZEN_DIR = None  # set by --frozen: read prices from parquet snapshot files instead of Yahoo
 
 
 # ------------------------------------------------------------------ data
 def load_prices(ticker, start="2015-01-01", end=None):
-    import yfinance as yf
-    df = yf.download(ticker, start=start, end=end, auto_adjust=True, progress=False)
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = df.columns.get_level_values(0)
+    if FROZEN_DIR:  # frozen snapshot: identical rows on every run
+        name = ticker.replace("^", "_").replace("=", "_").replace("&", "_and_") + ".parquet"
+        df = pd.read_parquet(os.path.join(FROZEN_DIR, name))
+        df = df[df.index >= pd.Timestamp(start)]
+        if end is not None:
+            df = df[df.index < pd.Timestamp(end)]  # exclusive end, as in yfinance
+    else:
+        import yfinance as yf
+        df = yf.download(ticker, start=start, end=end, auto_adjust=True, progress=False)
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
     df = df[["Close", "Volume"]].dropna()
     bad = df["Volume"] <= 0
     if bad.any() and not ticker.startswith("^") and ticker != "INR=X":
@@ -333,55 +341,120 @@ def regime_table(ticker, ret, vix, fz_all):
     return pd.DataFrame(rows)
 
 
+def ticker_outputs(t, ret, vix, macro, volume, groups):
+    """Backtest, regime and Diebold-Mariano tables for one ticker."""
+    res, fz = run_ticker(t, ret, vix, macro, volume, groups)
+    reg = regime_table(t, ret, vix, fz)
+    names, dm_rows = list(fz), []
+    for i in range(len(names)):          # Diebold-Mariano, 95% joint loss
+        for j in range(i + 1, len(names)):
+            stat, p = dm_test(fz[names[i]][0.05], fz[names[j]][0.05])
+            dm_rows.append(dict(ticker=t, model_a=names[i], model_b=names[j], dm_stat=stat, p=p))
+    return res, reg, pd.DataFrame(dm_rows)
+
+
+def _ticker_paths(by_dir, t):
+    safe = t.replace("^", "_").replace("=", "_").replace("&", "_and_")
+    return {k: os.path.join(by_dir, f"{safe}__{k}.csv") for k in ("backtest", "regime", "dm")}
+
+
+def process_ticker(t, groups, start, test_end, frozen_dir, by_dir, resume=True):
+    """Run one ticker and write its three per-ticker files (resumable; safe in a worker process)."""
+    import time
+    global FROZEN_DIR
+    FROZEN_DIR = frozen_dir
+    paths = _ticker_paths(by_dir, t)
+    if resume and all(os.path.exists(p) for p in paths.values()):
+        return t, "skipped", 0.0, ""
+    t0 = time.time()
+    try:
+        vix = load_series("^INDIAVIX", start, test_end)
+        px = load_prices(t, start, test_end)
+        ret = np.log(px["Close"]).diff().dropna()
+        macro = load_macro(ret.index, start, test_end)
+        res, reg, dm = ticker_outputs(t, ret, vix, macro, px["Volume"].reindex(ret.index), groups)
+        for key, df in (("backtest", res), ("regime", reg), ("dm", dm)):
+            tmp = paths[key] + ".tmp"
+            df.to_csv(tmp, index=False)
+            os.replace(tmp, paths[key])  # file appears only when complete
+        return t, "done", time.time() - t0, ""
+    except Exception as ex:
+        return t, "failed", time.time() - t0, f"{type(ex).__name__}: {ex}"
+
+
 def main():
+    import time
     ap = argparse.ArgumentParser()
     ap.add_argument("--tickers", default="")
     ap.add_argument("--tickers-file", default="")
     ap.add_argument("--features", default="price+vix+macro", help="price | price+vix | price+vix+macro")
     ap.add_argument("--start", default="2015-01-01")
-    ap.add_argument("--test-end", default=None)
+    ap.add_argument("--test-end", default=None, help="exclusive end date of the data (and of the test window)")
     ap.add_argument("--demo", action="store_true")
+    ap.add_argument("--n-jobs", type=int, default=1, help="tickers processed in parallel (joblib)")
+    ap.add_argument("--frozen", action="store_true", help="read prices from --frozen-dir parquet files")
+    ap.add_argument("--frozen-dir", default=os.path.join("data", "frozen"))
+    ap.add_argument("--out-dir", default=OUT, help="where the merged summary/regime/DM files are written")
+    ap.add_argument("--no-resume", action="store_true", help="recompute tickers that already have results")
     a = ap.parse_args()
-    os.makedirs(OUT, exist_ok=True)
+    out = a.out_dir
+    os.makedirs(out, exist_ok=True)
+    tag = a.features.replace("+", "_")
     all_rows, all_reg, dm_rows = [], [], []
 
     if a.demo:
         ret, vix, macro = demo_data()
-        jobs = [("DEMO", ret, vix, macro, None)]
+        print("Running DEMO ...")
+        res, reg, dm = ticker_outputs("DEMO", ret, vix, macro, None, a.features)
+        all_rows, all_reg, dm_rows = [res], [reg], [dm]
     else:
         tickers = [t.strip() for t in a.tickers.split(",") if t.strip()]
         if a.tickers_file:
-            tickers += [l.strip() for l in open(a.tickers_file) if l.strip()]
-        vix = load_series("^INDIAVIX", a.start, a.test_end)
-        jobs = []
-        for t in tickers:
-            px = load_prices(t, a.start, a.test_end)
-            ret = np.log(px["Close"]).diff().dropna()
-            macro = load_macro(ret.index, a.start, a.test_end)
-            jobs.append((t, ret, vix, macro, px["Volume"].reindex(ret.index)))
-
-    for t, ret, vix_s, macro, volume in jobs:
-        print(f"Running {t} ...")
-        res, fz = run_ticker(t, ret, vix_s, macro, volume, a.features)
-        all_rows.append(res)
-        all_reg.append(regime_table(t, ret, vix_s, fz))
-        names = list(fz)
-        for i in range(len(names)):          # Diebold-Mariano, 95% joint loss
-            for j in range(i + 1, len(names)):
-                stat, p = dm_test(fz[names[i]][0.05], fz[names[j]][0.05])
-                dm_rows.append(dict(ticker=t, model_a=names[i], model_b=names[j], dm_stat=stat, p=p))
+            if a.tickers_file.endswith(".csv"):
+                tickers += pd.read_csv(a.tickers_file)["ticker"].astype(str).str.strip().tolist()
+            else:
+                tickers += [l.strip() for l in open(a.tickers_file) if l.strip()]
+        by_dir = os.path.join(out, "by_ticker", tag)
+        os.makedirs(by_dir, exist_ok=True)
+        frozen_dir = a.frozen_dir if a.frozen else None
+        stamp = lambda: time.strftime("%Y-%m-%d %H:%M:%S")
+        print(f"[{stamp()}] {len(tickers)} tickers | features={a.features} | frozen={frozen_dir} | "
+              f"test_end={a.test_end} | n_jobs={a.n_jobs}", flush=True)
+        failures = []
+        if a.n_jobs > 1:
+            from joblib import Parallel, delayed
+            results = Parallel(n_jobs=a.n_jobs, return_as="generator")(
+                delayed(process_ticker)(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume)
+                for t in tickers)
+        else:
+            results = (process_ticker(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume)
+                       for t in tickers)
+        for k, (t, status, secs, err) in enumerate(results, 1):
+            print(f"[{stamp()}] {k}/{len(tickers)} {t}: {status} ({secs:.0f} s){' ' + err if err else ''}", flush=True)
+            if status == "failed":
+                failures.append((t, err))
+        done = [t for t in tickers if all(os.path.exists(p) for p in _ticker_paths(by_dir, t).values())]
+        if not done:
+            raise SystemExit(f"No ticker produced results; failures: {failures}")
+        for t in done:
+            p = _ticker_paths(by_dir, t)
+            all_rows.append(pd.read_csv(p["backtest"], float_precision="round_trip"))
+            all_reg.append(pd.read_csv(p["regime"], float_precision="round_trip"))
+            dm_rows.append(pd.read_csv(p["dm"], float_precision="round_trip"))
+        print(f"[{stamp()}] merged {len(done)} tickers; failed: {len(failures)}", flush=True)
+        for t, err in failures:
+            print(f"  FAILED {t}: {err}", flush=True)
 
     res = pd.concat(all_rows)
-    tag = a.features.replace("+", "_")
-    res.to_csv(f"{OUT}/backtest_results_{tag}.csv", index=False)
-    pd.concat(all_reg).to_csv(f"{OUT}/regime_results_{tag}.csv", index=False)
-    pd.DataFrame(dm_rows).to_csv(f"{OUT}/diebold_mariano_{tag}.csv", index=False)
+    res.to_csv(f"{out}/backtest_results_{tag}.csv", index=False)
+    pd.concat(all_reg).to_csv(f"{out}/regime_results_{tag}.csv", index=False)
+    pd.concat(dm_rows).to_csv(f"{out}/diebold_mariano_{tag}.csv", index=False)
     summ = (res.groupby(["model", "alpha"])
                .agg(exc_rate=("exc_rate", "mean"), pass_kupiec=("pass_kupiec", "mean"),
                     pass_cc=("pass_cc", "mean"), green99=("basel_green_share", "mean"),
                     pinball=("pinball", "mean"), fz0=("fz0", "mean"),
                     es_ratio=("actual_over_expected_es", "mean")).round(4))
-    summ.to_csv(f"{OUT}/summary_{tag}.csv")
+    summ.to_csv(f"{out}/summary_{tag}.csv")
     print(summ.to_string())
 
 

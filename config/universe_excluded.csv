@@ -1,0 +1,10 @@
+ticker,name,sector,first_date,last_date,n_days,max_gap_days,zero_volume_rows,flags,reason
+ADANIENT.NS,Adani Enterprises,Metals & Mining,2015-01-01,2026-11-17,2932,0,2,2015-06-03: one-day log move -49.0% | 2017-04-26: one-day log move -23.5% | 2019-05-20: one-day log move +24.2% | 2020-08-25: one-day log move +21.2% | 2023-01-27: one-day log move -20.5% | 2023-02-01: one-day log move -33.1% | 2023-02-02: one-day log move -31.1% | 2024-06-04: one-day log move -21.5% | 2024-11-21: one-day log move -25.6%,suspected unadjusted corporate action: 2015-06-03 move -49.0% vs Nifty -1.2%
+ETERNAL.NS,Eternal (Zomato),Consumer Services,2021-07-23,2026-11-17,1315,0,5,2022-01-24: one-day log move -21.8%,first price 2021-07-23 after 2015-01-15
+HDFCLIFE.NS,HDFC Life Insurance,Financial Services,2017-11-17,2026-11-17,2222,0,2,2020-03-23: one-day log move -20.0%,first price 2017-11-17 after 2015-01-15
+INDIGO.NS,InterGlobe Aviation,Services,2015-11-10,2026-11-17,2720,0,2,2016-01-22: one-day log move -21.3%,first price 2015-11-10 after 2015-01-15
+JIOFIN.NS,Jio Financial Services,Financial Services,2023-08-21,2026-11-17,800,0,3,,first price 2023-08-21 after 2015-01-15
+MAXHEALTH.NS,Max Healthcare Institute,Healthcare,2020-08-21,2026-11-17,1544,0,2,,first price 2020-08-21 after 2015-01-15
+SBILIFE.NS,SBI Life Insurance,Financial Services,2017-10-03,2026-11-17,2254,0,2,,first price 2017-10-03 after 2015-01-15
+TMPV.NS,Tata Motors Passenger Vehicles (formerly Tata Motors),Automobile,2015-01-01,2026-11-17,2932,0,2,2025-10-14: Tata Motors demerger: commercial-vehicle business split off; listed entity renamed Tata Motors Passenger Vehicles | 2025-10-14: one-day log move -51.3%,suspected unadjusted corporate action: 2025-10-14 move -51.3% vs Nifty -0.3%
+TRENT.NS,Trent,Consumer Services,2015-01-01,2026-11-17,2932,0,2,2020-03-23: one-day log move -22.3% | 2026-01-01: one-day log move -40.1%,suspected unadjusted corporate action: 2026-01-01 move -40.1% vs Nifty +0.1%

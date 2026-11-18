@@ -1,0 +1,42 @@
+ticker,name,sector,first_date,last_date,n_days,max_gap_days,zero_volume_rows,flags
+ADANIPORTS.NS,Adani Ports and SEZ,Services,2015-01-01,2026-11-17,2932,0,3,2020-03-23: one-day log move -21.0% | 2023-02-01: one-day log move -21.3% | 2024-06-04: one-day log move -23.8%
+APOLLOHOSP.NS,Apollo Hospitals Enterprise,Healthcare,2015-01-01,2026-11-17,2932,0,2,
+ASIANPAINT.NS,Asian Paints,Consumer Durables,2015-01-01,2026-11-17,2932,0,2,
+AXISBANK.NS,Axis Bank,Financial Services,2015-01-01,2026-11-17,2932,0,2,2020-03-23: one-day log move -32.7%
+BAJAJ-AUTO.NS,Bajaj Auto,Automobile,2015-01-01,2026-11-17,2932,0,3,
+BAJFINANCE.NS,Bajaj Finance,Financial Services,2015-01-01,2026-11-17,2932,0,2,2020-03-23: one-day log move -26.4%
+BAJAJFINSV.NS,Bajaj Finserv,Financial Services,2015-01-01,2026-11-17,2932,0,2,2020-03-23: one-day log move -29.9%
+BEL.NS,Bharat Electronics,Capital Goods,2015-01-01,2026-11-17,2932,0,2,2024-06-04: one-day log move -22.1%
+BHARTIARTL.NS,Bharti Airtel,Telecommunication,2015-01-01,2026-11-17,2932,0,2,
+CIPLA.NS,Cipla,Healthcare,2015-01-01,2026-11-17,2932,0,2,
+COALINDIA.NS,Coal India,Oil Gas & Consumable Fuels,2015-01-01,2026-11-17,2932,0,2,
+DRREDDY.NS,Dr. Reddy's Laboratories,Healthcare,2015-01-01,2026-11-17,2932,0,2,
+EICHERMOT.NS,Eicher Motors,Automobile,2015-01-01,2026-11-17,2932,0,2,
+GRASIM.NS,Grasim Industries,Construction Materials,2015-01-01,2026-11-17,2932,0,2,2020-03-23: one-day log move -20.0%
+HCLTECH.NS,HCL Technologies,Information Technology,2015-01-01,2026-11-17,2932,0,2,
+HDFCBANK.NS,HDFC Bank,Financial Services,2015-01-01,2026-11-17,2932,0,2,"2023-07-13: HDFC Ltd merged into HDFC Bank (effective 1 Jul 2023, new shares listed 13 Jul 2023)"
+HINDALCO.NS,Hindalco Industries,Metals & Mining,2015-01-01,2026-11-17,2932,0,2,
+HINDUNILVR.NS,Hindustan Unilever,FMCG,2015-01-01,2026-11-17,2932,0,2,
+ICICIBANK.NS,ICICI Bank,Financial Services,2015-01-01,2026-11-17,2932,0,2,
+INFY.NS,Infosys,Information Technology,2015-01-01,2026-11-17,2932,0,2,
+ITC.NS,ITC,FMCG,2015-01-01,2026-11-17,2932,0,1,
+JSWSTEEL.NS,JSW Steel,Metals & Mining,2015-01-01,2026-11-17,2932,0,7,
+KOTAKBANK.NS,Kotak Mahindra Bank,Financial Services,2015-01-01,2026-11-17,2932,0,2,
+LT.NS,Larsen & Toubro,Construction,2015-01-01,2026-11-17,2932,0,2,
+M&M.NS,Mahindra & Mahindra,Automobile,2015-01-01,2026-11-17,2932,0,3,
+MARUTI.NS,Maruti Suzuki India,Automobile,2015-01-01,2026-11-17,2932,0,3,
+NESTLEIND.NS,Nestle India,FMCG,2015-01-01,2026-11-17,2932,0,2,
+NTPC.NS,NTPC,Power,2015-01-01,2026-11-17,2932,0,2,
+ONGC.NS,Oil and Natural Gas Corporation,Oil Gas & Consumable Fuels,2015-01-01,2026-11-17,2932,0,2,
+POWERGRID.NS,Power Grid Corporation of India,Power,2015-01-01,2026-11-17,2932,0,2,
+RELIANCE.NS,Reliance Industries,Oil Gas & Consumable Fuels,2015-01-01,2026-11-17,2932,0,2,
+SBIN.NS,State Bank of India,Financial Services,2015-01-01,2026-11-17,2932,0,2,2017-10-25: one-day log move +24.4%
+SHRIRAMFIN.NS,Shriram Finance,Financial Services,2015-01-01,2026-11-17,2932,0,7,2020-03-23: one-day log move -25.1%
+SUNPHARMA.NS,Sun Pharmaceutical Industries,Healthcare,2015-01-01,2026-11-17,2932,0,2,
+TATACONSUM.NS,Tata Consumer Products,FMCG,2015-01-01,2026-11-17,2932,0,2,
+TATASTEEL.NS,Tata Steel,Metals & Mining,2015-01-01,2026-11-17,2932,0,2,
+TCS.NS,Tata Consultancy Services,Information Technology,2015-01-01,2026-11-17,2932,0,2,
+TECHM.NS,Tech Mahindra,Information Technology,2015-01-01,2026-11-17,2932,0,2,
+TITAN.NS,Titan Company,Consumer Durables,2015-01-01,2026-11-17,2932,0,2,
+ULTRACEMCO.NS,UltraTech Cement,Construction Materials,2015-01-01,2026-11-17,2932,0,2,
+WIPRO.NS,Wipro,Information Technology,2015-01-01,2026-11-17,2932,0,2,

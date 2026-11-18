@@ -10,6 +10,7 @@ data/raw/*
 !data/raw/repo_rate.csv
 !data/raw/cpi.csv
 !data/raw/iip.csv
+!data/raw/templates/
 outputs/models/*
 !outputs/models/.gitkeep
 
@@ -35,3 +36,6 @@ outputs/demo/
 data/processed/pilot_snapshot/*.parquet
 report/pilot_pitch.docx
 report/pilot_pitch.pdf
+
+# Frozen Yahoo prices stay local (Yahoo terms); the hash manifest is committed
+data/frozen/*.parquet
