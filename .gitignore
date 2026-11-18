@@ -1,0 +1,31 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Data and models (per PROJECT_PLAN P0)
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/repo_rate.csv
+!data/raw/cpi.csv
+!data/raw/iip.csv
+outputs/models/*
+!outputs/models/.gitkeep
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Private documents: kept locally, not published in this public repo
+Capstone notes.docx
+Phase1_Report_CAP_final.pdf
+report/template/*
+!report/template/.gitkeep
+~$*
+
+# Editors / OS / local tool settings
+.vscode/
+.claude/settings.local.json
+Thumbs.db
+desktop.ini
