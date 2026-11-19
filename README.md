@@ -76,4 +76,29 @@ one-day move above 20% placed in `data/live/quarantine.csv` (check whether it is
 if genuine, append the row to `prices_live.csv` by hand and rerun).
 
 Run locally: `pip install -r requirements-live.txt` then `python src/update_data.py`. Before 16:30 IST,
-today's partial prices are skipped.
+today's partial prices are skipped. The committed live file keeps only `date, ticker, adj_close` for the last
+1,600 trading days per symbol (what the Action needs); no other price fields are stored.
+
+## Figures and dashboard
+
+```powershell
+python src/make_figures.py            # outputs/figures/*.png (300 DPI) + *.html + captions.md
+python src/export_dashboard_json.py   # frontend/public/data/*.json (derived data only: returns, VaR/ES, test results)
+cd frontend
+npm ci
+npm run dev       # local development server
+npm run build     # type-check + production build into frontend/dist
+npm run preview   # serve the production build locally
+```
+
+Regenerate both after any model rerun (for example after the macro data are added), then commit
+`outputs/figures` and `frontend/public/data`.
+
+**Live site:** https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/
+
+**GitHub Pages setup (one time):** repository **Settings → Pages → Build and deployment → Source: GitHub Actions**
+(do not pick a suggested Jekyll or Static HTML workflow). The `deploy` job of `daily_update.yml` builds
+`frontend/dist` and publishes it with `actions/upload-pages-artifact` and `actions/deploy-pages` after every daily
+update, and whenever dashboard code is pushed. The Action never commits dashboard files: live risk JSON is
+regenerated inside the build. The app uses `HashRouter` and relative `./data/...` paths, and Vite `base` is
+`/capstone-nifty50-downside-risk/`.

@@ -1,13 +1,22 @@
 name: Daily data update
 
-# 13:30 UTC = 7:00 PM IST, Monday to Friday (GitHub cron runs in UTC and can start a few minutes late)
+# 13:30 UTC = 7:00 PM IST, Monday to Friday (GitHub cron runs in UTC and can start late).
+# A push that changes the dashboard redeploys it without running the data update.
 on:
   schedule:
     - cron: '30 13 * * 1-5'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'src/export_dashboard_json.py'
+      - '.github/workflows/daily_update.yml'
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: daily-data-update
@@ -15,6 +24,7 @@ concurrency:
 
 jobs:
   update:
+    if: github.event_name != 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -56,3 +66,55 @@ jobs:
         run: |
           echo "update_data.py reported failures; see data/logs/update_log.csv"
           exit 1
+
+  deploy:
+    # Runs after the update even if validation failed (the dashboard then shows the last good live data).
+    needs: update
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the latest main (includes today's data commit)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-live.txt
+
+      - name: Refresh live dashboard data (not committed)
+        run: |
+          pip install -r requirements-live.txt
+          python src/export_dashboard_json.py --live-only
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build dashboard
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: frontend/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

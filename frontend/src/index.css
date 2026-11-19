@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 17px; /* readable on a projector */
+}
+th,
+td {
+  padding: 0.35rem 0.6rem;
+}

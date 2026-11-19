@@ -1,0 +1,31 @@
+# Figure captions (generated from outputs by src/make_figures.py)
+
+ML models: price/volume features. Test window 2024-01-01 to 2026-11-17, 41 stocks.
+
+**fig01_market_context.** Nifty 50 cumulative log return since 1 January 2015 and the percentile of the India VIX within 2015-2026. The shaded area is the test window; the dashed line marks the RBI repo hike of 7 October 2026.
+
+**fig02_return_distributions.** Histograms of daily log returns for each of the 41 stocks over the test window (bins of 0.5 percentage points; returns beyond +/-8% are placed in the end bins).
+
+**fig03_var_vs_returns_RELIANCE.** RELIANCE.NS daily returns with the 99% VaR of GJR-GARCH-t and XGBoost (price/volume features). Breaches: GJR-t 7, XGBoost 11 of 709 days.
+
+**fig04_exception_heatmap_99.** 99% VaR breach rate for each stock and model; the colour scale is centred on the nominal 1%.
+
+**fig05_vix_quartiles_fz0.** Mean FZ0 loss (95% VaR and ES) in each quartile of the previous day's India VIX, averaged across stocks; error bars are one standard error across stocks. Lower is better.
+
+**fig06_xgb_shap_importance.** Mean absolute SHAP contribution of each feature to XGBoost's 1% quantile forecast (feature set price/volume + India VIX level), averaged over 41 stocks; the largest is vix.
+
+**fig07_kupiec_vs_christoffersen.** Kupiec (unconditional coverage) and Christoffersen (independence) p-values for 99% VaR, one point per stock and model; points left of or below the dashed lines fail the test at 5%.
+
+**fig08_es_calibration.** Ratio of the realised average loss on breach days to the average forecast ES on those days, per stock; 1 means the ES forecast matched realised tail losses.
+
+**fig09_sector_var.** Average one-day 99% VaR from GJR-GARCH-t over the test window for each stock, grouped by sector.
+
+**fig10_leaderboard.** Models ordered by the distance of the 99% breach rate from 1%. Closest to nominal: EGARCH-t (0.88%), GARCH-t (0.87%), GJR-t (0.84%). The ordering is by breach rate only; it is not a ranking of overall forecast quality.
+
+**fig11_fz0_mean_median.** Mean and median FZ0 across stocks. XGBoost had 19 no-risk days at 95% and 20 at 99% (forecast quantile at or above zero); its mean 99% FZ0 is 28.9606 against a median of -2.8156.
+
+**fig12_dm_summary.** Diebold-Mariano tests on FZ0 (95%) between each ML model and each of the six GARCH models for every stock: GARCH significantly better in 90 pairs, ML in 2, no difference in 646.
+
+**fig13_breaches_by_day.** Number of stocks whose return breached the 99% VaR on each day, for GJR-GARCH-t and XGBoost; triangles mark days on which the Nifty 50 fell 2% or more.
+
+**fig14_stress_share.** Share of all 99% breaches that occurred on market-stress days; stress days are 1.5% of test days. GJR-t: 21.4%, XGBoost: 16.2%.

@@ -41,6 +41,11 @@ CLOSE_CUTOFF_IST = (16, 30)  # rows dated today are used only after 16:30 IST (m
 MOVE_LIMIT = 0.20
 OVERLAP_TOL = 0.005
 GARCH_WINDOW = 1500
+# The repository is public: store only what the Action needs. Adjusted close is required for the overlap
+# check, the 20% move check and the GARCH returns; open/high/low/close/volume are validated on the fetched
+# rows and then dropped. Only the last KEEP_DAYS rows per symbol are kept (GARCH window + buffer).
+STORE_COLS = ["date", "ticker", "adj_close"]
+KEEP_DAYS = 1600
 MAX_LAG = 3               # a stock may trail the Nifty by at most 3 trading days before the run fails
 MAX_NIFTY_AGE_BDAYS = 4   # the Nifty's last date may be at most 4 business days old (allows for holidays)
 
@@ -180,7 +185,7 @@ def main():
     uni = pd.read_csv(os.path.join(ROOT, "config", "universe.csv"))
     symbols = uni["ticker"].tolist() + EXTRA
     stored_all = (pd.read_csv(PRICES, parse_dates=["date"], float_precision="round_trip") if os.path.exists(PRICES)
-                  else pd.DataFrame(columns=COLS))
+                  else pd.DataFrame(columns=STORE_COLS))
     appended, quarantined, log_rows, failures = [], [], [], []
 
     for sym in symbols:
@@ -238,12 +243,13 @@ def main():
                                      message=f"stale: {lag} Nifty trading days behind (last {last_by[sym].date()})"))
 
     out = new_all.drop_duplicates(["date", "ticker"], keep="first").sort_values(["date", "ticker"])
+    out = out.groupby("ticker", group_keys=False).tail(KEEP_DAYS).sort_values(["date", "ticker"])
     out["date"] = pd.to_datetime(out["date"]).dt.strftime("%Y-%m-%d")
     tmp = PRICES + ".tmp"
-    out[COLS].to_csv(tmp, index=False)
+    out[STORE_COLS].to_csv(tmp, index=False)
     os.replace(tmp, PRICES)  # atomic: an interrupted run never leaves a half-written file
     if quarantined:
-        q = pd.concat(quarantined).assign(run_utc=run_utc)
+        q = pd.concat(quarantined)[STORE_COLS + ["reason"]].assign(run_utc=run_utc)
         q["date"] = pd.to_datetime(q["date"]).dt.strftime("%Y-%m-%d")
         if os.path.exists(QUAR):  # keep one entry per (date, ticker): the first time it was quarantined
             q = pd.concat([pd.read_csv(QUAR), q]).drop_duplicates(["date", "ticker"], keep="first")
@@ -272,10 +278,11 @@ def main():
                                      message=f"GJR-GARCH fit failed: {ex}"))
                 continue
             rows.append(dict(as_of=str(s.index[-1].date()), forecast_for="next trading day", ticker=r.ticker,
-                             sector=r.sector, last_adj_close=float(s.iloc[-1]),
+                             sector=r.sector,
                              last_return=float(np.log(s.iloc[-1] / s.iloc[-2])), model="GJR-GARCH(1,1) Student-t",
                              window_days=GARCH_WINDOW, **risk,
-                             india_vix=float(vix["adj_close"].iloc[-1]) if len(vix) else np.nan,
+                             india_vix_change_1d=float(np.log(vix["adj_close"].iloc[-1] / vix["adj_close"].iloc[-2]))
+                             if len(vix) > 1 else np.nan,
                              india_vix_date=str(vix["date"].iloc[-1].date()) if len(vix) else "",
                              generated_utc=run_utc))
         risk_path = os.path.join(OUT_LIVE, "latest_risk.csv")
