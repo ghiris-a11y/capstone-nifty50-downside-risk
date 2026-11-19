@@ -41,6 +41,8 @@ CLOSE_CUTOFF_IST = (16, 30)  # rows dated today are used only after 16:30 IST (m
 MOVE_LIMIT = 0.20
 OVERLAP_TOL = 0.005
 GARCH_WINDOW = 1500
+MAX_LAG = 3               # a stock may trail the Nifty by at most 3 trading days before the run fails
+MAX_NIFTY_AGE_BDAYS = 4   # the Nifty's last date may be at most 4 business days old (allows for holidays)
 
 for _p in (LIVE, LOGS, OUT_LIVE, PRICES, QUAR, ULOG):  # rule 5: the Action never touches data/frozen
     assert "frozen" not in os.path.relpath(_p, ROOT).split(os.sep)
@@ -93,7 +95,17 @@ def validate_new_rows(stored, fetched, sym, today_ist, now_ist_hm):
     new = new.sort_values("date")
 
     price_cols = ["open", "high", "low", "close", "adj_close"]
-    if new[price_cols].isna().any().any():
+    # Yahoo sometimes returns recent days with empty prices until it finishes publishing them. Rows with
+    # empty prices are never appended: keep only the rows before the first empty one, so no gap is created,
+    # and retry from there on the next run. If Yahoo never fills the day, the staleness check in main()
+    # fails the run once the ticker is more than MAX_LAG Nifty trading days behind.
+    empty = new[price_cols].isna().any(axis=1).to_numpy()
+    if empty.any():
+        k = int(np.argmax(empty))
+        logs.append(("warning", f"empty prices from {new['date'].iloc[k].date()} (Yahoo not final yet); "
+                     f"{len(new) - k} row(s) held back and retried next run"))
+        new = new.iloc[:k]
+    if new[price_cols].isna().any().any():  # cannot happen after truncation; kept as a guard
         bad = new[new[price_cols].isna().any(axis=1)]
         logs.append(("error", "null prices on " + ", ".join(str(d.date()) for d in bad["date"])))
         failed = True
@@ -209,6 +221,21 @@ def main():
         if miss:
             log_rows.append(dict(run_utc=run_utc, ticker=sym, level="warning", new_rows=0,
                                  message="no row on Nifty trading day(s): " + ", ".join(str(d.date()) for d in miss)))
+
+    # staleness: fail if the Nifty stops updating or a stock falls more than MAX_LAG Nifty days behind
+    last_by = new_all.groupby("ticker")["date"].max()
+    nifty_cal = sorted(nifty_days)
+    if "^NSEI" in last_by and np.busday_count(last_by["^NSEI"].date(), now.date()) > MAX_NIFTY_AGE_BDAYS:
+        failures.append("^NSEI")
+        log_rows.append(dict(run_utc=run_utc, ticker="^NSEI", level="error", new_rows=0,
+                             message=f"Nifty data stale: last date {last_by['^NSEI'].date()}"))
+    for sym in uni["ticker"]:
+        if sym in last_by and "^NSEI" in last_by:
+            lag = sum(1 for d in nifty_cal if last_by[sym] < d <= last_by["^NSEI"])
+            if lag > MAX_LAG:
+                failures.append(sym)
+                log_rows.append(dict(run_utc=run_utc, ticker=sym, level="error", new_rows=0,
+                                     message=f"stale: {lag} Nifty trading days behind (last {last_by[sym].date()})"))
 
     out = new_all.drop_duplicates(["date", "ticker"], keep="first").sort_values(["date", "ticker"])
     out["date"] = pd.to_datetime(out["date"]).dt.strftime("%Y-%m-%d")

@@ -33,10 +33,12 @@ def test_appends_only_new_valid_rows():
     assert any("overlap check passed" in m for _, m in logs)
 
 
-def test_null_price_blocks_ticker():
-    f = pd.concat([STORED, frame(["2026-11-16"], [np.nan])])
-    new, _, _, failed = run(f)
-    assert failed and len(new) == 0
+def test_null_price_is_never_appended_and_later_rows_wait():
+    """A null followed by a valid row: nothing from the null onwards is appended (no gap, no null)."""
+    f = pd.concat([STORED, frame(["2026-11-16"], [np.nan]), frame(["2026-11-17"], [101])])
+    new, _, logs, failed = run(f)
+    assert not failed and len(new) == 0
+    assert any(level == "warning" and "held back" in m for level, m in logs)
 
 
 def test_non_positive_price_blocks_ticker():
@@ -102,3 +104,12 @@ def test_bootstrap_keeps_historical_big_moves_but_flags_them():
     new, quar, logs, failed = run(f, stored=empty)
     assert not failed and len(new) == 3 and len(quar) == 0
     assert any(level == "flag" and "bootstrap" in m for level, m in logs)
+
+
+def test_empty_newest_row_is_held_back_not_failed():
+    """Yahoo publishes the latest day late: rows before it are appended, the empty row is retried."""
+    f = pd.concat([STORED, frame(["2026-11-16"], [101]), frame(["2026-11-17"], [np.nan])])
+    new, quar, logs, failed = run(f)
+    assert not failed and len(quar) == 0
+    assert list(new["date"].dt.strftime("%Y-%m-%d")) == ["2026-11-16"]
+    assert any(level == "warning" and "not final" in m for level, m in logs)
