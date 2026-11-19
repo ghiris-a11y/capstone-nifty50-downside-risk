@@ -50,6 +50,15 @@ export interface SummaryRow {
   pinball: number; fz0: number; es_ratio: number; fz0_median_stocks: number; fz0_daily_median: number; norisk_days: number;
 }
 export interface SummaryFile { labels: Record<string, string>; default: string; summary: Record<string, SummaryRow[]> }
+export const rowAt = (rows: SummaryRow[], m: string, a: number) => rows.find((r) => r.model === m && Math.abs(r.alpha - a) < 1e-9)!;
+// "1.64 days in 100" from a breach rate of 0.0164
+export const per100 = (v: number) => (100 * v).toFixed(2);
+export interface BreachSummaryRow {
+  model: string; alpha: number; total_breaches: number; share_of_breaches_on_stress_days: number; share_of_days_stress: number;
+  max_breaches_one_day: number; days_with_10plus_breaches: number; top_days: string;
+}
+export const dmTotals = (rows: DmCount[] | undefined) =>
+  (rows || []).reduce((t, r) => ({ g: t.g + r.garch, m: t.m + r.ml, n: t.n + r.none }), { g: 0, m: 0, n: 0 });
 export interface BacktestRow {
   ticker: string; model: string; alpha: number; n: number; exceptions: number; exc_rate: number; kupiec_p: number;
   ind_p: number; cc_p: number; pass_kupiec: boolean; pass_cc: boolean; basel_green_share: number | null;

@@ -1,5 +1,7 @@
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import Overview from "./pages/Overview";
+import Start from "./pages/Start";
+import Glossary from "./pages/Glossary";
 import Models from "./pages/Models";
 import Regimes from "./pages/Regimes";
 import Stock from "./pages/Stock";
@@ -9,13 +11,15 @@ import About from "./pages/About";
 import { useJson, type Meta } from "./lib/data";
 
 const TABS = [
-  ["/", "Overview"],
+  ["/", "Start here"],
+  ["/overview", "Results at a glance"],
   ["/models", "Model comparison"],
-  ["/regimes", "Regimes & stress"],
-  ["/stock", "Stock drill-down"],
-  ["/features", "Feature importance"],
-  ["/live", "Live risk"],
-  ["/about", "About"],
+  ["/regimes", "Calm vs stressed days"],
+  ["/stock", "One stock up close"],
+  ["/features", "What drives the forecasts"],
+  ["/live", "Daily example"],
+  ["/glossary", "Glossary"],
+  ["/about", "About & limits"],
 ] as const;
 
 export default function App() {
@@ -24,10 +28,9 @@ export default function App() {
     <div className="min-h-screen">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 pt-4">
-          <h1 className="font-serif text-3xl font-bold">Nifty 50 Downside Risk: GARCH vs Machine Learning</h1>
+          <h1 className="font-serif text-2xl font-bold sm:text-3xl">How much could a big Indian stock lose tomorrow?</h1>
           <p className="text-slate-600">
-            One-day 95% and 99% Value-at-Risk and Expected Shortfall for {meta.data?.n_stocks ?? "…"} Nifty 50 stocks.
-            MBA Business Analytics capstone, ITM Skills University.
+            Classic models against machine learning, tested on {meta.data?.n_stocks ?? "…"} big stocks. A student project at ITM Skills University.
           </p>
           <nav className="mt-3 flex flex-wrap gap-1">
             {TABS.map(([to, label]) => (
@@ -48,13 +51,16 @@ export default function App() {
       {meta.data && (
         <div className="border-b border-warn-500 bg-warn-100 text-sm text-warn-700">
           <div className="mx-auto max-w-7xl px-4 py-2">
-            Working results. {meta.data.approval_note} {meta.data.macro_note}
+            Draft results: our project guide has not yet approved them. The models do not yet use interest rates, price rises or
+            factory output.
           </div>
         </div>
       )}
       <main className="mx-auto max-w-7xl px-4 py-6">
         <Routes>
-          <Route path="/" element={<Overview />} />
+          <Route path="/" element={<Start />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/glossary" element={<Glossary />} />
           <Route path="/models" element={<Models />} />
           <Route path="/regimes" element={<Regimes />} />
           <Route path="/stock" element={<Stock />} />
@@ -65,8 +71,8 @@ export default function App() {
         </Routes>
       </main>
       <footer className="border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-        Frozen research snapshot {meta.data?.snapshot_utc ?? ""} · results generated {meta.data?.results_generated_utc ?? ""}
-        {meta.data?.live_as_of ? ` · live data as of ${meta.data.live_as_of}` : ""} · Data: Yahoo Finance (derived values only)
+        Locked data copy {meta.data?.snapshot_utc ?? ""} · results made {meta.data?.results_generated_utc ?? ""}
+        {meta.data?.live_as_of ? ` · daily example up to ${meta.data.live_as_of}` : ""} · Data: Yahoo Finance (only returns and risk numbers are shown, no prices)
       </footer>
     </div>
   );

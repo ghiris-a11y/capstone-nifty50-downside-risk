@@ -41,3 +41,4 @@ report/pilot_pitch.pdf
 # Frozen Yahoo prices stay local (Yahoo terms); the hash manifest is committed
 data/frozen/*.parquet
 outputs/tables/**/by_ticker/**/*__daily.parquet
+outputs/dashboard_check/*.png

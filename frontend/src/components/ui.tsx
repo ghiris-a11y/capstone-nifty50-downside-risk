@@ -43,10 +43,10 @@ export function Select<T extends string>({ label, value, options, onChange }: {
   label: string; value: T; options: { value: T; label: string }[]; onChange: (v: T) => void;
 }) {
   return (
-    <label className="flex flex-col text-sm font-medium text-slate-700">
+    <label className="flex min-w-0 max-w-full flex-col text-sm font-medium text-slate-700">
       {label}
       <select
-        className="mt-1 rounded border border-slate-300 bg-white px-2 py-1.5 text-base"
+        className="mt-1 w-full max-w-full rounded border border-slate-300 bg-white px-2 py-1.5 text-base"
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
       >

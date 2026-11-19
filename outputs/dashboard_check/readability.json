@@ -1,0 +1,116 @@
+{
+ "url": "http://localhost:4181/capstone-nifty50-downside-risk/",
+ "tabs": {
+  "start": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 3.7,
+   "flesch_reading_ease": 82.3,
+   "words": 237,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  },
+  "overview": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 2.9,
+   "flesch_reading_ease": 88.3,
+   "words": 251,
+   "above_9": [
+    "A student project at ITM Skills University.",
+    "The machine-learning models were beaten more often."
+   ],
+   "overflow_px_projector": 0
+  },
+  "models": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 4.1,
+   "flesch_reading_ease": 86.0,
+   "words": 578,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  },
+  "regimes": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 3.7,
+   "flesch_reading_ease": 88.5,
+   "words": 352,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  },
+  "stock": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 4.0,
+   "flesch_reading_ease": 84.2,
+   "words": 366,
+   "above_9": [
+    "A student project at ITM Skills University.",
+    "Reliance Industries: forecast against real loss."
+   ],
+   "overflow_px_projector": 0
+  },
+  "features": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 3.6,
+   "flesch_reading_ease": 82.6,
+   "words": 228,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  },
+  "live": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 4.0,
+   "flesch_reading_ease": 84.9,
+   "words": 168,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  },
+  "glossary": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 3.7,
+   "flesch_reading_ease": 85.1,
+   "words": 495,
+   "above_9": [
+    "A student project at ITM Skills University.",
+    "Overall forecast quality score (lower is better)."
+   ],
+   "overflow_px_projector": 0
+  },
+  "about": {
+   "overflow_px_phone": 0,
+   "console_errors": [],
+   "overflow_px_laptop": 0,
+   "fk_grade": 3.3,
+   "flesch_reading_ease": 85.9,
+   "words": 229,
+   "above_9": [
+    "A student project at ITM Skills University."
+   ],
+   "overflow_px_projector": 0
+  }
+ }
+}

@@ -1,4 +1,6 @@
 import { Section, Table } from "../components/ui";
+import { Experts, Takeaway } from "../components/plain";
+import { Limits } from "./Glossary";
 import { pct, useJson, type Meta } from "../lib/data";
 
 interface Excl { ticker: string; name: string; sector: string; reason: string }
@@ -11,6 +13,18 @@ export default function About() {
   const m = meta.data;
   return (
     <>
+      <Takeaway>How we did the study, and what it cannot tell you.</Takeaway>
+      <Section title="How the study was done">
+        <ul className="max-w-3xl list-disc space-y-1 pl-6 text-lg" data-read>
+          <li>We used {m?.n_stocks ?? "the"} Nifty 50 stocks that have daily prices from 2015 onwards. We left out {m?.n_excluded ?? "some"} others. They listed later, or their price data had errors.</li>
+          <li>Each model forecast one day ahead. It used only what was known the evening before.</li>
+          <li>The models learned from 2015 to 2021. We made our choices on 2022 and 2023. We tested on {m?.test_start?.slice(0, 4) ?? "2024"} to {m?.data_last?.slice(0, 4) ?? "2026"}.</li>
+          <li>We say “closest to expected”, not “best”. We call a gap real only when a standard check says so.</li>
+          <li>All report numbers come from one locked copy of the data, so anyone can repeat them.</li>
+        </ul>
+      </Section>
+      <Limits />
+      <Experts title="method in technical terms">
       <Section title="Method">
         <ul className="list-disc space-y-1 pl-6 text-slate-800">
           <li>Balanced panel of {m?.n_stocks ?? "…"} Nifty 50 stocks with full daily history from 2015 ({m?.n_excluded ?? "…"} candidates excluded; see below).</li>
@@ -31,6 +45,8 @@ export default function About() {
           <li>Only derived values (returns, VaR/ES, test results) are published here; no raw price series.</li>
         </ul>
       </Section>
+      </Experts>
+      <Experts title="excluded stocks and the review of large one-day moves">
       <Section title="Excluded stocks">
         {excl.data && <Table head={["Stock", "Name", "Sector", "Reason"]} rows={excl.data.map((e) => [e.ticker, e.name, e.sector, e.reason])} />}
       </Section>
@@ -41,6 +57,7 @@ export default function About() {
             rows={rev.data.map((r) => [r.ticker, r.date, pct(r.log_move, 1), pct(r.nifty_move, 1), r.triggered_exclusion ? "yes" : "no", r.classification, r.note ?? ""])} />
         )}
       </Section>
+      </Experts>
     </>
   );
 }

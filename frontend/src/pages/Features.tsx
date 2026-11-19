@@ -1,6 +1,8 @@
-import Figure from "../components/Figure";
+import Figure, { type FigJson } from "../components/Figure";
 import { ErrorBox, Loading, Section, Table } from "../components/ui";
-import { ML, pct, useJson, type SummaryFile } from "../lib/data";
+import { Experts, HowToRead, Means, ModelName, Takeaway } from "../components/plain";
+import { ML, pct, per100, rowAt, useJson, type SummaryFile } from "../lib/data";
+import { FEATURE_PLAIN } from "../lib/plain";
 
 interface Variant { variant: string; contains: string; model: string; rel_pinball: number; exc99: number; calib_err: number; score: number }
 interface Validation { selection: { created_utc: string; rule: string; selected_overall: string; selected_stationary: string }; variants: Variant[] }
@@ -10,12 +12,55 @@ export default function Features() {
   const s = useJson<SummaryFile>("summary.json");
   const v = useJson<Validation>("validation.json");
   const r = useJson<Range[]>("feature_ranges.json");
+  if (s.loading) return <Loading />;
+  if (!s.data) return <ErrorBox error={s.error || "missing summary"} />;
+  const ex = (set: string, m: string) => rowAt(s.data!.summary[set], m, 0.01).exc_rate;
+  const vixWorse = ML.every((m) => Math.abs(ex("price_vixlevel", m) - 0.01) > Math.abs(ex("price", m) - 0.01));
+  const topFeature = (f: FigJson) => { const y = (f.data[0] as { y?: string[] }).y || []; return y[y.length - 1] ?? ""; };
   return (
     <>
-      <Section title="What drives the XGBoost 99% VaR forecast">
-        <Figure name="fig06_xgb_shap_importance" number="Figure 6" />
+      <Takeaway>
+        {vixWorse
+          ? "The market fear gauge moved XGBoost's forecasts the most. But adding it did not bring any model closer to expected."
+          : "Extra market inputs changed the machine-learning forecasts, with mixed results."}
+      </Takeaway>
+      <Section title="What moves the machine-learning forecast?">
+        <Figure name="fig06_xgb_shap_importance" number="Figure 6"
+          title={(f) => `${FEATURE_PLAIN[topFeature(f)] ?? topFeature(f)} had the biggest effect on XGBoost's forecast`}
+          how="Each bar shows how much one input moved XGBoost's forecast, on average. Longer bar = bigger effect. The thin line shows the uncertainty."
+          means="A big effect is not the same as a better forecast. The next section checks whether these inputs made the forecasts more accurate."
+          patch={(l, f) => {
+            const y = (f.data[0] as { y?: string[] }).y || [];
+            return {
+              yaxis: { ...(l.yaxis || {}), title: { text: "Input" }, tickvals: y, ticktext: y.map((v) => FEATURE_PLAIN[v] ?? v) },
+              xaxis: { ...(l.xaxis || {}), title: { text: "Average effect on the forecast (hundredths of 1% of return)" } },
+              margin: { ...(l.margin || {}), l: 260, t: 40 },
+            };
+          }} />
       </Section>
 
+      <Section title="Did extra market inputs help?">
+        <HowToRead>
+          Each card shows how many days in 100 a model was beaten. The ideal is 1. We compare price and volume only with the fear
+          gauge added.
+        </HowToRead>
+        <div className="grid gap-3 sm:grid-cols-3" data-read>
+          {ML.map((m) => (
+            <div key={m} className="rounded border border-ml-100 bg-ml-50 p-3">
+              <ModelName m={m} short />
+              <p className="mt-1">Price and volume only: <b>{per100(ex("price", m))}</b> in 100</p>
+              <p>With the fear gauge: <b>{per100(ex("price_vixlevel", m))}</b> in 100</p>
+            </div>
+          ))}
+        </div>
+        <Means>
+          {vixWorse
+            ? "With the fear gauge, every machine-learning model moved further from the ideal. The gauge helped a little in 2022 and 2023, but that gain mostly faded in the test years. The gauge also stayed well below the highs of the years the models learned from."
+            : "The effect of the fear gauge was mixed across models."}
+        </Means>
+      </Section>
+
+      <Experts title="ML results by input set, validation-window choice and feature ranges">
       <Section title="ML results by feature set (test window 2024-2026)"
         note="Each set is named by what it contains. GARCH and historical simulation do not use these features. Macro series (repo rate, CPI, IIP) are not yet included.">
         {s.loading && <Loading />}
@@ -62,6 +107,7 @@ export default function Features() {
           />
         )}
       </Section>
+      </Experts>
     </>
   );
 }
