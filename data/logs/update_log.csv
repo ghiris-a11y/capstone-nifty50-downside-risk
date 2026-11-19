@@ -1320,3 +1320,134 @@ run_utc,ticker,level,new_rows,message
 2026-11-19 05:42:13,NESTLEIND.NS,warning,0,no row on Nifty trading day(s): 2026-11-18
 2026-11-19 05:42:13,TECHM.NS,warning,0,no row on Nifty trading day(s): 2026-11-18
 2026-11-19 05:42:13,ULTRACEMCO.NS,warning,0,no row on Nifty trading day(s): 2026-11-18
+2026-11-19 21:43:05,ADANIPORTS.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,ADANIPORTS.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ADANIPORTS.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,APOLLOHOSP.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,APOLLOHOSP.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,APOLLOHOSP.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,ASIANPAINT.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,ASIANPAINT.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ASIANPAINT.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,AXISBANK.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,AXISBANK.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,AXISBANK.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,BAJAJ-AUTO.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,BAJAJ-AUTO.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,BAJAJ-AUTO.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,BAJFINANCE.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,BAJFINANCE.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,BAJFINANCE.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,BAJAJFINSV.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,BAJAJFINSV.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,BAJAJFINSV.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,BEL.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,BEL.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,BEL.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,BHARTIARTL.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,BHARTIARTL.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,BHARTIARTL.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,CIPLA.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,CIPLA.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,CIPLA.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,COALINDIA.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,COALINDIA.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,COALINDIA.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,DRREDDY.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,DRREDDY.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,DRREDDY.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,EICHERMOT.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,EICHERMOT.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,EICHERMOT.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,GRASIM.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,GRASIM.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,GRASIM.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,HCLTECH.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,HCLTECH.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,HCLTECH.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,HDFCBANK.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,HDFCBANK.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,HDFCBANK.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,HINDALCO.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,HINDALCO.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,HINDALCO.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,HINDUNILVR.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,HINDUNILVR.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,HINDUNILVR.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,ICICIBANK.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,ICICIBANK.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ICICIBANK.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,INFY.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,INFY.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,INFY.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,ITC.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,ITC.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ITC.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,JSWSTEEL.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,JSWSTEEL.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,JSWSTEEL.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,KOTAKBANK.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,KOTAKBANK.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,KOTAKBANK.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,LT.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,LT.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,LT.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,M&M.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,M&M.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,M&M.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,MARUTI.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,MARUTI.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,MARUTI.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,NESTLEIND.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,NESTLEIND.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,NESTLEIND.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,NTPC.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,NTPC.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,NTPC.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,ONGC.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,ONGC.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ONGC.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,POWERGRID.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,POWERGRID.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,POWERGRID.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,RELIANCE.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,RELIANCE.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,RELIANCE.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,SBIN.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,SBIN.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,SBIN.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,SHRIRAMFIN.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,SHRIRAMFIN.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,SHRIRAMFIN.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,SUNPHARMA.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,SUNPHARMA.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,SUNPHARMA.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,TATACONSUM.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,TATACONSUM.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,TATACONSUM.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,TATASTEEL.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,TATASTEEL.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,TATASTEEL.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,TCS.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,TCS.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,TCS.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,TECHM.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,TECHM.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,TECHM.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,TITAN.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,TITAN.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,TITAN.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,ULTRACEMCO.NS,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,ULTRACEMCO.NS,warning,1,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,ULTRACEMCO.NS,ok,1,stored 1600 rows to 2026-11-17; appended 1
+2026-11-19 21:43:05,WIPRO.NS,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,WIPRO.NS,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,WIPRO.NS,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,^NSEI,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,^NSEI,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,^NSEI,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,^INDIAVIX,info,0,overlap check passed on 5 days
+2026-11-19 21:43:05,^INDIAVIX,warning,0,empty prices from 2026-11-19 (Yahoo not final yet); 1 row(s) held back and retried next run
+2026-11-19 21:43:05,^INDIAVIX,ok,0,stored 1600 rows to 2026-11-18; appended 0
+2026-11-19 21:43:05,INR=X,info,1,overlap check passed on 5 days
+2026-11-19 21:43:05,INR=X,ok,1,stored 1600 rows to 2026-11-18; appended 1
