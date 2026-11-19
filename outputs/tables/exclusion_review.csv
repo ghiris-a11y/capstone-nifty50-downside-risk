@@ -1,0 +1,13 @@
+ticker,date,log_move,nifty_move,volume_vs_20d_median,next10_mean_over_event_close,best_next10_vs_prev_close,classification,note,triggered_exclusion
+TRENT.NS,2020-03-23,-0.2231434449605043,-0.1390375646105113,1.0218843753383418,1.1388295988118164,-0.018802606723365534,genuine move (market-wide day),,False
+TRENT.NS,2026-01-01,-0.40117432516621676,0.0006485241297404798,0.8431305026315098,0.947572970642423,-0.309838783369381,"unadjusted corporate action (level persists, no rebound, Nifty flat)",,True
+ADANIENT.NS,2015-06-03,-0.4901941851067697,-0.01238140439723523,6.421949743814907,0.9300683525434456,-0.34954213843199444,"unadjusted corporate action (level persists, no rebound, Nifty flat)",consistent with the 2015 demerger of Adani Transmission from Adani Enterprises [UNVERIFIED],True
+ADANIENT.NS,2017-04-26,-0.2349671444681931,0.0048503590177304545,7.766016480398543,0.9711514644314116,-0.18106034944452332,unclassified: needs NSE corporate-action check,,False
+ADANIENT.NS,2019-05-20,0.24191015048247522,0.036250352030178234,9.773781118013938,1.0345180487889232,0.34995828775476445,genuine move (market-wide day),,False
+ADANIENT.NS,2020-08-25,0.21239020170352507,0.0005056785922210594,10.4193545692202,0.9278329713030821,0.17832725266154248,unclassified: needs NSE corporate-action check,,False
+ADANIENT.NS,2023-01-27,-0.20476431767906966,-0.016204838949638756,9.750667435834528,0.741157794315786,-0.12247168703015154,genuine move (documented news),Hindenburg Research report (25 Jan 2023) sell-off: genuine news-driven move,False
+ADANIENT.NS,2023-02-01,-0.33124338161391087,-0.0025992997802717355,8.489124131022587,0.8294212938304865,-0.27225184370057665,genuine move (documented news),Hindenburg sell-off and withdrawal of the follow-on public offer: genuine move,False
+ADANIENT.NS,2023-02-02,-0.3105850956566627,-0.0003349953577203024,19.519731025366703,1.146296049898584,0.013533917262565476,genuine move (documented news),Hindenburg sell-off continued: genuine move,False
+ADANIENT.NS,2024-06-04,-0.21459026161653405,-0.06112419596275842,8.581463415046427,1.09621054439144,-0.09187470202461301,genuine move (market-wide day),general-election result day (market-wide sell-off): genuine move,False
+ADANIENT.NS,2024-11-21,-0.25627087551848504,-0.007194627306795098,21.780876864273402,1.095532734998746,-0.10595423946440208,genuine move (documented news),US indictment news involving Adani group: genuine move,False
+TMPV.NS,2025-10-14,-0.513351148630627,-0.0032497538671538706,3.966964399695016,1.0185611032611839,-0.3772228505986589,"unadjusted corporate action (level persists, no rebound, Nifty flat)",Tata Motors demerger ex-date (commercial-vehicle business split off); company announcement,True

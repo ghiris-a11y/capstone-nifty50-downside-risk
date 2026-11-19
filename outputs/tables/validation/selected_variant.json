@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-11-19 04:04:33",
+  "rule": "lowest mean (variant pinball / price-only pinball) over stocks, 95%+99%, and the 3 ML models; validation window 2022-2023 only",
+  "selected_overall": "val_price_vixlevel",
+  "selected_stationary": "val_price_vixrel",
+  "best_by_model": {
+    "MLP": "val_price_vixrel",
+    "RandomForest": "val_price_vixlevel",
+    "XGBoost": "val_price_vixlevel"
+  },
+  "scores": {
+    "val_price": 1.0,
+    "val_price_fxchg": 0.984,
+    "val_price_vixlevel": 0.9643,
+    "val_price_vixlevel_fxlevel": 1.0051,
+    "val_price_vixrel": 0.9672,
+    "val_price_vixrel_fxchg": 0.9714
+  }
+}

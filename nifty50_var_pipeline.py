@@ -34,6 +34,7 @@ REFIT = 20
 SEED = 42
 OUT = "outputs"
 FROZEN_DIR = None  # set by --frozen: read prices from parquet snapshot files instead of Yahoo
+SKIP_GARCH = False  # set by --skip-garch: ML models only (validation-window feature selection)
 
 
 # ------------------------------------------------------------------ data
@@ -119,6 +120,22 @@ def build_features(ret, vix, macro, volume=None, groups="price+vix+macro"):
         for c in macro.columns:
             f[c] = macro[c].reindex(ret.index).ffill()
             f[c + "_chg"] = f[c].diff(21)
+    # Stationary variants (additive). Tokens are chosen so they do not trigger the level branches above:
+    #   vrel    = India VIX relative to its own 60-day mean (instead of the VIX level)
+    #   fxchg   = USD/INR log changes over 1 and 21 days (instead of the USD/INR level)
+    #   ratechg = repo-rate changes over 21 and 63 days (needs data/raw/repo_rate.csv)
+    if "vrel" in groups and vix is not None:
+        v = vix.reindex(ret.index).ffill()
+        f["vix_rel60"] = v / v.rolling(60).mean() - 1
+        f["vix_rel60_chg"] = f["vix_rel60"].diff()
+    if "fxchg" in groups and macro is not None and "usdinr" in macro:
+        fx = macro["usdinr"].reindex(ret.index).ffill()
+        f["usdinr_ret1"] = np.log(fx).diff()
+        f["usdinr_ret21"] = np.log(fx).diff(21)
+    if "ratechg" in groups and macro is not None and "repo_rate" in macro:
+        rr = macro["repo_rate"].reindex(ret.index).ffill()
+        f["repo_rate_chg21"] = rr.diff(21)
+        f["repo_rate_chg63"] = rr.diff(63)
     return f.shift(1)  # information up to t-1 only
 
 
@@ -195,7 +212,8 @@ def xgb_quantile(X, y):
         idx = X.index[te]
         var = pd.Series(-P[:, -1], idx)  # level-a quantile is the largest of the sorted lower-tail quantiles
         es = pd.Series(-P[:, :-1].mean(axis=1), idx)  # mean of quantiles at 0.1a..0.9a approximates ES
-        out[a] = (np.maximum(var, 1e-6), np.maximum(es, var))
+        var_f = np.maximum(var, 1e-6)
+        out[a] = (var_f, np.maximum(es, var_f))  # ES floored at the floored VaR, so ES >= VaR always
     return out
 
 
@@ -296,11 +314,15 @@ def evaluate(name, ticker, y, fc):
         ratio = (-tail.mean() / es[h == 1].mean()) if len(tail) else np.nan
         fz = fz0_series(yy, var, es, a)
         fz_store[a] = fz
+        q = -var  # extra keys (strings) for pinball Diebold-Mariano and the daily breach file
+        fz_store[f"pinball_{a}"] = np.maximum(a * (yy - q), (a - 1) * (yy - q))
+        fz_store[f"daily_{a}"] = pd.DataFrame({"ret": yy, "var": var, "es": es, "exception": h})
         rows.append(dict(ticker=ticker, model=name, alpha=a, n=len(h), exceptions=int(h.sum()),
                          exc_rate=h.mean(), kupiec_p=p_u, ind_p=p_i, cc_p=p_cc,
                          pass_kupiec=p_u > 0.05, pass_cc=p_cc > 0.05,
                          basel_green_share=basel_green_share(h) if a == 0.01 else np.nan,
-                         pinball=pinball(yy, var, a), fz0=fz.mean(), actual_over_expected_es=ratio))
+                         pinball=pinball(yy, var, a), fz0=fz.mean(), actual_over_expected_es=ratio,
+                         fz0_median=float(fz.median()), norisk_days=int((var <= 1e-6 + 1e-12).sum())))
     return rows, fz_store
 
 
@@ -310,13 +332,14 @@ def run_ticker(ticker, ret, vix, macro, volume, groups):
     data = pd.concat([X_all, ret.rename("y")], axis=1).dropna()
     X, y = data.drop(columns="y"), data["y"]
     forecasts = {}
-    for kind in ("GARCH", "EGARCH", "GJR"):
+    for kind in (() if SKIP_GARCH else ("GARCH", "EGARCH", "GJR")):
         for dist in ("normal", "t"):
             try:
                 forecasts[f"{kind}-{dist}"] = garch_forecasts(ret, kind, dist, TEST_START)
             except Exception as ex:
                 print(f"  {ticker} {kind}-{dist} failed: {ex}")
-    forecasts["HistSim250"] = hist_sim(ret, TEST_START)
+    if not SKIP_GARCH:
+        forecasts["HistSim250"] = hist_sim(ret, TEST_START)
     forecasts["XGBoost"] = xgb_quantile(X, y)
     forecasts["RandomForest"] = vol_scaled(X, y, "rf")
     forecasts["MLP"] = vol_scaled(X, y, "mlp")
@@ -342,36 +365,56 @@ def regime_table(ticker, ret, vix, fz_all):
 
 
 def ticker_outputs(t, ret, vix, macro, volume, groups):
-    """Backtest, regime and Diebold-Mariano tables for one ticker."""
+    """Backtest, regime and Diebold-Mariano tables for one ticker, plus Diebold-Mariano on pinball
+    loss (95% and 99%) and the daily VaR/ES/breach records."""
     res, fz = run_ticker(t, ret, vix, macro, volume, groups)
     reg = regime_table(t, ret, vix, fz)
-    names, dm_rows = list(fz), []
+    names, dm_rows, pin_rows = list(fz), [], []
     for i in range(len(names)):          # Diebold-Mariano, 95% joint loss
         for j in range(i + 1, len(names)):
             stat, p = dm_test(fz[names[i]][0.05], fz[names[j]][0.05])
             dm_rows.append(dict(ticker=t, model_a=names[i], model_b=names[j], dm_stat=stat, p=p))
-    return res, reg, pd.DataFrame(dm_rows)
+            for a in ALPHAS:             # Diebold-Mariano, pinball (VaR-only) loss
+                stat, p = dm_test(fz[names[i]][f"pinball_{a}"], fz[names[j]][f"pinball_{a}"])
+                pin_rows.append(dict(ticker=t, alpha=a, model_a=names[i], model_b=names[j], dm_stat=stat, p=p))
+    daily = pd.concat([fz[m][f"daily_{a}"].rename_axis("date").reset_index().assign(ticker=t, model=m, alpha=a)
+                       for m in names for a in ALPHAS], ignore_index=True)
+    return res, reg, pd.DataFrame(dm_rows), pd.DataFrame(pin_rows), daily
 
 
 def _ticker_paths(by_dir, t):
     safe = t.replace("^", "_").replace("=", "_").replace("&", "_and_")
-    return {k: os.path.join(by_dir, f"{safe}__{k}.csv") for k in ("backtest", "regime", "dm")}
+    paths = {k: os.path.join(by_dir, f"{safe}__{k}.csv") for k in ("backtest", "regime", "dm", "dm_pinball")}
+    paths["daily"] = os.path.join(by_dir, f"{safe}__daily.parquet")
+    return paths
 
 
 def _ticker_done(paths):
-    """A ticker counts as done only if all three files exist and hold rows (an interrupted write or a
+    """A ticker counts as done only if all files exist and hold rows (an interrupted write or a
     crash can leave empty or NUL-filled files, which must be recomputed, not merged)."""
     try:
-        return all(os.path.exists(p) and len(pd.read_csv(p)) > 0 for p in paths.values())
+        return all(os.path.exists(p) and len(pd.read_parquet(p) if p.endswith(".parquet") else pd.read_csv(p)) > 0
+                   for p in paths.values())
     except Exception:
         return False
 
 
-def process_ticker(t, groups, start, test_end, frozen_dir, by_dir, resume=True):
-    """Run one ticker and write its three per-ticker files (resumable; safe in a worker process)."""
+def set_split(train_end=None, val_end=None, test_start=None, skip_garch=None):
+    """Override the train/validation/test split (used for the validation-window protocol)."""
+    global TRAIN_END, VAL_END, TEST_START, SKIP_GARCH
+    TRAIN_END = train_end or TRAIN_END
+    VAL_END = val_end or VAL_END
+    TEST_START = test_start or TEST_START
+    SKIP_GARCH = SKIP_GARCH if skip_garch is None else skip_garch
+
+
+def process_ticker(t, groups, start, test_end, frozen_dir, by_dir, resume=True, split=None):
+    """Run one ticker and write its per-ticker files (resumable; safe in a worker process)."""
     import time
     global FROZEN_DIR
     FROZEN_DIR = frozen_dir
+    if split:
+        set_split(**split)  # worker processes do not inherit globals set in main()
     paths = _ticker_paths(by_dir, t)
     if resume and _ticker_done(paths):
         return t, "skipped", 0.0, ""
@@ -381,10 +424,13 @@ def process_ticker(t, groups, start, test_end, frozen_dir, by_dir, resume=True):
         px = load_prices(t, start, test_end)
         ret = np.log(px["Close"]).diff().dropna()
         macro = load_macro(ret.index, start, test_end)
-        res, reg, dm = ticker_outputs(t, ret, vix, macro, px["Volume"].reindex(ret.index), groups)
-        for key, df in (("backtest", res), ("regime", reg), ("dm", dm)):
+        res, reg, dm, dm_pin, daily = ticker_outputs(t, ret, vix, macro, px["Volume"].reindex(ret.index), groups)
+        for key, df in (("backtest", res), ("regime", reg), ("dm", dm), ("dm_pinball", dm_pin), ("daily", daily)):
             tmp = paths[key] + ".tmp"
-            df.to_csv(tmp, index=False)
+            if key == "daily":
+                df.to_parquet(tmp, index=False)
+            else:
+                df.to_csv(tmp, index=False)
             os.replace(tmp, paths[key])  # file appears only when complete
         return t, "done", time.time() - t0, ""
     except Exception as ex:
@@ -405,17 +451,26 @@ def main():
     ap.add_argument("--frozen-dir", default=os.path.join("data", "frozen"))
     ap.add_argument("--out-dir", default=OUT, help="where the merged summary/regime/DM files are written")
     ap.add_argument("--no-resume", action="store_true", help="recompute tickers that already have results")
+    ap.add_argument("--label", default=None,
+                    help="name used in output file names instead of the --features string "
+                         "(so a set is labelled by what it actually contains)")
+    ap.add_argument("--train-end", default=None, help=f"override TRAIN_END ({TRAIN_END})")
+    ap.add_argument("--val-end", default=None, help=f"override VAL_END ({VAL_END})")
+    ap.add_argument("--test-start", default=None, help=f"override TEST_START ({TEST_START})")
+    ap.add_argument("--skip-garch", action="store_true", help="ML models only")
     a = ap.parse_args()
     out = a.out_dir
     os.makedirs(out, exist_ok=True)
-    tag = a.features.replace("+", "_")
-    all_rows, all_reg, dm_rows = [], [], []
+    tag = (a.label or a.features).replace("+", "_")
+    split = dict(train_end=a.train_end, val_end=a.val_end, test_start=a.test_start, skip_garch=a.skip_garch)
+    set_split(**split)
+    all_rows, all_reg, dm_rows, pin_rows = [], [], [], []
 
     if a.demo:
         ret, vix, macro = demo_data()
         print("Running DEMO ...")
-        res, reg, dm = ticker_outputs("DEMO", ret, vix, macro, None, a.features)
-        all_rows, all_reg, dm_rows = [res], [reg], [dm]
+        res, reg, dm, dm_pin, _ = ticker_outputs("DEMO", ret, vix, macro, None, a.features)
+        all_rows, all_reg, dm_rows, pin_rows = [res], [reg], [dm], [dm_pin]
     else:
         tickers = [t.strip() for t in a.tickers.split(",") if t.strip()]
         if a.tickers_file:
@@ -427,16 +482,19 @@ def main():
         os.makedirs(by_dir, exist_ok=True)
         frozen_dir = a.frozen_dir if a.frozen else None
         stamp = lambda: time.strftime("%Y-%m-%d %H:%M:%S")
-        print(f"[{stamp()}] {len(tickers)} tickers | features={a.features} | frozen={frozen_dir} | "
-              f"test_end={a.test_end} | n_jobs={a.n_jobs}", flush=True)
+        print(f"[{stamp()}] {len(tickers)} tickers | features={a.features} | label={tag} | frozen={frozen_dir} | "
+              f"train_end={TRAIN_END} val_end={VAL_END} test_start={TEST_START} test_end={a.test_end} | "
+              f"skip_garch={SKIP_GARCH} | n_jobs={a.n_jobs}", flush=True)
         failures = []
         if a.n_jobs > 1:
             from joblib import Parallel, delayed
             results = Parallel(n_jobs=a.n_jobs, return_as="generator")(
-                delayed(process_ticker)(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume)
+                delayed(process_ticker)(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume,
+                                        split)
                 for t in tickers)
         else:
-            results = (process_ticker(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume)
+            results = (process_ticker(t, a.features, a.start, a.test_end, frozen_dir, by_dir, not a.no_resume,
+                                      split)
                        for t in tickers)
         for k, (t, status, secs, err) in enumerate(results, 1):
             print(f"[{stamp()}] {k}/{len(tickers)} {t}: {status} ({secs:.0f} s){' ' + err if err else ''}", flush=True)
@@ -453,6 +511,7 @@ def main():
             all_rows.append(pd.read_csv(p["backtest"], float_precision="round_trip"))
             all_reg.append(pd.read_csv(p["regime"], float_precision="round_trip"))
             dm_rows.append(pd.read_csv(p["dm"], float_precision="round_trip"))
+            pin_rows.append(pd.read_csv(p["dm_pinball"], float_precision="round_trip"))
         print(f"[{stamp()}] merged {len(done)} tickers; failed: {len(failures)}", flush=True)
         for t, err in failures:
             print(f"  FAILED {t}: {err}", flush=True)
@@ -461,11 +520,15 @@ def main():
     res.to_csv(f"{out}/backtest_results_{tag}.csv", index=False)
     pd.concat(all_reg).to_csv(f"{out}/regime_results_{tag}.csv", index=False)
     pd.concat(dm_rows).to_csv(f"{out}/diebold_mariano_{tag}.csv", index=False)
+    pd.concat(pin_rows).to_csv(f"{out}/diebold_mariano_pinball_{tag}.csv", index=False)
     summ = (res.groupby(["model", "alpha"])
                .agg(exc_rate=("exc_rate", "mean"), pass_kupiec=("pass_kupiec", "mean"),
                     pass_cc=("pass_cc", "mean"), green99=("basel_green_share", "mean"),
                     pinball=("pinball", "mean"), fz0=("fz0", "mean"),
-                    es_ratio=("actual_over_expected_es", "mean")).round(4))
+                    es_ratio=("actual_over_expected_es", "mean"),
+                    fz0_median_stocks=("fz0", "median"),       # median across stocks of mean daily FZ0
+                    fz0_daily_median=("fz0_median", "median"),  # median across stocks of median daily FZ0
+                    norisk_days=("norisk_days", "sum")).round(4))
     summ.to_csv(f"{out}/summary_{tag}.csv")
     print(summ.to_string())
 

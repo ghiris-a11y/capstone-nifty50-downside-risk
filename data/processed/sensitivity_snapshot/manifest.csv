@@ -1,0 +1,4 @@
+file,rows,first,last,sha256,source
+ADANIENT.NS.parquet,2932,2015-01-01,2026-11-17,60ef102e2094bfdd0ba761a17e74951435042d5a3ac4e6977fe2c4ea50e49f5f,data/raw/universe_check (download of 2026-11-18)
+INR_X.parquet,3091,2015-01-01,2026-11-17,0c115d7be236a69c9cd426b8799ae0a715ea44944ee2745a6044576ede3ec6df,copy of data/frozen
+_INDIAVIX.parquet,2912,2015-01-01,2026-11-17,f1f4179e53e3e0383c9320be8ea26498292dc6b379e3c26221d2724f66184543,copy of data/frozen

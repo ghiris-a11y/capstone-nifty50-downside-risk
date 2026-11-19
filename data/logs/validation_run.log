@@ -1,0 +1,20 @@
+=== VALIDATION-WINDOW RUNS 2026-11-19T03:49:25Z: ML only; train <=2019-12-31, calibration 2020-2021, evaluation 2022-01-01..2023-12-31 (data cut at 2024-01-01); test window not used
+[2026-11-19 09:19:27] 41 tickers | features=price | label=val_price | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:21:30] merged 41 tickers; failed: 0
+--- val_price (price) finished in 126 s
+[2026-11-19 09:21:34] 41 tickers | features=price+vix | label=val_price_vixlevel | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:24:19] merged 41 tickers; failed: 0
+--- val_price_vixlevel (price+vix) finished in 169 s
+[2026-11-19 09:24:22] 41 tickers | features=price+vix+macro | label=val_price_vixlevel_fxlevel | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:27:01] merged 41 tickers; failed: 0
+--- val_price_vixlevel_fxlevel (price+vix+macro) finished in 162 s
+[2026-11-19 09:27:06] 41 tickers | features=price+vrel | label=val_price_vixrel | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:29:21] merged 41 tickers; failed: 0
+--- val_price_vixrel (price+vrel) finished in 139 s
+[2026-11-19 09:29:23] 41 tickers | features=price+fxchg | label=val_price_fxchg | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:31:36] merged 41 tickers; failed: 0
+--- val_price_fxchg (price+fxchg) finished in 135 s
+[2026-11-19 09:31:39] 41 tickers | features=price+vrel+fxchg | label=val_price_vixrel_fxchg | frozen=data\frozen | train_end=2019-12-31 val_end=2021-12-31 test_start=2022-01-01 test_end=2024-01-01 | skip_garch=True | n_jobs=8
+[2026-11-19 09:34:17] merged 41 tickers; failed: 0
+--- val_price_vixrel_fxchg (price+vrel+fxchg) finished in 161 s
+=== END 2026-11-19T04:04:18Z
