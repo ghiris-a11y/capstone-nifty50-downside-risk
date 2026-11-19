@@ -1,0 +1,23 @@
+=== TEST-WINDOW RERUN 2026-11-19T04:04:47Z: after XGBoost ES floor; variant selection fixed at outputs/tables/validation/selected_variant.json before this run
+[2026-11-19 09:34:49] 41 tickers | features=price | label=price | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+[2026-11-19 09:41:04] merged 41 tickers; failed: 0
+--- price (price) finished in 378 s
+[2026-11-19 09:41:07] 41 tickers | features=price+vix | label=price_vixlevel | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+[2026-11-19 09:48:03] merged 41 tickers; failed: 0
+--- price_vixlevel (price+vix) finished in 419 s
+[2026-11-19 09:48:06] 41 tickers | features=price+vrel | label=price_vixrel | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+[2026-11-19 09:55:42] merged 41 tickers; failed: 0
+--- price_vixrel (price+vrel) finished in 460 s
+[2026-11-19 09:55:46] 41 tickers | features=price+fxchg | label=price_fxchg | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+[2026-11-19 10:03:14] merged 41 tickers; failed: 0
+--- price_fxchg (price+fxchg) finished in 451 s
+[2026-11-19 10:03:17] 41 tickers | features=price+vrel+fxchg | label=price_vixrel_fxchg | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+[2026-11-19 10:12:33] merged 41 tickers; failed: 0
+--- price_vixrel_fxchg (price+vrel+fxchg) finished in 559 s
+[2026-11-19 10:12:37] 1 tickers | features=price | label=sens_adanient_price | frozen=data/processed/sensitivity_snapshot | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=1
+[2026-11-19 10:13:03] merged 1 tickers; failed: 0
+--- sens_adanient_price finished
+[2026-11-19 10:13:05] 1 tickers | features=price+vix | label=sens_adanient_price_vixlevel | frozen=data/processed/sensitivity_snapshot | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=1
+[2026-11-19 10:13:29] merged 1 tickers; failed: 0
+--- sens_adanient_price_vixlevel finished
+=== END 2026-11-19T04:43:29Z
