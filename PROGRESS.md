@@ -11,6 +11,7 @@ Last updated: 2026-11-21. Read this file to resume work in a fresh session.
   - build: `python src/report_numbers.py`, `python src/make_report_visuals.py`, `python src/build_report.py`, `python src/export_pdf.py`, `python src/report_pages.py --pages 37,48,61`
   - outputs: `report/Phase2_Report.docx` and `.pdf` (62 pages). These stay local and are git-ignored because they carry the ITM logo.
   - QA: `report/qa_phase2.md`, `report/page_check.md`
+- 2026-11-21: pushed; redeploy run 44861869400 succeeded and the live site shows the corrected labels ("Return 5 days ago", "Fall from 60-day high").
 - 2026-11-21: the daily Action's deploy failed on a temporary GitHub artifact-API error ("Fetching artifact metadata failed"); the update job and upload were fine. Added one automatic deploy retry after 90 s to `.github/workflows/daily_update.yml`.
 
 ## Open items (need the user)
