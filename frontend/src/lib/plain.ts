@@ -65,9 +65,9 @@ export const status = (passShare: number): Level => (passShare >= 0.9 ? "good" :
 export const FEATURE_PLAIN: Record<string, string> = {
   vix: "Market fear gauge (VIX) level", vix_chg: "Change in market fear gauge", rv_x_vix: "Recent swings × fear gauge",
   rv_10: "Size of swings, last 10 days", rv_20: "Size of swings, last 20 days", rv_60: "Size of swings, last 60 days",
-  ret_l1: "Return yesterday", ret_l2: "Return 2 days ago", ret_l5: "Return over the last week", ret_l10: "Return over 2 weeks",
-  ret_l20: "Return over a month", abs_ret: "Size of yesterday's move", neg_ret: "Yesterday's fall (if any)",
-  mdd_60: "Biggest drop, last 60 days", vol_chg_5: "Change in trading volume, 1 week", vol_chg_20: "Change in trading volume, 1 month",
+  ret_l1: "Return yesterday", ret_l2: "Return 2 days ago", ret_l5: "Return 5 days ago", ret_l10: "Return 10 days ago",
+  ret_l20: "Return 20 days ago", abs_ret: "Size of yesterday's move", neg_ret: "Yesterday's fall (if any)",
+  mdd_60: "Fall from 60-day high", vol_chg_5: "Change in trading volume, 1 week", vol_chg_20: "Change in trading volume, 1 month",
 };
 
 // Rewrites technical trace names and notes inside exported Plotly figures into plain words.

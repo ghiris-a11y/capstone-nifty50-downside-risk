@@ -42,3 +42,11 @@ report/pilot_pitch.pdf
 data/frozen/*.parquet
 outputs/tables/**/by_ticker/**/*__daily.parquet
 outputs/dashboard_check/*.png
+
+# Final report files carry the ITM logo: kept local like the Phase 1 PDF
+report/Phase2_Report.docx
+report/Phase2_Report.pdf
+report/page_previews/
+# Demo-mode outputs written to the outputs/ root by --demo
+outputs/*_vix_macro.csv
+report/figures/_trimmed/

@@ -81,11 +81,10 @@ def fig_market_context():
     return style(fig, "Nifty 50 cumulative return and India VIX percentile, 2015-2026")
 
 
-def fig_return_distributions():
+def fig_return_distributions(cols=7):
     d = daily()
     d = d[(d.model == "GJR-t") & (d.alpha == 0.01)]
     stocks = sorted(d.ticker.unique())
-    cols = 7
     rows = int(np.ceil(len(stocks) / cols))
     fig = make_subplots(rows=rows, cols=cols, subplot_titles=[s.replace(".NS", "") for s in stocks],
                         shared_xaxes=True, vertical_spacing=0.04, horizontal_spacing=0.02)
@@ -311,6 +310,91 @@ FIGURES = {
 }
 
 
+# ------------------------------------------------------------------ print versions for the Word/PDF report
+# Same data and code as above, re-laid-out at true print size: Plotly px map 1:1 to 1/96 inch, so a 590 px wide
+# figure prints at 15.6 cm and 14 px text prints at 10.5 pt (CLAUDE.md: min 10 pt). No title (the caption carries it).
+PRINT_W = 590
+PRINT_DIR = os.path.join(FIG, "print")
+
+
+def fig_exception_heatmap_print():
+    """Figure 4 for print: models as rows, stocks as columns, split over two panels so stock labels stay at 10 pt."""
+    b = rd(f"backtest_results_{LABEL}.csv")
+    b = b[b.alpha == 0.01]
+    p = (b.pivot(index="ticker", columns="model", values="exc_rate")[ORDER] * 100).T
+    p.columns = [c.replace(".NS", "") for c in p.columns]
+    half = int(np.ceil(p.shape[1] / 2))
+    fig = make_subplots(rows=2, cols=1, vertical_spacing=0.2)
+    for i, cols in enumerate((p.columns[:half], p.columns[half:]), 1):
+        fig.add_trace(go.Heatmap(z=p[cols].values, x=list(cols), y=list(p.index), coloraxis="coloraxis",
+                                 hovertemplate="%{y} | %{x}: %{z:.2f}%<extra></extra>"), row=i, col=1)
+        fig.update_xaxes(tickangle=-90, tickfont=dict(size=14), row=i, col=1)
+        fig.update_yaxes(autorange="reversed", tickfont=dict(size=14), row=i, col=1)
+    fig.update_layout(coloraxis=dict(colorscale="PuOr_r", cmid=1.0, colorbar=dict(title="Breach<br>rate (%)")))  # white = nominal 1%
+    return fig
+
+
+def fig_vix_quartiles_print():
+    """Figure 5 for print: dots with +/-1 s.e. bars on a zoomed axis (bars from zero hide the differences)."""
+    r = rd(f"regime_results_{LABEL}.csv")
+    g = r.groupby(["model", "regime"])["mean_fz0"].agg(["mean", "std", "count"]).reset_index()
+    g["se"] = g["std"] / np.sqrt(g["count"])
+    qs = ["Q1 calm", "Q2", "Q3", "Q4 stressed"]
+    fig = go.Figure()
+    for k, m in enumerate(ORDER):
+        s = g[g.model == m].set_index("regime").reindex(qs)
+        x = np.arange(4) + (k - (len(ORDER) - 1) / 2) * 0.075
+        fig.add_scatter(x=x, y=s["mean"], mode="markers", name=m, error_y=dict(type="data", array=s["se"], thickness=1),
+                        marker=dict(color=COL[m], size=8, symbol="circle" if m in GARCH else "diamond" if m in ML else "square"))
+    fig.update_xaxes(tickvals=list(range(4)), ticktext=qs, title_text="Previous-day India VIX quartile (test window)")
+    fig.update_yaxes(title_text="Mean FZ0, 95% (lower is better)")
+    return fig
+
+
+PRINT = {  # name: (height px, extra layout tweaks)
+    "fig01_market_context": (430, lambda f: f.update_layout(legend=dict(y=-0.2), annotations=[])),  # notes in the caption
+    "fig02_return_distributions": (780, None),
+    "fig03_var_vs_returns_RELIANCE": (440, lambda f: f.update_layout(legend=dict(y=-0.2))),
+    "fig04_exception_heatmap_99": (760, lambda f: f.update_layout(margin=dict(l=115, b=40))),
+    "fig05_vix_quartiles_fz0": (470, lambda f: f.update_layout(legend=dict(y=-0.2), yaxis_title_text="Mean FZ0 loss, 95% (lower is better)")),
+    "fig06_xgb_shap_importance": (470, lambda f: f.update_layout(xaxis_title_text="Mean |SHAP| contribution (basis points)", margin=dict(l=110))),
+    "fig07_kupiec_vs_christoffersen": (560, lambda f: f.update_layout(legend=dict(y=-0.17), xaxis_title_text="Kupiec p-value",
+                                                                    yaxis_title_text="Christoffersen independence p-value")),
+    "fig08_es_calibration": (470, lambda f: f.update_layout(yaxis_title_text="Actual / forecast ES")),
+    "fig09_sector_var": (560, lambda f: f.update_xaxes(tickangle=-90).update_layout(yaxis_title_text="Average 99% VaR, GJR-t (%)")),
+    "fig10_leaderboard": (430, None),
+    "fig11_fz0_mean_median": (470, None),
+    "fig12_dm_summary": (330, lambda f: f.update_layout(xaxis_title_text="(GARCH model × stock) pairs, DM test at 5%, FZ0 95%")),
+    "fig13_breaches_by_day": (520, None),
+    "fig14_stress_share": (460, None),
+}
+
+
+def print_figure(name):
+    fn = {"fig04_exception_heatmap_99": fig_exception_heatmap_print,
+          "fig05_vix_quartiles_fz0": fig_vix_quartiles_print}.get(name, FIGURES[name])
+    if name == "fig02_return_distributions":
+        fig = fig_return_distributions(cols=6)
+    else:
+        fig = fn()
+    h, tweak = PRINT[name]
+    fig.update_layout(title=None, width=PRINT_W, height=h, font=dict(family="Times New Roman, serif", size=14), template="simple_white",
+                      margin=dict(t=30, l=65, r=15, b=110), legend=dict(orientation="h", y=-0.25, yanchor="top", x=0, font=dict(size=14)))
+    fig.update_annotations(font_size=14)
+    if name == "fig10_leaderboard":  # table: wrap headers, widen the model column
+        fig.update_traces(header=dict(font=dict(size=14), height=60), cells=dict(font=dict(size=14), height=28),
+                          columnwidth=[2.3] + [1] * 9)
+        fig.update_layout(margin=dict(t=10, l=5, r=5, b=5))
+    if name == "fig02_return_distributions":
+        fig.update_layout(margin=dict(t=30, l=20, r=10, b=40))
+        fig.update_xaxes(tickfont=dict(size=14))
+    if tweak:
+        tweak(fig)
+    os.makedirs(PRINT_DIR, exist_ok=True)
+    fig.write_image(os.path.join(PRINT_DIR, f"{name}.png"), scale=300 / 96)
+    return fig
+
+
 def captions():
     s = rd(f"summary_{LABEL}.csv").set_index(["model", "alpha"])
     b = rd(f"backtest_results_{LABEL}.csv")
@@ -371,4 +455,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if "--print" in sys.argv:  # print-size PNGs for the Word/PDF report (outputs/figures/print/)
+        for n in (sys.argv[sys.argv.index("--print") + 1:] or PRINT):
+            print_figure(n)
+            print("wrote print", n)
+    else:
+        main()

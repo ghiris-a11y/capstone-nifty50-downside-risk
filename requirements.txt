@@ -17,3 +17,4 @@ pymupdf==1.24.14
 matplotlib==3.9.3
 playwright==1.49.1
 textstat==0.7.10
+pywin32==308; sys_platform == "win32"

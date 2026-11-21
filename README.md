@@ -102,3 +102,21 @@ Regenerate both after any model rerun (for example after the macro data are adde
 update, and whenever dashboard code is pushed. The Action never commits dashboard files: live risk JSON is
 regenerated inside the build. The app uses `HashRouter` and relative `./data/...` paths, and Vite `base` is
 `/capstone-nifty50-downside-risk/`.
+
+## Phase 2 report (Word and PDF)
+
+Every number in the report is a `{{key}}` placeholder in `report/chapters/*.md`, filled from `outputs/` by
+`src/report_numbers.py` (each key, value and source file is listed in `outputs/tables/report/report_numbers.csv`).
+
+```
+python src/garch_estimates.py            # GARCH parameters at the test start -> outputs/tables/garch_params_teststart.csv
+python src/make_figures.py --print       # print-size figures (15.6 cm, text >= 10 pt) -> outputs/figures/print/
+python src/make_report_visuals.py        # diagrams and extra charts -> report/figures/
+python src/dashboard_check.py --screens-only --url https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/ --out report/figures/dashboard
+python src/build_report.py               # report/Phase2_Report.docx + report/qa_phase2.md
+python src/export_pdf.py                 # Word (Windows): update contents lists, export tagged PDF with bookmarks
+python src/report_pages.py --pages 37,48,61   # page count per chapter (report/page_check.md) and page previews
+```
+
+The .docx and .pdf carry the ITM logo and stay local (see .gitignore). `src/dashboard_check.py` also measures the
+dashboard's Flesch-Kincaid grade and checks phone, laptop and projector widths (`outputs/dashboard_check/readability.json`).
