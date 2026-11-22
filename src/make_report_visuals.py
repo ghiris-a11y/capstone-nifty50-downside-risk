@@ -380,8 +380,8 @@ def model_flow():
 
 def roadmap():
     fig, ax = plt.subplots(figsize=(W, 5.6 / 2.54))
-    steps = [("Month 1", ["Data checks", "and snapshot", "pipeline"], GREY_L), ("Month 2", ["Run GJR-t", "in shadow", "mode"], RED_L),
-             ("Month 3", ["Backtest;", "go live with", "stress add-on"], RED_L), ("Quarterly", ["Re-validate;", "check", "clustering"], AMBER_L),
+    steps = [("Days 1-30", ["Data checks", "and snapshot", "pipeline"], GREY_L), ("Days 31-60", ["Run GJR-t", "in shadow", "mode"], RED_L),
+             ("Days 61-90", ["Backtest;", "go live with", "stress add-on"], RED_L), ("Quarterly", ["Re-validate;", "check", "clustering"], AMBER_L),
              ("Yearly", ["Review ML", "challengers"], BLUE_L)]
     for i, (t, d, c) in enumerate(steps):
         ax.add_patch(FancyBboxPatch((i * 2.05, 0), 1.85, 1.6, boxstyle="round,pad=0.02,rounding_size=0.1", fc=c, ec="#333333", lw=0.9))

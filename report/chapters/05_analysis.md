@@ -30,6 +30,8 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 
 [[MEANS]] The tests confirm the breach rates. GJR-t passed the Kupiec test for {{kup99_gjrt}} of stocks and stayed in the Basel green zone in {{green_gjrt}} of 250-day windows; XGBoost passed Kupiec for {{kup99_xgb}} and was green in {{green_xgb}}. For a bank, falling out of the green zone means a higher capital multiplier, so this gap is a direct cost. The Basel zones penalise too many breaches, not too few, so the slight conservatism of the t-models does not count against them.
 
+The Basel share uses complete, non-overlapping 250-day blocks counted from the start of the test window. Each stock has {{basel_blocks}} such blocks ({{basel_cov_days}} test days, the last ending on {{basel_last_cov}}), so a stock's Basel share can only be {{basel_values}}. The remaining {{basel_uncov_min}} to {{basel_uncov_max}} days per stock, including the weeks after the 7 October 2026 repo hike, are covered by the Kupiec, Christoffersen and FZ0 results but not by the Basel share.
+
 [[TABLE:bt95|bt95]]
 
 [[MEANS]] At 95% the picture is the same in direction: the t-models were slightly conservative ({{exc95_gjrt}} for GJR-t against 5%) and the ML models were breached more often than nominal (XGBoost {{exc95_xgb}}). The Normal GARCH models over-forecast risk at 95% but under-forecast it at 99%, the classic sign of a bell curve fitted to fat-tailed data.
@@ -80,9 +82,13 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 
 [[MEANS]] The pinball tests give the same direction for VaR alone: GARCH was significantly better in {{dmp95_g}} pairs at 95% and {{dmp99_g}} at 99%, against {{dmp95_m}} and {{dmp99_m}} for ML. The exception is Random Forest at 95% pinball, where it was significantly better than GARCH in {{dmp95_m_rf}} pairs and worse in {{dmp95_g_rf}}: for the 95% VaR alone, Random Forest is competitive. MLP was the weakest ML model ({{dm_g_mlp}} pairs in favour of GARCH and {{dm_m_mlp}} in favour of MLP on FZ0).
 
+One caution applies to every comparison of average loss, including the Diebold-Mariano tests. XGBoost's few no-risk days ({{norisk99_xgb}} stock-days at 99%) produce very large FZ0 values that can dominate a mean: for {{nr_stock}}, the mean 99% FZ0 was {{nr_fz0}} against a median of {{nr_fz0med}}. The counts of significant pairs above and the medians in {{fig:fz}} are therefore the safer guide to how XGBoost compares.
+
 {{fig:fz}} contrasts the mean and median FZ0 loss, and {{tab:norisk}} explains the gap for XGBoost.
 
 [[FIG:fz|outputs/figures/print/fig11_fz0_mean_median.png|Joint VaR-ES loss (FZ0): mean (open) and median (filled) across stocks, 95% and 99%|outputs/tables/summary_price.csv (src/make_figures.py)|Dot plot of mean and median FZ0 loss by model for 95% and 99%; XGBoost's 99% mean is off the scale and annotated.]]
+
+[[MEANS]] For most models the average and the typical stock tell the same story. XGBoost is the exception: a handful of days pull its average far off the scale, which a risk manager would experience as sudden, unexplained jumps in reported model loss.
 
 [[TABLE:norisk|norisk]]
 
@@ -97,6 +103,8 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 {{fig:vix}} and {{tab:regime}} show the FZ0 loss in each quartile of the previous day's India VIX.
 
 [[FIG:vix|outputs/figures/print/fig05_vix_quartiles_fz0.png|Joint VaR-ES loss by previous-day India VIX quartile (mean across stocks, ±1 standard error)|outputs/tables/regime_results_price.csv (src/make_figures.py)|Dot plot of mean FZ0 by model in four VIX quartiles; losses rise from the calm to the stressed quartile and GARCH dots sit below ML dots in the stressed quartile.]]
+
+[[MEANS]] For a risk team the message is about timing: forecasting gets harder for every model when the market is nervous, and the choice of model matters less than that general rise in difficulty, which {{tab:regime}} quantifies.
 
 [[TABLE:regime|regime]]
 
@@ -117,6 +125,8 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 [[MEANS]] Stress days were only {{stress_days}} of {{mkt_days}} test days ({{stress_share_days}}), yet they carried between {{stress_min}} and {{stress_max}} of each model's breaches ({{stress_gjrt}} for GJR-t, {{stress_xgb}} for XGBoost). No model, classic or ML, avoids this. For a portfolio or a clearing corporation this is the risk that matters: many positions lose more than forecast on the same day.
 
 [[TABLE:stress|stress]]
+
+[[MEANS]] The same pattern holds for every model: a few days carry many breaches at once. For a broker these are the days when margin calls arrive together and liquidity is tightest, so the stress add-on in Chapter 6 is sized from these days.
 
 [[FIG:byday|outputs/figures/print/fig13_breaches_by_day.png|Number of stocks breaching 99% VaR on each day, GJR-t and XGBoost; triangles mark stress days|outputs/tables/breach_days_price.csv (src/make_figures.py)|Two bar charts over 2024 to 2026 of the number of stocks breaching on each day; tall bars line up with stress-day triangles, the tallest on 4 June 2024.]]
 
@@ -142,13 +152,15 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 
 [[TABLE:ranges|ranges]]
 
-[[MEANS]] The USD/INR level was outside the range seen in fitting on {{out_usdinr}} of test days, and tree models cannot extrapolate beyond the values they were trained on; using it as a level is unsafe. The VIX level was outside its range on only {{out_vix}} of days, so range shift does not explain the VIX result. Over-fitting was not tested directly, so it is not claimed as the cause. The repo rate, CPI and IIP could not be tested because the official files were not yet supplied.
+[[MEANS]] The USD/INR level was outside the range seen in fitting on {{out_usdinr}} of test days, and tree models cannot extrapolate beyond the values they were trained on; using it as a level is unsafe. The VIX level was outside its range on only {{out_vix}} of days, so range shift does not explain the VIX result. Over-fitting was not tested directly, so it is not claimed as the cause. Interest rates, CPI and IIP were outside the scope of these tests (Section 3.4).
 
 ## 5.10 Sector differences
 
 {{fig:sector}} and {{tab:sector}} show how the forecast risk differs by sector.
 
 [[FIG:sector|outputs/figures/print/fig09_sector_var.png|Average one-day 99% VaR from GJR-t by sector (each point is one stock, test window)|outputs/tables/by_ticker/price/*__daily.parquet (src/make_figures.py)|Box plots of average 99% VaR by sector, from FMCG at the low end to Services and Capital Goods at the high end, with Financial Services showing the widest spread.]]
+
+[[MEANS]] Each sector's box spans several stocks, so a sector rate works best as a floor that a stock's own VaR can raise, not as a replacement for stock-level VaR.
 
 [[TABLE:sector|sector]]
 
@@ -166,11 +178,10 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 
 [[TABLE:hyp|hyp]]
 
-**Interpretation and findings.**
+[[MEANS]] The decisions are: H1 {{h1}}, H2 {{h2}}, H3 {{h3}}, H4 {{h4}}. In business terms, the test data give no reason to move loss limits or margins from the Student-t GARCH models to the machine-learning models we tested.
 
-1. GARCH-family models with Student-t errors gave the most reliable one-day VaR for Nifty 50 stocks in 2024 to 2026: breach rates closest to nominal, the highest Kupiec and Basel green shares, and significantly lower joint loss wherever a difference was significant.
-2. The ML models were breached more often than nominal at both levels. Their overall loss was mostly not significantly different from GARCH, and where it was, GARCH was better far more often.
-3. A forecast of "no risk" by XGBoost on a few stock-days is a model-risk issue on its own, not just a statistical curiosity.
-4. Every model under-forecast losses on market-wide stress days; breaches cluster across stocks.
-5. The India VIX moved the ML forecasts a lot but did not improve them in the test years; USD/INR as a level is unsafe because of range shift.
-6. Risk differs widely by sector, so limits should differ too.
+{{tab:findings}} brings the results together: each finding, the exact number behind it and its source file, what it means for a business user, and the recommendation in Chapter 6 that acts on it.
+
+[[TABLE:findings|findings]]
+
+[[MEANS]] The findings point one way. For one-day loss limits on large Indian stocks, the classic Student-t GARCH models are the reliable choice, the machine-learning models we tested did not improve on them, and the biggest remaining risk is not the choice of model but market-wide stress days on which many stocks lose at once. Chapter 6 turns each row into an action.

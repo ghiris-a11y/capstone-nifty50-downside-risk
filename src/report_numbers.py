@@ -423,6 +423,76 @@ def build():
                          rows=[[t.replace(".NS", "")] + [pct(piv.loc[t, m]) for m in ("GARCH-t", "EGARCH-t", "GJR-t", "HistSim250", "XGBoost", "RandomForest", "MLP")]
                                + [f"{kp.loc[t, 'GJR-t']:.3f}", f"{kp.loc[t, 'XGBoost']:.3f}"] for t in piv.index])
 
+    # ---------------------------------------------------------------- business quantities for Chapter 6 (all from outputs/)
+    d99 = d[d.alpha == 0.01].copy()
+    # (a) capital or margin set aside per Rs 100 crore: average 99% VaR over all stock-days, by model
+    buf = d99.groupby("model").agg(avg_var99=("var", "mean"), breach_rate=("exception", "mean")).reindex(ORDER).reset_index()
+    buf["per_100cr"] = buf.avg_var99 * 100
+    src_buf = save(buf, "buffer_by_model.csv")
+    for m in ORDER:
+        n(f"buf_{SLUG[m]}", f"{buf.set_index('model').loc[m, 'per_100cr']:.2f}", src_buf)
+    tfam = buf[buf.model.isin(["GARCH-t", "EGARCH-t", "GJR-t"])].per_100cr.mean()
+    mlfam = buf[buf.model.isin(ML)].per_100cr.mean()
+    n("buf_tfam", f"{tfam:.2f}", src_buf); n("buf_mlfam", f"{mlfam:.2f}", src_buf)
+    n("buf_diff_ml_t", f"{mlfam - tfam:.2f}", src_buf)
+    T["buffers"] = dict(caption="Money set aside for one bad day: average one-day 99% VaR by model, as Rs crore per Rs 100 crore held (test window, all stock-days)",
+                        source=src_buf, head=["Model", "Family", "Average 99% VaR", "Rs crore per Rs 100 crore", "99% breach rate"],
+                        rows=[[r.model, fam(r.model), pct(r.avg_var99), f"{r.per_100cr:.2f}", pct(r.breach_rate)] for r in buf.itertuples()])
+    # (b) stress-day cushion for GJR-t (stress day = Nifty 50 fell 2% or more, as in breach_days_price.csv)
+    bd = rd("breach_days_price.csv"); bd["date"] = pd.to_datetime(bd["date"])
+    sdays = set(bd.loc[bd.stress_day.astype(bool), "date"])
+    gj = d99[d99.model == "GJR-t"].copy()
+    gj["stress"] = gj.date.isin(sdays)
+    gj["ratio"] = -gj.ret / gj["var"]
+    st, ns = gj[gj.stress], gj[~gj.stress]
+    k99 = st.ratio.quantile(0.99)
+    src_g = "outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv"
+    n("st_obs", f"{len(st):,}", src_g)
+    n("st_br_gjrt", pct(st.exception.mean(), 1), src_g)
+    n("ns_br_gjrt", pct(ns.exception.mean(), 2), src_g)
+    n("st_mult99", f"{k99:.2f}", src_g)
+    n("st_excess", pct((st.loc[st.exception.astype(bool), "ret"].abs() - st.loc[st.exception.astype(bool), "var"]).mean()), src_g)
+    # (c) India VIX rule: previous trading day's VIX, quartiles over the test window (same split as the regime table)
+    vix = pd.read_parquet(os.path.join(ROOT, "data", "frozen", "_INDIAVIX.parquet"))["Close"]
+    dates = pd.DatetimeIndex(sorted(gj.date.unique()))
+    vprev = vix.reindex(vix.index.union(dates)).ffill().shift(1).reindex(dates)
+    edge = vprev.quantile(0.75)
+    q4 = set(vprev[vprev > edge].index)
+    gj["q4"] = gj.date.isin(q4)
+    k_q4 = gj[gj.q4].ratio.quantile(0.99)
+    src_v = "data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet"
+    n("vix_q4_edge", f"{edge:.1f}", src_v)
+    n("vix_q4_days", len(q4), src_v)
+    n("br_q4_gjrt", pct(gj[gj.q4].exception.mean()), src_v)
+    n("br_q13_gjrt", pct(gj[~gj.q4].exception.mean()), src_v)
+    n("mult_q4", f"{k_q4:.2f}", src_v)
+    vr = pd.DataFrame([dict(group="stress days (Nifty <= -2%)", stock_days=len(st), breach_rate=st.exception.mean(), multiplier_for_1pct=k99),
+                       dict(group="other days", stock_days=len(ns), breach_rate=ns.exception.mean(), multiplier_for_1pct=ns.ratio.quantile(0.99)),
+                       dict(group=f"previous-day India VIX above {edge:.1f} (top quartile)", stock_days=int(gj.q4.sum()), breach_rate=gj[gj.q4].exception.mean(), multiplier_for_1pct=k_q4),
+                       dict(group="previous-day India VIX in lower three quartiles", stock_days=int((~gj.q4).sum()), breach_rate=gj[~gj.q4].exception.mean(), multiplier_for_1pct=gj[~gj.q4].ratio.quantile(0.99))])
+    src_vr = save(vr, "stress_vix_cushion_gjrt.csv")
+    T["cushion"] = dict(caption="GJR-t 99% VaR on stress days and high-VIX days: breach rate and the VaR multiplier that would have cut breaches to 1% (test window, 41 stocks)",
+                        source=src_vr, family_col=None, head=["Group of stock-days", "Stock-days", "99% breach rate", "Multiplier for 1% breaches"],
+                        rows=[[r.group, f"{r.stock_days:,}", pct(r.breach_rate), f"{r.multiplier_for_1pct:.2f}"] for r in vr.itertuples()])
+    # (d) Basel coverage: complete non-overlapping 250-day blocks from the test start (as in basel_green_share)
+    nb = b99[b99.model == "GJR-t"][["ticker", "n"]].copy()
+    nb["blocks"] = nb.n // 250
+    nb["covered_days"] = nb.blocks * 250
+    nb["uncovered_days"] = nb.n - nb.covered_days
+    last_cov = []
+    for r in nb.itertuples():
+        dd = sorted(gj[gj.ticker == r.ticker].date)
+        last_cov.append(dd[r.covered_days - 1].date() if r.covered_days else None)
+    nb["last_covered_date"] = last_cov
+    src_nb = save(nb, "basel_coverage.csv")
+    n("basel_blocks", "-".join(sorted({str(x) for x in nb.blocks})), src_nb)
+    n("basel_cov_days", "-".join(sorted({str(x) for x in nb.covered_days})), src_nb)
+    n("basel_uncov_min", int(nb.uncovered_days.min()), src_nb); n("basel_uncov_max", int(nb.uncovered_days.max()), src_nb)
+    lc = max(x for x in nb.last_covered_date if x)
+    n("basel_last_cov", pd.Timestamp(lc).strftime("%d %B %Y").lstrip("0"), src_nb)
+    n("basel_hike_outside", "yes" if pd.Timestamp(lc) < pd.Timestamp(HIKE) else "no", src_nb)
+    n("basel_values", ", ".join(f"{i / nb.blocks.max():g}" for i in range(int(nb.blocks.max()) + 1)), src_nb)
+
     # ---------------------------------------------------------------- hypotheses (decided only from the numbers above)
     ml_closer = any(abs(s.loc[(m, 0.01)].exc_rate - 0.01) < min(abs(s.loc[(g_, 0.01)].exc_rate - 0.01) for g_ in GARCH) for m in ML)
     h1 = "Supported" if ml_closer else "Rejected"
@@ -444,6 +514,24 @@ def build():
                            f"Lowest mean FZ0 in Q4: {q4}; Q4 loss above Q1 loss for {'all' if (g['Q4 stressed'] > g['Q1 calm']).all() else 'some'} models", h3],
                           ["H4: India VIX and macro inputs improve ML forecasts over price/volume inputs",
                            f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo rate not used (file not fully verified); CPI and IIP excluded by design", h4]])
+    # ---------------------------------------------------------------- findings table (end of Chapter 5)
+    v_ = lambda k: N[k][0]
+    T["findings"] = dict(
+        caption="Summary of findings: evidence, business implication and the matching recommendation",
+        source="src/report_numbers.py; the source file of each number is listed in outputs/tables/report/report_numbers.csv",
+        head=["Finding", "Number (source)", "Business implication", "Chapter 6"], widths=[4, 5, 5, 1.6], small=True, family_col=None,
+        rows=[
+            ["Student-t GARCH models were closest to the 1% breach rate", f"{v_('closest1')} {v_('closest1_exc')}, {v_('closest2')} {v_('closest2_exc')}, {v_('closest3')} {v_('closest3_exc')} (summary_price.csv)", "Use them for 99% limits, margins and capital", "6.1, 6.2"],
+            ["The ML models we tested were breached more often", f"XGBoost {v_('exc99_xgb')}, Random Forest {v_('exc99_rf')}, MLP {v_('exc99_mlp')}; about {v_('gap_xgb_gjrt_panel')} extra breaches a year across {v_('n_stocks')} stocks for XGBoost (summary_price.csv)", "Switching to ML would leave more days uncovered", "6.3, 6.6"],
+            ["Most score gaps could be luck; real gaps favour GARCH", f"GARCH better {v_('dm_g')}, ML better {v_('dm_m')}, no difference {v_('dm_n')} of {v_('dm_total')} pairs (diebold_mariano_price.csv)", "No case for replacing GARCH; ML only as a challenger", "6.3"],
+            ["XGBoost sometimes forecast no risk", f"{v_('norisk99_xgb')} stock-days at 99%; {v_('nr_stock')} mean FZ0 {v_('nr_fz0')} against median {v_('nr_fz0med')} (backtest_results_price.csv)", "Screen any ML model for zero-risk forecasts before use", "6.1.5, 6.9"],
+            ["Losses on the very bad days were bigger than forecast", f"Actual/forecast ES above 1 for {v_('n_es_above1')} of {v_('n_models')} models (summary_price.csv)", "Add a prudence margin to ES", "6.1.1"],
+            ["Breaches cluster on market-wide stress days", f"{v_('stress_share_days')} of days held {v_('stress_gjrt')} of GJR-t breaches; stress-day breach rate {v_('st_br_gjrt')} against {v_('ns_br_gjrt')}; 1% coverage needs about {v_('st_mult99')} times VaR (breach_days_price.csv, daily files)", "Keep a stress add-on sized from stress days", "6.4"],
+            ["A high India VIX the day before did not predict breaches", f"Top-quartile VIX (above {v_('vix_q4_edge')}) breach rate {v_('br_q4_gjrt')} against {v_('br_q13_gjrt')}; VIX inputs moved ML further from 1% (summary_price_vixlevel.csv)", "Use the VIX as an alert, not as a margin multiplier or paid input", "6.3, 6.4"],
+            ["Risk differs widely by sector", f"Median average 99% VaR from {v_('sec_low_var')} ({v_('sec_low')}) to {v_('sec_high_var')} ({v_('sec_high')}) (sector_summary_price.csv)", "Set margins and limits by sector, not one rate", "6.5"],
+            ["The money at stake is large", f"Average 99% VaR {v_('avg_var99')}: about Rs {v_('buffer_100cr')} crore per Rs 100 crore; ML family Rs {v_('buf_mlfam')} crore against Rs {v_('buf_tfam')} crore for Student-t GARCH (buffer_by_model.csv)", "ML sets aside less money and is breached more often", "6.6"],
+            ["The weeks after the October 2026 rate rise were calm for the models", f"{v_('ph_days')} trading days; 99% breach rate GJR-t {v_('ph_gjrt')}, XGBoost {v_('ph_xgb')} (post_hike_breaches_99.csv)", "Too short to judge; keep monthly monitoring", "6.7"],
+        ])
     return N, T
 
 
