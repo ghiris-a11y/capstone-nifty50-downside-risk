@@ -335,7 +335,7 @@ es_bias_max,6.3%,outputs/tables/xgb_es_approx_bias.csv
 sec_per_stock,125,data/logs/run.log
 min_per_set,8,data/logs/run_test_rerun.log
 n_jobs,8,data/logs/run_test_rerun.log
-fk_min,3.0,outputs/dashboard_check/readability.json
+fk_min,3.1,outputs/dashboard_check/readability.json
 fk_max,4.0,outputs/dashboard_check/readability.json
 n_tabs,9,outputs/dashboard_check/readability.json
 buf_garchn,3.76,outputs/tables/report/buffer_by_model.csv

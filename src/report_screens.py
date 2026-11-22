@@ -8,7 +8,7 @@ each crop (HTML and chart text) is measured and its printed size logged. It must
   python src/report_screens.py [--url https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/] [--mode all|desktop|phone|crops]
   -> report/figures/dashboard/app_<name>.png and report/figures/dashboard/app_sizes.json   (crops: element crops)
   -> report/figures/dashboard/desk_<tab>.png  (desktop: first screen of each tab, 1100 x 700, device scale 3, cropped
-     to the content column (menu removed) and the top 560 px, so two fit on a portrait A4 page at 15.5 cm wide)
+     to the tab's own content (menu, masthead and banners removed), 560 px high, so two fit on a portrait A4 page)
   -> report/figures/dashboard/phone_<tab>.png (phone: first screen at 390 x 844, device scale 3)
   -> report/figures/dashboard/qr_dashboard.png (QR code of the live dashboard URL)
   -> report/figures/dashboard/screen_sizes.json (printed size of the body text in each image)
@@ -91,11 +91,13 @@ def first_screens(url, out, tabs, w, h, scale, prefix, print_cm, crop_h=None):
             page.wait_for_timeout(3500)
             body_px = page.evaluate(BODY_JS)
             path = os.path.join(out, f"{prefix}_{name}.png")
-            page.screenshot(path=path)
             shown_w = w
-            if crop_h:   # desktop: keep the content column (menu cropped off) and the top crop_h pixels
-                im = Image.open(path); im.crop((SIDEBAR_PX * scale, 0, im.width, crop_h * scale)).save(path)
+            if crop_h:   # desktop: the tab's own content (masthead and banners are the same on every tab); menu cropped off
+                top = page.evaluate("() => document.querySelector('main').getBoundingClientRect().top + window.scrollY")
+                page.screenshot(path=path, full_page=True, clip=dict(x=SIDEBAR_PX, y=top, width=w - SIDEBAR_PX, height=crop_h))
                 shown_w = w - SIDEBAR_PX
+            else:
+                page.screenshot(path=path)
             sizes[f"{prefix}_{name}"] = dict(viewport=f"{w}x{h}", scale=scale, print_cm=print_cm, body_px=body_px,
                                              body_pt=round(body_px * print_cm / shown_w / 0.03528, 1))
             print(prefix, name, sizes[f"{prefix}_{name}"], flush=True)

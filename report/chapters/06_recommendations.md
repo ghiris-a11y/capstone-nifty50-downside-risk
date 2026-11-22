@@ -91,6 +91,6 @@ Live dashboard: [https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/](
 The dashboard turns this chapter into a daily tool, refreshed every weekday evening. Its first screen, {{fig:desk_start}}, gives the one-line answer, the key numbers and "What a firm should do" cards.
 
 
-[[FIG:desk_start|report/figures/dashboard/desk_start.png|Dashboard, Start here tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the dashboard content area with the masthead, the question as the page title, a draft-results banner, the one-line answer and the first key-number cards.|15.5]]
+[[FIG:desk_start|report/figures/dashboard/desk_start.png|Dashboard, Start here tab on a desktop screen (tab content)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the dashboard content area with the masthead, the question as the page title, a draft-results banner, the one-line answer and the first key-number cards.|15.5]]
 
 [[SHOWS]] Each morning a risk manager opens Start here for the answer and the action cards. The Daily example tab then lists tomorrow's likely worst loss for each stock, sorted from largest. Calm vs stressed days shows whether misses are bunching, and One stock up close checks a single position before a limit is changed.

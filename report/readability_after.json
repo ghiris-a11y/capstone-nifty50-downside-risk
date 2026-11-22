@@ -28,10 +28,10 @@
  },
  "04": {
   "sentences": 15,
-  "avg_words": 14.4,
+  "avg_words": 14.8,
   "max_words": 28,
   "over_30": 0,
-  "reading_ease": 71.7,
+  "reading_ease": 71.3,
   "banned": [],
   "longest": []
  },
@@ -64,10 +64,10 @@
  },
  "09": {
   "sentences": 30,
-  "avg_words": 12.2,
+  "avg_words": 12.4,
   "max_words": 24,
   "over_30": 0,
-  "reading_ease": 68.6,
+  "reading_ease": 68.8,
   "banned": [],
   "longest": []
  }

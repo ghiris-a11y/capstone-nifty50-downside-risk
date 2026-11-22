@@ -1,23 +1,44 @@
 {
- "phone_start": {
-  "viewport": "390x844",
+ "desk_start": {
+  "viewport": "1100x700",
   "scale": 3,
-  "print_cm": 5.4,
-  "body_px": 20,
-  "body_pt": 7.8
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
  },
- "phone_models": {
-  "viewport": "390x844",
+ "desk_overview": {
+  "viewport": "1100x700",
   "scale": 3,
-  "print_cm": 5.4,
-  "body_px": 20,
-  "body_pt": 7.8
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
  },
- "phone_live": {
-  "viewport": "390x844",
+ "desk_models": {
+  "viewport": "1100x700",
   "scale": 3,
-  "print_cm": 5.4,
-  "body_px": 20,
-  "body_pt": 7.8
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
+ },
+ "desk_regimes": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
+ },
+ "desk_stock": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
+ },
+ "desk_live": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 15.5,
+  "body_px": 27,
+  "body_pt": 13.8
  }
 }

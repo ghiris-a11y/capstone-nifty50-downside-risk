@@ -62,6 +62,22 @@ Pages (restructure, 2026-11-22): 48 in total (front matter 6; chapters 1-9: 42).
 - Written into the report (Chapters 1-7, post-hike table with small-sample warning, RBI Handbook reference) and the dashboard (new input set, macro note from the data).
 - Report: 47 pages; desktop screenshots now on portrait A4 (content area, 15.5 cm, two per page).
 
+## Full check and redesign (2026-11-22)
+- **Figma:** a reconnect was refused (Starter-plan MCP limit; an upgrade would be needed). The local reference images in `design/figma/` were used instead.
+- **Dashboard "risk ledger" identity:**
+  - Fraunces headlines and numbers; IBM Plex Sans body; IBM Plex Mono labels;
+  - ink on warm paper, hairline rules, a numbered menu, a model-colour ribbon and a masthead.
+  - Stale interest-rate wording fixed on Start here and on What drives the forecasts.
+  - Checks: Flesch-Kincaid grade 3.1-4.0; design review clean in Chromium and WebKit (360-480 px, landscape, 1440 px).
+- **Report:**
+  - desktop screenshots now crop to each tab's own content (menu and masthead removed);
+  - Yahoo Finance data set now cited;
+  - new `src/report_content_check.py`: every reference cited, no stale wording or leftover markup, no missing figure or table numbers.
+- **All checks:**
+  - pytest 25 passed; demo exit 0;
+  - report 47 pages, 0 split words in tables, 397 numbers traced;
+  - only two pages under 40% (page 4, the contents end; page 19, a chapter end).
+
 ## Open items (need the user)
 1. **Interest rates.** Verify `data/raw/repo_rate.csv` row by row and fill the 13 blank rows, then set every status to VERIFIED.
    - Only then run Path A (one extra labelled set, `price_vixrel_fxchg_repo`). That needs your go-ahead, because it adds results.
