@@ -44,7 +44,7 @@ function Nav({ onPick }: { onPick?: () => void }) {
   const item = (to: string, label: string, icon: string) => (
     <NavLink key={to} to={to} end={to === "/"} onClick={onPick}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-lg px-3 py-2 text-[15px] ${isActive ? "bg-slate-100 font-semibold text-navy-900" : "text-slate-600 hover:bg-slate-50 hover:text-navy-900"}`}>
+        `flex min-h-[40px] items-center gap-3 rounded-lg px-3 py-2 text-[15px] ${isActive ? "bg-slate-100 font-semibold text-navy-900" : "text-slate-600 hover:bg-slate-50 hover:text-navy-900"}`}>
       <Icon name={icon} />{label}
     </NavLink>
   );
@@ -139,7 +139,7 @@ export default function App() {
           <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] overflow-y-auto bg-white px-4 py-5 shadow-xl">
             <div className="mb-6 flex items-center justify-between px-2">
               <span className="flex items-center gap-2"><Mark /><span className="font-bold text-navy-900">Nifty 50 Downside Risk</span></span>
-              <button onClick={() => setOpen(false)} aria-label="Close menu" className="rounded p-1 text-slate-600"><Icon name="close" /></button>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="flex h-10 w-10 items-center justify-center rounded text-slate-600"><Icon name="close" /></button>
             </div>
             <Nav onPick={() => setOpen(false)} />
           </div>
@@ -149,7 +149,7 @@ export default function App() {
       <div className="min-w-0 flex-1">
         <header className="border-b border-line bg-white">
           <div className="flex items-center gap-3 px-4 py-3 lg:px-8">
-            <button className="rounded-lg border border-line p-2 text-navy-900 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
+            <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-line text-navy-900 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
               <Icon name="menu" />
             </button>
             <span className="flex items-center gap-2 lg:hidden"><Mark /><span className="hidden text-sm font-bold text-navy-900 xs:inline">Nifty 50 Downside Risk</span></span>

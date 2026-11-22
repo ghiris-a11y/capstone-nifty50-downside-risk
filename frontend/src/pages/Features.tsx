@@ -1,4 +1,4 @@
-import Figure, { type FigJson } from "../components/Figure";
+import Figure, { isPhone, type FigJson } from "../components/Figure";
 import { ErrorBox, Loading, Section, Table } from "../components/ui";
 import { Experts, HowToRead, Means, ModelName, Takeaway } from "../components/plain";
 import { ML, pct, per100, rowAt, useJson, type SummaryFile } from "../lib/data";
@@ -33,8 +33,8 @@ export default function Features() {
             const y = (f.data[0] as { y?: string[] }).y || [];
             return {
               yaxis: { ...(l.yaxis || {}), title: { text: "Input" }, tickvals: y, ticktext: y.map((v) => FEATURE_PLAIN[v] ?? v) },
-              xaxis: { ...(l.xaxis || {}), title: { text: "Average effect on the forecast (hundredths of 1% of return)" } },
-              margin: { ...(l.margin || {}), l: 260, t: 40 },
+              xaxis: { ...(l.xaxis || {}), title: { text: isPhone() ? "Effect (0.01%)" : "Average effect on the forecast (hundredths of 1% of return)" } },
+              margin: { ...(l.margin || {}), l: 260, t: 40, ...(isPhone() ? { b: 95 } : {}) },
             };
           }} />
       </Section>

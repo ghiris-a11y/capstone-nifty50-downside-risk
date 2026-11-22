@@ -44,7 +44,7 @@ export default function Live() {
           Sort by:
           {(["var_99", "es_99", "var_95", "sector", "ticker"] as Key[]).map((k) => (
             <button key={k} onClick={() => setSort(k)}
-              className={`rounded border px-2 py-0.5 ${sort === k ? "border-slate-800 bg-slate-800 text-white" : "border-slate-300"}`}>
+              className={`min-h-[40px] rounded-full border px-3 py-2 ${sort === k ? "border-slate-800 bg-slate-800 text-white" : "border-slate-300"}`}>
               {LABELS[k]}
             </button>
           ))}

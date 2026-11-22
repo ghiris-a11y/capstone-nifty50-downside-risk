@@ -69,7 +69,7 @@ export default function Regimes() {
             return `On the most fearful quarter of days, the best score came from ${best}. ${ML.includes(best) ? "Machine learning did best on stressed days." : "Machine learning did not pull ahead when markets were stressed."}`;
           }}
           patch={() => ({
-            xaxis: { title: { text: "Fear gauge the day before (calm → fearful)" } },
+            xaxis: { title: { text: isPhone() ? "Fear gauge day before" : "Fear gauge the day before (calm → fearful)" } },
             yaxis: { title: { text: "Quality score (lower is better)" } },
           })} />
       </Section>
@@ -81,7 +81,8 @@ export default function Regimes() {
           note={top ? `The worst day was ${day(top[1])}, when the Nifty 50 fell ${top[3].replace("-", "")}.` : undefined}
           side={[...(top ? [{ value: top[2], text: `stocks beaten by GJR-t on ${day(top[1])}` }] : []),
             { value: String(gjr.days_with_10plus_breaches), text: "days when 10 or more stocks were beaten at once (GJR-t)" }]}
-          patch={(l) => ({ margin: { ...(l.margin || {}), t: 70 } })}
+          patch={(l) => ({ margin: { ...(l.margin || {}), t: 70 },
+            ...(isPhone() ? { annotations: (l.annotations || []).map((a) => ({ ...a, text: String(a.text).replace(/: stocks with a loss bigger than forecast/i, ": stocks beaten") })) } : {}) })}
           means="Bad days hit many stocks at once. A fund that holds many of these stocks would take several losses on the same day. It should plan for that." />
         <Figure name="fig14_stress_share" number="Figure 14"
           title={`Market-wide bad days were ${pct(gjr.share_of_days_stress, 1)} of days but held ${pct(gjr.share_of_breaches_on_stress_days, 1)} of GJR-t's beaten days`}

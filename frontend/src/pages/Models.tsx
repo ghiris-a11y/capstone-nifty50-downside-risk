@@ -1,5 +1,5 @@
 import type { Layout } from "plotly.js";
-import Figure from "../components/Figure";
+import Figure, { isPhone } from "../components/Figure";
 import BeatenChart from "../components/BeatenChart";
 import { ErrorBox, Loading, Section, Table } from "../components/ui";
 import { Experts, Takeaway } from "../components/plain";
@@ -25,7 +25,16 @@ export default function Models() {
   const esLow = ORDER.filter((m) => es(m) > 1);
   const x99 = rowAt(rows, "XGBoost", 0.01);
   const bestMedian = [...ORDER].sort((p, q) => rowAt(rows, p, 0.01).fz0_median_stocks - rowAt(rows, q, 0.01).fz0_median_stocks)[0];
-  const yTitle = (t: string) => (l: Partial<Layout>) => ({ yaxis: { ...(l.yaxis || {}), title: { text: t } } });
+  const ph = isPhone();
+  // Two panels (19 in 20 and 99 in 100 days): on phones use short panel titles and show every model name, rotated.
+  const twoPanel = (t: string) => (l: Partial<Layout>) => ({
+    yaxis: { ...(l.yaxis || {}), title: { text: t } },
+    ...(ph ? {
+      annotations: (l.annotations || []).map((a) => ({ ...a, text: String(a.text).replace(" out of ", " in ") })),
+      xaxis: { ...(l.xaxis || {}), tickangle: -90, dtick: 1 }, xaxis2: { ...((l as { xaxis2?: object }).xaxis2 || {}), tickangle: -90, dtick: 1 },
+      margin: { ...(l.margin || {}), b: 130 },
+    } : {}),
+  });
   return (
     <>
       <Takeaway>
@@ -38,17 +47,21 @@ export default function Models() {
       <Section title="How often were the forecasts beaten?">
         <BeatenChart rows={rows} level="99" />
         <Figure name="fig04_exception_heatmap_99" number="Figure 4"
+          phone={(f) => ({
+            data: f.data.map((t) => ({ ...t, colorbar: { ...((t as { colorbar?: object }).colorbar || {}), orientation: "h", y: -0.2, yanchor: "top", thickness: 10, len: 0.9, title: { text: "Breach rate (%)", side: "top" } } })) as typeof f.data,
+            layout: { ...f.layout, height: 1000, margin: { t: 40, l: 90, r: 10, b: 190 } },
+          })}
           title={`GJR-t was beaten too often on ${above("GJR-t")} of ${nStocks} stocks; XGBoost on ${above("XGBoost")} of ${nStocks}`}
           how="Each square is one stock (row) and one model (column). Orange means beaten more than 1 day in 100; purple means fewer. Pale means close to ideal. Hover to see the number."
           means={`${pct(share(GARCH, (r) => r.exc_rate > 0.01), 0)} of the classic-model squares are above the ideal, against ${pct(share(ML, (r) => r.exc_rate > 0.01), 0)} for machine learning. A firm would need to watch those stocks more closely.`}
-          patch={() => ({ xaxis: { title: { text: "Model" }, tickangle: -35 } })} />
+          patch={() => ({ xaxis: { title: { text: "Model" }, tickangle: isPhone() ? -60 : -35 } })} />
         <Figure name="fig07_kupiec_vs_christoffersen" number="Figure 7"
           title={`${pct(share(GARCH, bothPass), 0)} of classic-model results passed both checks, against ${pct(share(ML, bothPass), 0)} for machine learning`}
           how="Each dot is one stock and one model. Dots right of the dashed line passed “Did forecasts fail too often?”. Dots above the flat dashed line passed “Did failures come in clusters?”."
           means="A model that fails the first check sets aside the wrong amount of money. A model that fails the second check tends to fail several days in a row, which is when a firm can least afford it."
           patch={() => ({
-            xaxis: { title: { text: "Did forecasts fail too often? (right of line = pass)" }, range: [0, 1] },
-            yaxis: { title: { text: "Did failures come in clusters? (above line = pass)" }, range: [0, 1] },
+            xaxis: { title: { text: ph ? "Fail too often? (right = pass)" : "Did forecasts fail too often? (right of line = pass)" }, range: [0, 1] },
+            yaxis: { title: { text: ph ? "Clusters? (above = pass)" : "Did failures come in clusters? (above line = pass)" }, range: [0, 1] },
           })} />
         <Experts title="models ordered by breach rate (Figure 10) and the technical terms">
           <Figure name="fig10_leaderboard" number="Figure 10" />
@@ -62,14 +75,14 @@ export default function Models() {
           means={esLow.length
             ? `${esLow.length === ORDER.length ? "For every model" : `For ${esLow.length} of ${ORDER.length} models`}, the forecast of the loss on the very bad days was too small. A firm would have been surprised by the size of those losses.`
             : "No model's forecast of the average loss on the very bad days was too small on average."}
-          patch={yTitle("Real loss on bad days ÷ forecast (1 = exact)")} />
+          patch={twoPanel("Real loss on bad days ÷ forecast (1 = exact)")} />
         <Figure name="fig11_fz0_mean_median" number="Figure 11"
           title={x99.fz0 - x99.fz0_median_stocks > 1
             ? "A few “no-risk” days made XGBoost's average score look much worse than its typical score"
             : "Average and typical scores tell the same story"}
           how="Lower is better. Open circles show the average. Filled circles show the typical stock. Values far off the scale are written as notes."
           means={`One forecast of “no risk” followed by a real loss can wreck an average, so we also show the typical stock. The best typical score at the 99 out of 100 level came from ${bestMedian}.`}
-          patch={yTitle("Overall forecast quality score (lower is better)")} />
+          patch={twoPanel(ph ? "Quality score (lower is better)" : "Overall forecast quality score (lower is better)")} />
       </Section>
 
       <Section title="Is the difference real, or just luck?">
@@ -79,7 +92,7 @@ export default function Models() {
           means={tot.g > tot.m
             ? "Most gaps in the score are too small to be sure about. Where a gap is real, it almost always favours GARCH. The data give no reason to switch to machine learning for this job."
             : "Most gaps in the score are too small to be sure about."}
-          patch={() => ({ xaxis: { title: { text: "Number of comparisons (stock × GARCH model)" } } })} />
+          patch={() => ({ xaxis: { title: { text: ph ? "Comparisons" : "Number of comparisons (stock × GARCH model)" } } })} />
         <Experts title="Diebold-Mariano counts for every input set and loss">
         <p className="mb-2 text-sm text-slate-600">Each ML model is compared with each of the six GARCH models for every stock (5% level). Counts are pairs: GARCH significantly lower loss / ML significantly lower loss / no significant difference.</p>
         {dm.data && (

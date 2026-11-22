@@ -56,7 +56,7 @@ export function Pills<T extends string>({ options, value, onChange, label }: {
     <div className="flex flex-wrap gap-2" role="group" aria-label={label}>
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)} aria-pressed={value === o.value}
-          className={`rounded-full border px-3 py-1 text-[13px] font-medium ${value === o.value ? "border-navy-900 bg-navy-900 text-white" : "border-slate-300 bg-white text-slate-700 hover:border-navy-900"}`}>
+          className={`min-h-[40px] min-w-[44px] rounded-full border px-3.5 py-2 text-[13px] font-medium ${value === o.value ? "border-navy-900 bg-navy-900 text-white" : "border-slate-300 bg-white text-slate-700 hover:border-navy-900"}`}>
           {o.label}
         </button>
       ))}
@@ -79,7 +79,7 @@ export function Select<T extends string>({ label, value, options, onChange }: {
     <label className="flex min-w-0 max-w-full flex-col text-[13px] font-medium text-slate-600">
       {label}
       <select
-        className="mt-1 w-full max-w-full rounded-lg border border-line bg-white px-2 py-1.5 text-[15px] text-slate-900"
+        className="mt-1 min-h-[42px] w-full max-w-full rounded-lg border border-line bg-white px-2 py-2 text-[15px] text-slate-900"
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
       >

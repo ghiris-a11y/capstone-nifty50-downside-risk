@@ -1,15 +1,27 @@
 import { Link } from "react-router-dom";
+import type { FigJson } from "../components/Figure";
 import { ErrorBox, Kpi, Loading, Section } from "../components/ui";
 import { Takeaway, Tech } from "../components/plain";
 import { dmTotals, family, GARCH, ML, ORDER, per100, pct, rowAt, useJson, type BreachSummaryRow, type DmCount, type Meta, type SummaryFile } from "../lib/data";
 
 interface Finding { head: string; text: string; tech?: string }
+interface Action { who: string; act: string; why: string; tone: "garch" | "ml" | "warn" | "plain" }
+
+// Median of each sector's per-stock average 99% VaR (in %) from the exported Figure 9 data, low to high.
+function sectorMedians(f: FigJson): [string, number][] {
+  return (f.data as { name?: string; y?: number[] }[]).filter((t) => t.y?.length).map((t) => {
+    const y = [...(t.y as number[])].sort((p, q) => p - q);
+    const mid = y.length % 2 ? y[(y.length - 1) / 2] : (y[y.length / 2 - 1] + y[y.length / 2]) / 2;
+    return [t.name ?? "", mid] as [string, number];
+  }).sort((p, q) => p[1] - q[1]);
+}
 
 export default function Start() {
   const s = useJson<SummaryFile>("summary.json");
   const dm = useJson<Record<string, Record<string, DmCount[]>>>("dm.json");
   const br = useJson<Record<string, BreachSummaryRow[]>>("breach_summary.json");
   const meta = useJson<Meta>("meta.json");
+  const f9 = useJson<FigJson>("figures/fig09_sector_var.json");
   if (s.loading || dm.loading || br.loading) return <Loading />;
   if (!s.data || !dm.data || !br.data) return <ErrorBox error={s.error || dm.error || br.error || "missing data"} />;
 
@@ -26,6 +38,27 @@ export default function Start() {
   const bestM = [...ML].sort((a, b) => at(b).pass_kupiec - at(a).pass_kupiec)[0];
   const esLow = ORDER.filter((m) => at(m).es_ratio > 1);
   const noRisk = at("XGBoost").norisk_days;
+  const vixRows = s.data.summary.price_vixlevel;
+  const sec = f9.data ? sectorMedians(f9.data) : [];
+  const top = gjr ? /^(\d{4}-\d{2}-\d{2}) (\d+)/.exec(gjr.top_days.split(";")[0].trim()) : null;
+  const day = (iso: string) => new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  const actions: Action[] = [
+    ...(garchClosest ? [{ who: "Bank risk desk", tone: "garch" as const,
+      act: `Use ${closest[0]} or ${closest[1]} for 99 in 100 loss limits.`,
+      why: `${closest[0]} was beaten on ${per100(r99(closest[0]))} days in 100, close to the ideal of 1. XGBoost was beaten on ${per100(r99("XGBoost"))}.` }] : []),
+    ...(gjr ? [{ who: "Broker margin team", tone: "warn" as const,
+      act: "Add an extra cushion on days the whole market falls.",
+      why: `Those days were ${pct(gjr.share_of_days_stress, 1)} of all days but held ${pct(gjr.share_of_breaches_on_stress_days, 1)} of GJR-t's misses.${top ? ` On ${day(top[1])}, ${top[2]} stocks were beaten at once.` : ""}` }] : []),
+    ...(sec.length ? [{ who: "Portfolio manager", tone: "plain" as const,
+      act: "Set different limits for each sector.",
+      why: `A typical ${sec[sec.length - 1][0]} stock needed about ${sec[sec.length - 1][1].toFixed(1)}% set aside for a bad day. ${sec[0][0]} needed about ${sec[0][1].toFixed(1)}%.` }] : []),
+    ...(gjr ? [{ who: "Risk committee", tone: "plain" as const,
+      act: "Count the misses every month. Look for days when many stocks miss together.",
+      why: `GJR-t passed the check on both the number of misses and misses in a row for ${pct(at("GJR-t").pass_cc, 0)} of stocks. It still had ${gjr.days_with_10plus_breaches} days when 10 or more stocks missed at once.` }] : []),
+    ...(vixRows ? [{ who: "Product or fintech team", tone: "ml" as const,
+      act: "Do not pay for extra inputs before they prove their worth.",
+      why: `Adding the fear gauge moved XGBoost from ${per100(r99("XGBoost"))} to ${per100(rowAt(vixRows, "XGBoost", 0.01).exc_rate)} days in 100. Interest rates were not tested.` }] : []),
+  ];
 
   const findings: Finding[] = [
     { head: "Closest to expected", text: `${closest.map((m) => `${m} (${per100(r99(m))})`).join(", ")} came closest to the ideal of 1 bad day in 100.${garchClosest ? " All three are classic models that allow for extreme days." : ""}`, tech: "99% VaR breach rate closest to nominal 1%" },
@@ -58,6 +91,19 @@ export default function Start() {
               sub={`Of GJR-t's beaten days. These days were only ${pct(gjr.share_of_days_stress, 1)} of all days.`} />
           )}
         </div>
+      </Section>
+
+      <Section title="What a firm should do">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {actions.map((a) => (
+            <div key={a.who} className={`card flex flex-col p-5 ${a.tone === "garch" ? "border-t-4 border-t-garch-500" : a.tone === "ml" ? "border-t-4 border-t-ml-500" : a.tone === "warn" ? "border-t-4 border-t-warn-500" : "border-t-4 border-t-navy-900"}`} data-read>
+              <div className="text-[13px] font-medium uppercase tracking-wide text-slate-500">For: {a.who}</div>
+              <p className="mt-2 text-[17px] font-semibold leading-snug text-navy-900">{a.act}</p>
+              <p className="mt-2 text-[15px] text-slate-600">{a.why}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-[13px] text-slate-500">These follow the report's recommendations chapter. All numbers come from the study's result files.</p>
       </Section>
 
       <Section title="The question">
@@ -98,7 +144,7 @@ export default function Start() {
         <div className="flex flex-wrap gap-3 text-[15px]" data-read>
           {[["/overview", "Results at a glance"], ["/models", "Compare the models"], ["/regimes", "Calm vs stressed days"],
             ["/stock", "Look at one stock"], ["/glossary", "What the words mean"]].map(([to, label]) => (
-            <Link key={to} to={to} className="rounded-full border border-navy-900 bg-white px-4 py-1.5 font-semibold text-navy-900 hover:bg-navy-900 hover:text-white">
+            <Link key={to} to={to} className="inline-flex min-h-[40px] items-center rounded-full border border-navy-900 bg-white px-4 py-2 font-semibold text-navy-900 hover:bg-navy-900 hover:text-white">
               {label} →
             </Link>
           ))}

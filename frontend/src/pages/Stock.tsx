@@ -26,6 +26,39 @@ function shareSmall(f: FigJson) {
   return all ? `${Math.round((100 * small) / all)}%` : "most";
 }
 
+// Phone-only layouts (480 px and below): same data, fewer panels or shorter labels.
+type Obj = Record<string, unknown>;
+const SHORT: Record<string, string> = {
+  "Oil Gas & Consumable Fuels": "Oil & gas", "Construction Materials": "Constr. materials", "Information Technology": "IT",
+  "Financial Services": "Finance", "Consumer Durables": "Cons. durables", "Telecommunication": "Telecom", "Metals & Mining": "Metals",
+  "Capital Goods": "Cap. goods", "Automobile": "Auto",
+};
+function fig9Phone(f: FigJson): FigJson {
+  return {
+    data: f.data.map((t) => ({ ...t, name: SHORT[(t as Obj).name as string] ?? (t as Obj).name })) as FigJson["data"],
+    layout: { ...f.layout, height: 560, xaxis: { ...(f.layout.xaxis || {}), tickangle: -55 }, margin: { ...(f.layout.margin || {}), b: 110 } },
+  };
+}
+// Figure 2 on a phone: only the selected stock's panel, drawn full width.
+function fig2Phone(f: FigJson, ticker: string): FigJson {
+  const anns = (f.layout.annotations || []) as Obj[];
+  const i = anns.findIndex((a) => a.text === ticker.replace(".NS", ""));
+  if (i < 0 || !f.data[i]) return f;
+  const tr = f.data[i] as Obj;
+  const L = f.layout as unknown as Obj;
+  const axis = (ref: unknown, kind: "x" | "y") => (L[`${kind}axis${String(ref ?? kind).slice(1)}`] || {}) as Obj;
+  const base = Object.fromEntries(Object.entries(L).filter(([k]) => !/^[xy]axis\d*$/.test(k)));
+  return {
+    data: [{ ...tr, xaxis: "x", yaxis: "y" }] as FigJson["data"],
+    layout: {
+      ...base, height: 360, showlegend: false, margin: { l: 55, r: 15, t: 44, b: 55 },
+      annotations: [{ ...anns[i], x: 0.5, xref: "paper", y: 1, yref: "paper", yanchor: "bottom", font: { size: 14 } }],
+      xaxis: { ...axis(tr.xaxis, "x"), domain: [0, 1], anchor: "y", matches: undefined, showticklabels: true, title: { text: "Daily move (%)" } },
+      yaxis: { ...axis(tr.yaxis, "y"), domain: [0, 1], anchor: "x", matches: undefined, showticklabels: true, title: { text: "Test days" } },
+    } as FigJson["layout"],
+  };
+}
+
 interface Daily { ticker: string; dates: string[]; ret: number[]; var: Record<string, number[]>; es: Record<string, number[]> }
 interface StockInfo { ticker: string; name: string; sector: string }
 type Range = "1M" | "3M" | "6M" | "1Y" | "All" | "hike";
@@ -302,14 +335,14 @@ export default function Stock() {
       </Section>
 
       <Section title="All stocks and sectors">
-        <Figure name="fig09_sector_var" number="Figure 9"
+        <Figure name="fig09_sector_var" number="Figure 9" phone={fig9Phone}
           title={(f) => { const s = sectorMedians(f); return s.length ? `${s[s.length - 1][0]} stocks had the biggest likely worst daily loss; ${s[0][0]} the smallest` : "Likely worst daily loss by sector"; }}
           how="Each dot is one stock. It shows the stock's average likely worst daily loss from GJR-t. Boxes group stocks by sector."
           means={(f) => { const s = sectorMedians(f); return s.length ? `A typical ${s[s.length - 1][0]} stock needed about ${s[s.length - 1][1].toFixed(1)}% of the position set aside for a bad day, against about ${s[0][1].toFixed(1)}% for ${s[0][0]}. Margins and limits should differ by sector.` : ""; }}
           patch={() => ({ yaxis: { title: { text: phone ? "Worst daily loss (% of position)" : "Likely worst daily loss, 99 out of 100 days (% of position)" } } })} />
-        <Figure name="fig02_return_distributions" number="Figure 2"
+        <Figure name="fig02_return_distributions" number="Figure 2" phone={(f) => fig2Phone(f, ticker)}
           title={(f) => `On ${shareSmall(f)} of stock-days the price moved less than 2% either way; big moves were rare`}
-          how="Each small chart is one stock. Bars count test days by the size of the daily move, from −8% (left) to +8% (right)."
+          how={phone ? "Bars count test days by the size of the daily move, from −8% (left) to +8% (right). On a phone it shows the stock chosen above." : "Each small chart is one stock. Bars count test days by the size of the daily move, from −8% (left) to +8% (right)."}
           means="Most days are quiet. The rare big moves in the tails are what the risk models must catch." />
         <Figure name="fig03_var_vs_returns_RELIANCE" number="Figure 3"
           title={(f) => `Reliance: GJR-t was beaten on ${relCount(f, "GJR-t")} days and XGBoost on ${relCount(f, "XGBoost")} (99 out of 100 days)`}

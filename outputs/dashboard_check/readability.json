@@ -5,11 +5,12 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.6,
-   "flesch_reading_ease": 83.6,
-   "words": 268,
+   "fk_grade": 3.0,
+   "flesch_reading_ease": 86.7,
+   "words": 446,
    "above_9": [
-    "A student project at ITM Skills University."
+    "A student project at ITM Skills University.",
+    "These follow the report's recommendations chapter."
    ],
    "overflow_px_projector": 0
   },
@@ -92,9 +93,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.7,
-   "flesch_reading_ease": 85.1,
-   "words": 495,
+   "fk_grade": 3.8,
+   "flesch_reading_ease": 84.7,
+   "words": 508,
    "above_9": [
     "A student project at ITM Skills University.",
     "Overall forecast quality score (lower is better)."
@@ -105,9 +106,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.3,
-   "flesch_reading_ease": 85.9,
-   "words": 229,
+   "fk_grade": 3.5,
+   "flesch_reading_ease": 85.1,
+   "words": 242,
    "above_9": [
     "A student project at ITM Skills University."
    ],

@@ -14,6 +14,22 @@ const resolve = <T,>(v: FromFig<T> | undefined, f: FigJson) => (typeof v === "fu
 export const isPhone = () => typeof window !== "undefined" && window.innerWidth <= 480;
 
 // Chart typography for the dashboard: Inter, at least 11 px (phone) / 13 px (wider screens).
+// Raise every font size in a figure (axis ticks, annotations, legends, trace text) to at least `min` px.
+export function minFonts<T>(obj: T, min = 11): T {
+  const walk = (v: unknown, key = ""): unknown => {
+    if (Array.isArray(v)) return v.map((x) => walk(x, key));
+    if (v && typeof v === "object") {
+      const o: Record<string, unknown> = {};
+      for (const [k, x] of Object.entries(v as Record<string, unknown>)) {
+        o[k] = /font$/i.test(key) && k === "size" && typeof x === "number" ? Math.max(x, min) : walk(x, k);
+      }
+      return o;
+    }
+    return v;
+  };
+  return walk(obj) as T;
+}
+
 export function chartFont(layout: Partial<Layout>): Partial<Layout> {
   return { ...layout, font: { ...(layout.font || {}), family: "Inter, system-ui, sans-serif", size: isPhone() ? 11 : 13 } };
 }
@@ -64,33 +80,38 @@ export function StoryCard({ label, title, how, lead, note, side, means, children
 // Renders a figure exported by src/make_figures.py (the same figure as in the report). With `title` it becomes a
 // plain-language chart: a finding as the title, a "How to read this" line, plain axis labels (`patch`) and a
 // "What this means" box. The technical caption stays available under "Technical note".
-export default function Figure({ name, number, title, how, means, patch, annotate, lead, note, side }: {
+export default function Figure({ name, number, title, how, means, patch, annotate, lead, note, side, phone }: {
   name: string; number?: string; title?: FromFig<string>; how?: ReactNode; means?: FromFig<ReactNode>;
   patch?: (layout: Partial<Layout>, fig: FigJson) => Partial<Layout>;
   annotate?: FromFig<Annot | undefined>; lead?: FromFig<Big | undefined>; note?: FromFig<ReactNode>; side?: FromFig<Big[] | undefined>;
+  phone?: (fig: FigJson) => FigJson;  // phone-only layout (480 px and below); never changes the figure's numbers
 }) {
   const fig = useJson<FigJson>(`figures/${name}.json`);
   const captions = useJson<Record<string, string>>("figures/index.json");
   if (fig.loading) return <Loading what="chart" />;
   if (fig.error || !fig.data) return <ErrorBox error={fig.error || "missing figure"} />;
-  const h = Math.min((fig.data.layout.height as number) || 560, 1000);
+  const shown = isPhone() && phone ? phone(fig.data) : fig.data;
+  const h = Math.min((shown.layout.height as number) || 560, 1100);
   const plain = title !== undefined;
-  const data = plain ? fig.data.data.map((t) => ({ ...t, name: plainText((t as { name?: string }).name) })) as Data[] : fig.data.data;
-  let layout: Partial<Layout> = { ...fig.data.layout, autosize: true, width: undefined, height: h, paper_bgcolor: "white", plot_bgcolor: "white" };
+  const data = plain ? shown.data.map((t) => ({ ...t, name: plainText((t as { name?: string }).name) })) as Data[] : shown.data;
+  let layout: Partial<Layout> = { ...shown.layout, autosize: true, width: undefined, height: h, paper_bgcolor: "white", plot_bgcolor: "white" };
   if (plain) {
     const ann = (layout.annotations || []).map((a) => ({ ...a, text: plainText(a.text) }));
     layout = { ...layout, title: undefined, annotations: ann, margin: { ...(layout.margin || {}), t: 40 } };
     if (patch) layout = { ...layout, ...patch(layout, fig.data) };
+    // subplot titles sit just above the plot area: leave room so they stay inside the chart
+    const top = (layout.annotations || []).some((a) => a.yref === "paper" && (a.y as number) >= 1 && a.yanchor === "bottom");
+    if (top) layout = { ...layout, margin: { ...(layout.margin || {}), t: Math.max((layout.margin?.t as number) || 0, 64) } };
   }
   layout = chartFont(layout);
   if (isPhone()) layout = { ...layout, margin: { ...(layout.margin || {}), l: 55, r: 15 } };
   const tech = captions.data?.[name] ? (
     <details className="mt-3 text-sm text-slate-600">
-      <summary className="cursor-pointer">Technical note</summary>
+      <summary className="flex min-h-[40px] cursor-pointer items-center">Technical note</summary>
       <p className="mt-1">{captions.data[name]}</p>
     </details>
   ) : undefined;
-  const plot = <Plot data={data} layout={layout} style={{ height: h }} annotate={resolve(annotate, fig.data)} />;
+  const plot = <Plot data={minFonts(data)} layout={minFonts(layout)} style={{ height: h }} annotate={resolve(annotate, fig.data)} />;
   if (!plain) {
     return (
       <figure className="card mb-10 p-3">
