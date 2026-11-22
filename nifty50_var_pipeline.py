@@ -73,7 +73,15 @@ def load_macro(index, start, end, lag_days=None):
     for name, lag in lag_days.items():
         path = os.path.join("data", "raw", f"{name}.csv")
         if os.path.exists(path):
-            s = pd.read_csv(path, parse_dates=["date"]).set_index("date")["value"]
+            raw = pd.read_csv(path, parse_dates=["date"])
+            unverified = raw["value"].isna().any() or (
+                "status" in raw and (raw["status"].astype(str).str.strip().str.upper() != "VERIFIED").any())
+            if unverified:  # partial or unverified macro file: never use it silently
+                os.makedirs(os.path.join("data", "logs"), exist_ok=True)
+                with open(os.path.join("data", "logs", "macro_skipped.log"), "a") as fh:
+                    fh.write(f"{pd.Timestamp.now()} skipped {path}: blank or unverified rows\n")
+                continue
+            s = raw.set_index("date")["value"]
             s.index = s.index + pd.Timedelta(days=lag)  # only known after release
             m[name] = s.reindex(s.index.union(index)).ffill().reindex(index)
     try:
