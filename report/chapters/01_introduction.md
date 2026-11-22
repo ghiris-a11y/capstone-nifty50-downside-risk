@@ -48,5 +48,5 @@ Risk teams can choose between well-known statistical models and newer machine-le
 - One-day horizon; 95% and 99% VaR and ES, shown as positive loss numbers.
 - Secondary data only; no questionnaire.
 - Training 2015 to 2021, validation 2022 to 2023, test 1 January 2024 to {{data_last}}.
-- Inputs: market data (prices, volume, India VIX and USD/INR). Price rises (CPI) and factory output (IIP) were left out on purpose: they come monthly, late and are later revised.
+- Inputs: market data (prices, volume, India VIX and USD/INR), plus changes in the RBI repo rate as one extra test (Reserve Bank of India, 2025). Price rises (CPI) and factory output (IIP) were left out on purpose: they come monthly, late and are later revised.
 - Live dashboard: [https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/](https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/)

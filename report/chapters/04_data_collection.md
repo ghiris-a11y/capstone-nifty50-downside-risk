@@ -12,6 +12,7 @@ All data are secondary, daily and numeric. No questionnaire was used (Appendix A
 | India VIX | ^INDIAVIX | Yahoo Finance | Input, calm and stressed days |
 | USD/INR | INR=X | Yahoo Finance | Input (labelled sets) |
 | Index members, December 2025 | Nifty 50 list | NSE | Population |
+| Repo rate | Handbook Table 43; policy releases | RBI | Input (one labelled set) |
 | CPI, IIP | Monthly releases | MoSPI | Left out on purpose |
 
 ## 4.2 Data pipeline

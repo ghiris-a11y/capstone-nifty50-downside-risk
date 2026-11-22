@@ -23,7 +23,8 @@ LABELS = {"price": "Price/volume only",
           "price_vixlevel": "Price/volume + India VIX level (selected on validation)",
           "price_vixrel": "Price/volume + VIX relative to 60-day mean (selected stationary variant)",
           "price_fxchg": "Price/volume + USD/INR changes",
-          "price_vixrel_fxchg": "Price/volume + VIX relative + USD/INR changes"}
+          "price_vixrel_fxchg": "Price/volume + VIX relative + USD/INR changes",
+          "price_vixrel_fxchg_repo": "Price/volume + VIX relative + USD/INR + repo-rate changes"}
 FORBIDDEN = {"open", "high", "low", "close", "adj_close", "volume", "last_adj_close", "india_vix", "Open", "High",
              "Low", "Close", "Volume"}
 
@@ -169,8 +170,18 @@ def macro_note():
         verified = not rr["value"].isna().any() and (rr.get("status", pd.Series(["VERIFIED"])).astype(str).str.strip().str.upper() == "VERIFIED").all()
     tested = verified and any("repo" in f for f in os.listdir(T) if f.startswith("summary_"))
     if tested:
-        return ("Interest-rate changes were tested as an extra input. Price rises and factory output were left out on purpose: "
-                "they come monthly and late.")
+        # one plain sentence on the effect, from the 99% ML miss rates with and without repo-rate changes
+        base = pd.read_csv(os.path.join(T, "summary_price_vixrel_fxchg.csv")).set_index(["model", "alpha"])
+        repo = pd.read_csv(os.path.join(T, "summary_price_vixrel_fxchg_repo.csv")).set_index(["model", "alpha"])
+        ml = ["XGBoost", "RandomForest", "MLP"]
+        shift = max(abs(repo.loc[(m, 0.01)].exc_rate - base.loc[(m, 0.01)].exc_rate) for m in ml) * 100
+        closer = sum(abs(repo.loc[(m, 0.01)].exc_rate - 0.01) < abs(base.loc[(m, 0.01)].exc_rate - 0.01) for m in ml)
+        effect = (f"they changed how often the machine-learning models were beaten by at most {shift:.2f} points, so they did not help"
+                  if shift < 0.10 else
+                  f"they brought {closer} of 3 machine-learning models closer to expected" if closer else
+                  "they did not bring the machine-learning models closer to expected")
+        return (f"Interest-rate changes were tested as an extra input: {effect}. Price rises and factory output were left out "
+                "on purpose: they come monthly and late.")
     return ("The models use market data only. Interest rates, price rises and factory output were left out on purpose: "
             "they change rarely or come monthly and late.")
 

@@ -23,7 +23,7 @@ The population is the fifty Nifty 50 stocks of December 2025. The sample is purp
 - **Random Forest and MLP:** forecast the size of tomorrow's move; past forecast errors then give VaR and ES (filtered historical simulation).
 - **Benchmark:** the loss limit and worst-day average of the last 250 days (historical simulation).
 
-The machine-learning inputs are past returns, recent volatility, recent falls and volume changes. Labelled sets add the India VIX or USD/INR changes. Every input for day t uses data up to day t-1 only, and random seeds are fixed at 42.
+The machine-learning inputs are past returns, recent volatility, recent falls and volume changes. Labelled sets add the India VIX or USD/INR changes. One more set adds the change in the RBI repo rate over 21 and 63 trading days. Each rate change is dated on the day the RBI announced it, from a file checked row by row against RBI Handbook Table 43 and the policy releases (Reserve Bank of India, 2025). The program refuses to use any rate file with a blank or unchecked row. Every input for day t uses data up to day t-1 only, and random seeds are fixed at 42.
 
 ## 3.5 How the forecasts are judged
 

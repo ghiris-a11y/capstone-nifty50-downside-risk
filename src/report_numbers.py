@@ -26,7 +26,9 @@ ORDER = GARCH + ["HistSim250"] + ML
 SLUG = {"GARCH-normal": "garchn", "GARCH-t": "garcht", "EGARCH-normal": "egarchn", "EGARCH-t": "egarcht", "GJR-normal": "gjrn",
         "GJR-t": "gjrt", "HistSim250": "hs", "XGBoost": "xgb", "RandomForest": "rf", "MLP": "mlp"}
 SETS = {"price": "Price/volume only", "price_vixlevel": "+ India VIX level", "price_vixrel": "+ VIX relative to 60-day mean",
-        "price_fxchg": "+ USD/INR changes", "price_vixrel_fxchg": "+ VIX relative + USD/INR changes"}
+        "price_fxchg": "+ USD/INR changes", "price_vixrel_fxchg": "+ VIX relative + USD/INR changes",
+        "price_vixrel_fxchg_repo": "+ VIX relative + USD/INR + repo-rate changes"}
+REPO, REPO_BASE = "price_vixrel_fxchg_repo", "price_vixrel_fxchg"
 HIKE = "2026-10-07"
 
 
@@ -279,6 +281,20 @@ def build():
                          source=src_ph, head=["Model", "Trading days", "Stock-days", "Breaches", "Breach rate"],
                          rows=[[x.model, int(x.days), int(x.obs), int(x.breaches), pct(x.rate)] for x in post.itertuples()])
 
+    # post-hike view for the repo-rate set's ML models (same window, from its own daily files)
+    dr_ = daily(REPO)
+    phr = dr_[(dr_.date >= pd.Timestamp(HIKE)) & (dr_.alpha == 0.01) & dr_.model.isin(ML)]
+    postr = phr.groupby("model").agg(days=("date", "nunique"), obs=("exception", "size"), breaches=("exception", "sum")).reindex(ML).reset_index()
+    postr["rate"] = postr.breaches / postr.obs
+    postr["model"] = postr.model + " (+repo)"
+    src_phr = save(postr, "post_hike_breaches_99_repo.csv")
+    n("ph_first", pd.Timestamp(HIKE).strftime("%d %B %Y").lstrip("0"), src_ph)
+    n("ph_last", ph.date.max().strftime("%d %B %Y").lstrip("0"), src_ph)
+    n("ph_xgb_repo", pct(postr.set_index("model").loc["XGBoost (+repo)", "rate"]), src_phr)
+    T["posthike"]["rows"] += [[x.model, int(x.days), int(x.obs), int(x.breaches), pct(x.rate)] for x in postr.itertuples()]
+    T["posthike"]["source"] = f"{src_ph}; {src_phr}"
+    T["posthike"]["head"] = ["Model", "Days", "Stock-days", "Breaches", "Breach rate"]
+
     # ---------------------------------------------------------------- breach clustering on stress days
     bs = rd("breach_days_summary_price.csv")
     bs = bs[bs.alpha == 0.01].set_index("model").reindex(ORDER)
@@ -493,6 +509,32 @@ def build():
     n("basel_hike_outside", "yes" if pd.Timestamp(lc) < pd.Timestamp(HIKE) else "no", src_nb)
     n("basel_values", ", ".join(f"{i / nb.blocks.max():g}" for i in range(int(nb.blocks.max()) + 1)), src_nb)
 
+    # ---------------------------------------------------------------- Path A: repo-rate changes added to the VIX-relative + USD/INR set
+    sb, sr = rd(f"summary_{REPO_BASE}.csv").set_index(["model", "alpha"]), rd(f"summary_{REPO}.csv").set_index(["model", "alpha"])
+    db = ad(dm_counts(rd(f"diebold_mariano_{REPO_BASE}.csv"))); dr = ad(dm_counts(rd(f"diebold_mariano_{REPO}.csv")))
+    src_r = f"outputs/tables/summary_{REPO_BASE}.csv, summary_{REPO}.csv, diebold_mariano_{REPO_BASE}.csv, diebold_mariano_{REPO}.csv"
+    rr = []
+    for m in ML:
+        a99, b99_ = sb.loc[(m, 0.01)], sr.loc[(m, 0.01)]
+        rr.append([m, pct(a99.exc_rate), pct(b99_.exc_rate), pct(a99.pass_kupiec, 0), pct(b99_.pass_kupiec, 0),
+                   f"{int(db.loc[m].garch)} / {int(db.loc[m].ml)} / {int(db.loc[m]['none'])}", f"{int(dr.loc[m].garch)} / {int(dr.loc[m].ml)} / {int(dr.loc[m]['none'])}"])
+        n(f"repo_exc99_{SLUG[m]}", pct(b99_.exc_rate), src_r); n(f"base2_exc99_{SLUG[m]}", pct(a99.exc_rate), src_r)
+        n(f"repo_kup99_{SLUG[m]}", pct(b99_.pass_kupiec, 0), src_r); n(f"base2_kup99_{SLUG[m]}", pct(a99.pass_kupiec, 0), src_r)
+    tb, tr = db.sum(), dr.sum()
+    n("base2_dm_g", int(tb.garch), src_r); n("base2_dm_m", int(tb.ml), src_r); n("base2_dm_n", int(tb["none"]), src_r)
+    n("repo_dm_g", int(tr.garch), src_r); n("repo_dm_m", int(tr.ml), src_r); n("repo_dm_n", int(tr["none"]), src_r)
+    d_exc = [100 * (sr.loc[(m, 0.01)].exc_rate - sb.loc[(m, 0.01)].exc_rate) for m in ML]   # percentage points
+    n("repo_maxshift_pp", f"{max(abs(x) for x in d_exc):.2f}", src_r)
+    closer = sum(abs(sr.loc[(m, 0.01)].exc_rate - 0.01) < abs(sb.loc[(m, 0.01)].exc_rate - 0.01) for m in ML)
+    n("repo_closer", closer, src_r)
+    # plain one-line verdict, decided from the numbers (little = every 99% breach rate within 0.10 points and DM totals within 5%)
+    little = max(abs(x) for x in d_exc) < 0.10 and abs(int(tr.garch) - int(tb.garch)) <= 0.05 * max(int(tb.garch), 1) + 1
+    n("repo_verdict", "changed the results very little" if little else ("brought some ML miss rates closer to 1%" if closer else "moved the ML miss rates further from 1%"), src_r)
+    T["repo"] = dict(caption="Effect of adding repo-rate changes to the ML inputs (VIX relative + USD/INR set; Diebold-Mariano on FZ0 at 95%: GARCH better / ML better / no difference)",
+                     source=src_r, family_col=0,
+                     head=["Model", "Breach 99% without", "Breach 99% with", "Kupiec pass without", "Kupiec pass with", "DM without", "DM with"],
+                     rows=rr + [["All three", "", "", "", "", f"{int(tb.garch)} / {int(tb.ml)} / {int(tb['none'])}", f"{int(tr.garch)} / {int(tr.ml)} / {int(tr['none'])}"]])
+
     # ---------------------------------------------------------------- hypotheses (decided only from the numbers above)
     ml_closer = any(abs(s.loc[(m, 0.01)].exc_rate - 0.01) < min(abs(s.loc[(g_, 0.01)].exc_rate - 0.01) for g_ in GARCH) for m in ML)
     h1 = "Supported" if ml_closer else "Rejected"
@@ -501,7 +543,9 @@ def build():
     h3 = "Supported" if q4 in ML else "Rejected"
     vix_better = [abs(rd("summary_price_vixlevel.csv").set_index(["model", "alpha"]).loc[(m, 0.01)].exc_rate - 0.01) < abs(s.loc[(m, 0.01)].exc_rate - 0.01) for m in ML]
     h4 = "Supported" if all(vix_better) else "Partly supported" if any(vix_better) or flip < len(rows) else "Rejected"
-    h4 = "Rejected for India VIX; interest rates, CPI and IIP outside scope" if not any(vix_better) else h4 + "; interest rates, CPI and IIP outside scope"
+    repo_better = N["repo_closer"][0] != "0"
+    h4 = ("Rejected for India VIX and repo-rate changes; CPI and IIP outside scope" if not any(vix_better) and not repo_better
+          else h4 + "; repo-rate changes " + N["repo_verdict"][0] + "; CPI and IIP outside scope")
     for k_, v_ in (("h1", h1), ("h2", h2), ("h3", h3), ("h4", h4)):
         n(k_, v_, "derived from the tables above (src/report_numbers.py)")
     T["hyp"] = dict(caption="Hypotheses and decisions", source="src/report_numbers.py (decision rules applied to the tables in this chapter)",
@@ -513,7 +557,7 @@ def build():
                           ["H3: Any ML advantage is larger when the India VIX is high (Q4)",
                            f"Lowest mean FZ0 in Q4: {q4}; Q4 loss above Q1 loss for {'all' if (g['Q4 stressed'] > g['Q1 calm']).all() else 'some'} models", h3],
                           ["H4: India VIX and macro inputs improve ML forecasts over price/volume inputs",
-                           f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo rate not used (file not fully verified); CPI and IIP excluded by design", h4]])
+                           f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; adding repo-rate changes " + N["repo_verdict"][0] + "; CPI and IIP excluded by design", h4]])
     # ---------------------------------------------------------------- compact tables for the restructured report
     FAMS = {"GARCH": "GARCH", "ML": "ML", "Benchmark": "Bench."}
     T["bt"] = dict(caption="Backtest summary across 41 stocks. Breach = share of days the loss exceeded VaR (ideal 5% and 1%); pass and green = share of stocks",
@@ -583,6 +627,7 @@ def build():
             ["Losses on the very bad days were bigger than forecast", f"Actual/forecast ES above 1 for {v_('n_es_above1')} of {v_('n_models')} models (summary_price.csv)", "Add a prudence margin to ES", "6.8"],
             ["Breaches cluster on market-wide stress days", f"{v_('stress_share_days')} of days held {v_('stress_gjrt')} of GJR-t breaches; stress-day breach rate {v_('st_br_gjrt')} against {v_('ns_br_gjrt')}; 1% coverage needs about {v_('st_mult99')} times VaR (breach_days_price.csv, daily files)", "Keep a stress add-on sized from stress days", "6.3"],
             ["A high India VIX the day before did not predict breaches", f"Top-quartile VIX (above {v_('vix_q4_edge')}) breach rate {v_('br_q4_gjrt')} against {v_('br_q13_gjrt')}; VIX inputs moved ML further from 1% (summary_price_vixlevel.csv)", "Use the VIX as an alert, not as a margin multiplier or paid input", "6.3"],
+            ["Interest-rate changes did not help the ML models either", f"With repo-rate changes, 99% miss rates XGBoost {v_('repo_exc99_xgb')}, Random Forest {v_('repo_exc99_rf')}, MLP {v_('repo_exc99_mlp')} (without: {v_('base2_exc99_xgb')}, {v_('base2_exc99_rf')}, {v_('base2_exc99_mlp')}) (summary_price_vixrel_fxchg_repo.csv)", "Do not buy a rate feed for one-day stock risk", "6.2"],
             ["Risk differs widely by sector", f"Median average 99% VaR from {v_('sec_low_var')} ({v_('sec_low')}) to {v_('sec_high_var')} ({v_('sec_high')}) (sector_summary_price.csv)", "Set margins and limits by sector, not one rate", "6.4"],
             ["The money at stake is large", f"Average 99% VaR {v_('avg_var99')}: about Rs {v_('buffer_100cr')} crore per Rs 100 crore; ML family Rs {v_('buf_mlfam')} crore against Rs {v_('buf_tfam')} crore for Student-t GARCH (buffer_by_model.csv)", "ML sets aside less money and is breached more often", "6.5"],
             ["The weeks after the October 2026 rate rise were calm for the models", f"{v_('ph_days')} trading days; 99% breach rate GJR-t {v_('ph_gjrt')}, XGBoost {v_('ph_xgb')} (post_hike_breaches_99.csv)", "Too short to judge; keep monthly monitoring", "6.9"],

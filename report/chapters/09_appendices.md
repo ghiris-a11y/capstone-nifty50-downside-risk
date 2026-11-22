@@ -88,31 +88,29 @@ Code and data: [https://github.com/ghiris-a11y/capstone-nifty50-downside-risk](h
 
 The main pipeline is nifty50_var_pipeline.py; scripts in src/ build every number and figure in this report. A GitHub Action runs each weekday at 7:00 PM IST. It downloads the day's prices, checks them, recomputes a next-day GJR-t VaR and ES for every stock and updates the dashboard. The dashboard text scored grade {{fk_min}} to {{fk_max}} on the Flesch-Kincaid scale across its {{n_tabs}} tabs. Its layout borrows ideas from two Figma Community files, the [Trading Stock Market Dashboard Platform UI Kit](https://www.figma.com/design/3c5zWpbNciVkRL6YMIsbgg/) and the [Minimal & modern report template](https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/). Only layout ideas were used and no assets were copied; the licence on the two Community pages was not checked.
 
-The pages that follow show the first screen of six tabs on a desktop (1,100 by 700 pixels), then the same dashboard on a phone.
+The figures below show the first screen of five more tabs on a desktop (1,100 by 700 pixels), cropped to the content area with the side menu removed, two to a page. The last figure shows the same dashboard on a phone.
 
-[[LANDSCAPE]]
 
-[[FIG:desk_overview|report/figures/dashboard/desk_overview.png|Dashboard, Results at a glance tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Results at a glance tab with the one-line answer, input and level selectors, and summary cards.|25]]
+[[FIG:desk_overview|report/figures/dashboard/desk_overview.png|Dashboard, Results at a glance tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Results at a glance tab with the one-line answer, input and level selectors, and summary cards.|15.5]]
 
 [[SHOWS]] One screen with the headline numbers for any input set and level, for a manager who has two minutes.
 
-[[FIG:desk_models|report/figures/dashboard/desk_models.png|Dashboard, Model comparison tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Model comparison tab with the one-line answer and the top of the chart of how often each model was beaten.|25]]
+[[FIG:desk_models|report/figures/dashboard/desk_models.png|Dashboard, Model comparison tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Model comparison tab with the one-line answer and the top of the chart of how often each model was beaten.|15.5]]
 
 [[SHOWS]] How often each model was beaten, with good, caution and poor labels; the basis for choosing the model.
 
-[[FIG:desk_regimes|report/figures/dashboard/desk_regimes.png|Dashboard, Calm vs stressed days tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Calm vs stressed days tab with the one-line answer and the market context chart.|25]]
+[[FIG:desk_regimes|report/figures/dashboard/desk_regimes.png|Dashboard, Calm vs stressed days tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Calm vs stressed days tab with the one-line answer and the market context chart.|15.5]]
 
 [[SHOWS]] When the models fail: on market-wide fall days, the case for the stress buffer.
 
-[[FIG:desk_stock|report/figures/dashboard/desk_stock.png|Dashboard, One stock up close tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the stock tab with selectors for stock, two models and level, time-range buttons and the stocks-to-watch list.|25]]
+[[FIG:desk_stock|report/figures/dashboard/desk_stock.png|Dashboard, One stock up close tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the stock tab with selectors for stock, two models and level, time-range buttons and the stocks-to-watch list.|15.5]]
 
 [[SHOWS]] Any stock and two models, day by day, before a position limit is changed.
 
-[[FIG:desk_live|report/figures/dashboard/desk_live.png|Dashboard, Daily example tab on a desktop screen (live extension, not the report's results)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Daily example tab with an amber banner saying it is not the report's results and the table of next-day worst-loss estimates by stock.|25]]
+[[FIG:desk_live|report/figures/dashboard/desk_live.png|Dashboard, Daily example tab on a desktop screen (live extension, not the report's results)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Daily example tab with an amber banner saying it is not the report's results and the table of next-day worst-loss estimates by stock.|15.5]]
 
 [[SHOWS]] Tomorrow's likely worst loss for each stock, updated every weekday evening and clearly marked as separate from the report's frozen results.
 
-[[PORTRAIT]]
 
 [[PHONES:phones|report/figures/dashboard/phone_start.png|report/figures/dashboard/phone_models.png|report/figures/dashboard/phone_live.png|The same dashboard on a phone: Start here, Model comparison and Daily example|Live dashboard, captured with Playwright (src/report_screens.py)|Three phone screenshots side by side showing the first screen of the Start here, Model comparison and Daily example tabs, each with a menu button at the top.]]
 

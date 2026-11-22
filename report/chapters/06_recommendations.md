@@ -10,7 +10,7 @@ Every recommendation follows from Chapter 5. The central finding is that the mac
 
 ## 6.2 Where machine learning did not help
 
-The machine-learning models we tested did not help with the main job. They missed more often at 99% (XGBoost {{exc99_xgb}} against {{exc99_gjrt}} for GJR-t). They also set aside less money: Rs {{buf_mlfam}} crore per Rs 100 crore, against Rs {{buf_tfam}} crore for the Student-t GARCH models. They should not set limits, margins or capital. Random Forest may serve as a challenger for internal 95% limits. It must then be refitted regularly, screened for zero-risk forecasts and given inputs that stay within their training range.
+The machine-learning models we tested did not help with the main job. They missed more often at 99% (XGBoost {{exc99_xgb}} against {{exc99_gjrt}} for GJR-t). They also set aside less money: Rs {{buf_mlfam}} crore per Rs 100 crore, against Rs {{buf_tfam}} crore for the Student-t GARCH models. They should not set limits, margins or capital. Interest-rate data did not help either: adding repo-rate changes moved every ML model further from 1% (Section 5.8), so a rate feed is not worth buying for this purpose. Random Forest may serve as a challenger for internal 95% limits. It must then be refitted regularly, screened for zero-risk forecasts and given inputs that stay within their training range.
 
 ## 6.3 Stress-day cushion and an India VIX alert
 
@@ -71,7 +71,7 @@ Assumptions: one-day horizon; equal positions in each stock; 250 trading days a 
 | An ML model forecasts no risk | XGBoost: {{norisk99_xgb}} stock-days | Zero-risk check; ML only as challenger |
 | Inputs leave their training range | USD/INR level: {{out_usdinr}} of days | Use changes, not levels; daily range check |
 | Errors in free price data | {{n_excl_ca}} stocks excluded | Licensed data; daily validation |
-| Rate-cycle change | {{ph_days}} days after the hike | Review after each policy meeting |
+| Rate-cycle change | {{ph_days}} days after the hike; rate inputs did not help | Review misses after each policy meeting |
 | Reliance on one model | One test window | Keep a challenger and the benchmark |
 
 [[MEANS]] {{tab:risks}} shows each risk has a low-cost control. Most controls are already built into the daily pipeline and the dashboard.
@@ -90,8 +90,7 @@ Live dashboard: [https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/](
 
 The dashboard turns this chapter into a daily tool, refreshed every weekday evening. Its first screen, {{fig:desk_start}}, gives the one-line answer, the key numbers and "What a firm should do" cards.
 
-[[LANDSCAPE]]
 
-[[FIG:desk_start|report/figures/dashboard/desk_start.png|Dashboard, Start here tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the dashboard with the menu on the left, the question as the page title, a draft-results banner, the one-line answer and the first key-number cards.|25]]
+[[FIG:desk_start|report/figures/dashboard/desk_start.png|Dashboard, Start here tab on a desktop screen (content area)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the dashboard with the menu on the left, the question as the page title, a draft-results banner, the one-line answer and the first key-number cards.|15.5]]
 
 [[SHOWS]] Each morning a risk manager opens Start here for the answer and the action cards. The Daily example tab then lists tomorrow's likely worst loss for each stock, sorted from largest. Calm vs stressed days shows whether misses are bunching, and One stock up close checks a single position before a limit is changed.

@@ -1,0 +1,4 @@
+model,days,obs,breaches,rate
+XGBoost (+repo),28,1148,8,0.006968641114982578
+RandomForest (+repo),28,1148,5,0.004355400696864111
+MLP (+repo),28,1148,4,0.003484320557491289

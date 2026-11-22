@@ -260,6 +260,9 @@ ph_obs,1148,outputs/tables/report/post_hike_breaches_99.csv
 ph_gjrt,0.17%,outputs/tables/report/post_hike_breaches_99.csv
 ph_xgb,0.52%,outputs/tables/report/post_hike_breaches_99.csv
 ph_exp,11.5,outputs/tables/report/post_hike_breaches_99.csv
+ph_first,7 October 2026,outputs/tables/report/post_hike_breaches_99.csv
+ph_last,17 November 2026,outputs/tables/report/post_hike_breaches_99.csv
+ph_xgb_repo,0.70%,outputs/tables/report/post_hike_breaches_99_repo.csv
 stress_days,11,outputs/tables/breach_days_summary_price.csv
 mkt_days,710,outputs/tables/breach_days_summary_price.csv
 stress_share_days,1.5%,outputs/tables/breach_days_summary_price.csv
@@ -329,7 +332,7 @@ adani_gjrt,0.56%,outputs/tables/sensitivity/summary_sens_adanient_price.csv
 adani_xgb,0.56%,outputs/tables/sensitivity/summary_sens_adanient_price.csv
 adani_hs,1.41%,outputs/tables/sensitivity/summary_sens_adanient_price.csv
 es_bias_max,6.3%,outputs/tables/xgb_es_approx_bias.csv
-sec_per_stock,130,data/logs/run.log
+sec_per_stock,125,data/logs/run.log
 min_per_set,8,data/logs/run_test_rerun.log
 n_jobs,8,data/logs/run_test_rerun.log
 fk_min,3.0,outputs/dashboard_check/readability.json
@@ -365,10 +368,31 @@ basel_uncov_max,210,outputs/tables/report/basel_coverage.csv
 basel_last_cov,9 January 2026,outputs/tables/report/basel_coverage.csv
 basel_hike_outside,yes,outputs/tables/report/basel_coverage.csv
 basel_values,"0, 0.5, 1",outputs/tables/report/basel_coverage.csv
+repo_exc99_xgb,1.58%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_exc99_xgb,1.54%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_kup99_xgb,66%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_kup99_xgb,63%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_exc99_rf,1.35%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_exc99_rf,1.30%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_kup99_rf,76%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_kup99_rf,73%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_exc99_mlp,1.58%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_exc99_mlp,1.20%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_kup99_mlp,51%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_kup99_mlp,71%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_dm_g,87,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_dm_m,19,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+base2_dm_n,632,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_dm_g,112,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_dm_m,20,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_dm_n,606,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_maxshift_pp,0.38,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_closer,0,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
+repo_verdict,moved the ML miss rates further from 1%,"outputs/tables/summary_price_vixrel_fxchg.csv, summary_price_vixrel_fxchg_repo.csv, diebold_mariano_price_vixrel_fxchg.csv, diebold_mariano_price_vixrel_fxchg_repo.csv"
 h1,Rejected,derived from the tables above (src/report_numbers.py)
 h2,Rejected,derived from the tables above (src/report_numbers.py)
 h3,Rejected,derived from the tables above (src/report_numbers.py)
-h4,"Rejected for India VIX; interest rates, CPI and IIP outside scope",derived from the tables above (src/report_numbers.py)
+h4,Rejected for India VIX and repo-rate changes; CPI and IIP outside scope,derived from the tables above (src/report_numbers.py)
 gjrt_breaches_yr,2.1,outputs/tables/summary_price.csv
 ideal_yr,2.5,nominal 1% x 250 trading days
 gjrt_kupfail,2%,outputs/tables/summary_price.csv

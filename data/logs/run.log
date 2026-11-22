@@ -183,3 +183,151 @@ NOTE: price+vix+macro currently = price+vix+USD/INR only (repo_rate/cpi/iip file
 [2026-11-18 16:48:32] 41/41 WIPRO.NS: skipped (0 s)
 [2026-11-18 16:48:33] merged 41 tickers; failed: 0
 --- features=price repair finished in 416 s
+=== PATH A RUN 2026-11-22T15:00:19Z: price_vixrel_fxchg + ratechg on the verified repo-rate file (student go-ahead 2026-11-22)
+[2026-11-22 20:30:22] 41 tickers | features=price+vrel+fxchg+ratechg | label=price_vixrel_fxchg_repo | frozen=data\frozen | train_end=2021-12-31 val_end=2023-12-31 test_start=2024-01-01 test_end=2026-11-18 | skip_garch=False | n_jobs=8
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:32:36] 1/41 ADANIPORTS.NS: done (130 s)
+[2026-11-22 20:32:36] 2/41 APOLLOHOSP.NS: done (121 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:32:37] 3/41 ASIANPAINT.NS: done (132 s)
+[2026-11-22 20:32:37] 4/41 AXISBANK.NS: done (123 s)
+[2026-11-22 20:32:37] 5/41 BAJAJ-AUTO.NS: done (125 s)
+[2026-11-22 20:32:37] 6/41 BAJFINANCE.NS: done (124 s)
+[2026-11-22 20:32:37] 7/41 BAJAJFINSV.NS: done (124 s)
+[2026-11-22 20:32:37] 8/41 BEL.NS: done (121 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:34:26] 9/41 BHARTIARTL.NS: done (119 s)
+[2026-11-22 20:34:26] 10/41 CIPLA.NS: done (112 s)
+[2026-11-22 20:34:26] 11/41 COALINDIA.NS: done (112 s)
+[2026-11-22 20:34:26] 12/41 DRREDDY.NS: done (114 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:34:27] 13/41 EICHERMOT.NS: done (117 s)
+[2026-11-22 20:34:27] 14/41 GRASIM.NS: done (109 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:34:30] 15/41 HCLTECH.NS: done (114 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:34:38] 16/41 HDFCBANK.NS: done (120 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:36:03] 17/41 HINDALCO.NS: done (104 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:36:25] 18/41 HINDUNILVR.NS: done (125 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:36:29] 19/41 ICICIBANK.NS: done (129 s)
+[2026-11-22 20:36:29] 20/41 INFY.NS: done (109 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:36:45] 21/41 ITC.NS: done (139 s)
+[2026-11-22 20:36:45] 22/41 JSWSTEEL.NS: done (117 s)
+[2026-11-22 20:36:45] 23/41 KOTAKBANK.NS: done (127 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:36:53] 24/41 LT.NS: done (135 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:03] 25/41 M&M.NS: done (120 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:23] 26/41 MARUTI.NS: done (128 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:25] 27/41 NESTLEIND.NS: done (120 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:29] 28/41 NTPC.NS: done (124 s)
+[2026-11-22 20:38:29] 29/41 ONGC.NS: done (116 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:37] 30/41 POWERGRID.NS: done (120 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:46] 31/41 RELIANCE.NS: done (121 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:38:55] 32/41 SBIN.NS: done (122 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:39:55] 33/41 SHRIRAMFIN.NS: done (111 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:40:30] 34/41 SUNPHARMA.NS: done (127 s)
+[2026-11-22 20:40:30] 35/41 TATACONSUM.NS: done (116 s)
+[2026-11-22 20:40:30] 36/41 TATASTEEL.NS: done (118 s)
+[2026-11-22 20:40:30] 37/41 TCS.NS: done (119 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:40:32] 38/41 TECHM.NS: done (115 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:40:43] 39/41 TITAN.NS: done (116 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:40:43] 40/41 ULTRACEMCO.NS: done (108 s)
+c:\Users\Burma\Documents\Capstone\nifty50_var_pipeline.py:370: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  for lab, g in s.groupby(q):
+[2026-11-22 20:40:59] 41/41 WIPRO.NS: done (64 s)
+[2026-11-22 20:41:02] merged 41 tickers; failed: 0
+                     exc_rate  pass_kupiec  pass_cc  green99  pinball      fz0  es_ratio  fz0_median_stocks  fz0_daily_median  norisk_days
+model         alpha                                                                                                                       
+EGARCH-normal 0.01     0.0131       0.8293   0.9268   0.8293   0.0006  -2.8110    1.2540            -2.8518           -3.3109            0
+              0.05     0.0375       0.6341   0.6585      NaN   0.0018  -3.3571    1.1716            -3.3740           -3.6488            0
+EGARCH-t      0.01     0.0088       1.0000   0.9756   0.9634   0.0006  -2.8588    1.0760            -2.8766           -3.1540            0
+              0.05     0.0438       0.8780   0.8780      NaN   0.0018  -3.3641    1.0122            -3.3853           -3.6593            0
+GARCH-normal  0.01     0.0133       0.8293   1.0000   0.8415   0.0006  -2.8302    1.2329            -2.8276           -3.3137            0
+              0.05     0.0388       0.7561   0.6829      NaN   0.0018  -3.3566    1.1566            -3.3758           -3.6494            0
+GARCH-t       0.01     0.0087       0.9512   1.0000   0.9634   0.0006  -2.8753    1.0486            -2.9049           -3.1567            0
+              0.05     0.0448       0.8293   0.8537      NaN   0.0018  -3.3622    1.0072            -3.3844           -3.6747            0
+GJR-normal    0.01     0.0130       0.8293   0.9756   0.8537   0.0006  -2.8240    1.2458            -2.8343           -3.3164            0
+              0.05     0.0372       0.5854   0.6585      NaN   0.0018  -3.3540    1.1674            -3.3753           -3.6507            0
+GJR-t         0.01     0.0084       0.9756   1.0000   0.9634   0.0006  -2.8648    1.0662            -2.8762           -3.1621            0
+              0.05     0.0437       0.8780   0.8537      NaN   0.0018  -3.3604    1.0076            -3.3861           -3.6677            0
+HistSim250    0.01     0.0169       0.6341   0.7561   0.6341   0.0006  -2.6941    1.0583            -2.7453           -3.2882            0
+              0.05     0.0621       0.7805   0.8293      NaN   0.0018  -3.3005    1.0207            -3.3277           -3.7453            0
+MLP           0.01     0.0158       0.5122   0.6098   0.6463   0.0006  -2.6906    1.0682            -2.7494           -3.2089            0
+              0.05     0.0719       0.3659   0.4634      NaN   0.0019  -3.2430    1.0034            -3.2583           -3.7943            0
+RandomForest  0.01     0.0135       0.7561   0.8537   0.7439   0.0006  -2.8294    1.0895            -2.8331           -3.2693            0
+              0.05     0.0575       0.7073   0.7317      NaN   0.0018  -3.3576    1.0350            -3.3658           -3.7926            0
+XGBoost       0.01     0.0158       0.6585   0.7317   0.6829   0.0006  28.9564    1.0264            -2.7487           -3.2836           14
+              0.05     0.0651       0.6098   0.6585      NaN   0.0018  -3.3322    1.0124            -3.3560           -3.7978           11

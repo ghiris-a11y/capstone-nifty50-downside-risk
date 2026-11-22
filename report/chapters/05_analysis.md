@@ -60,7 +60,11 @@ One caution applies to all average scores. XGBoost forecast "no risk" on {{noris
 
 [[TABLE:regime|regime]]
 
+[[TABLE:posthike|posthike]]
+
 [[MEANS]] {{tab:regime}} gives the scores behind the chart (lower is better). Every model scores worse on fearful days than on calm ones. Stress planning therefore matters more than switching models.
+
+[[MEANS]] {{tab:posthike}} covers the {{ph_days}} trading days from {{ph_first}} to {{ph_last}}, after the repo hike. With about {{ph_exp}} misses expected per model at 99%, this sample is far too small to judge any model. Misses stayed low (GJR-t {{ph_gjrt}}), so the hike did not set off a run of failures; a desk should keep watching rather than change models.
 
 ## 5.7 Do bad days come together?
 
@@ -83,6 +87,10 @@ The India VIX level moved XGBoost's 99% forecast more than any other input ({{sh
 [[TABLE:sets|sets]]
 
 [[MEANS]] Adding the VIX level moved every ML model's 99% miss rate further from 1% (XGBoost {{vix_exc99_xgb}}). The inputs helped on the validation years but hurt on the test years in {{flip}} of {{flip_of}} cases. A firm should not pay for extra inputs until they prove their value out of sample.
+
+[[TABLE:repo|repo]]
+
+[[MEANS]] {{tab:repo}} tests interest rates. Adding repo-rate changes {{repo_verdict}}: no ML model came closer to 1%, and MLP moved from {{base2_exc99_mlp}} to {{repo_exc99_mlp}}. GARCH was really better in {{repo_dm_g}} comparisons with rates, against {{base2_dm_g}} without. A firm should not pay for a rate feed for one-day stock risk.
 
 [[TABLE:ranges|ranges]]
 

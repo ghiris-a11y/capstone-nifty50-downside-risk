@@ -36,6 +36,6 @@ The India VIX rises more after market falls than it drops after rises (Chandra &
 1. RQ1: Do the machine-learning models give 99% VaR miss rates closer to 1% than the GARCH models?
 2. RQ2: Do they give significantly better VaR and ES forecasts together (FZ0 score)?
 3. RQ3: Does the answer change between calm and stressed markets?
-4. RQ4: Do extra market inputs improve the machine-learning forecasts?
+4. RQ4: Do extra inputs (India VIX, USD/INR or repo-rate changes) improve the machine-learning forecasts?
 
 The matching hypotheses say the ML models do better. H1: their 99% miss rates are closer to 1%. H2: their FZ0 score is significantly lower. H3: any ML advantage is larger when the India VIX is high. H4: extra inputs improve ML forecasts. The objective is to turn the answers into clear rules for risk desks, brokers, fund managers and regulators.

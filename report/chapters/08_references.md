@@ -56,6 +56,8 @@ National Stock Exchange of India. (n.d.-a). *Equity market margins*. Retrieved N
 
 National Stock Exchange of India. (n.d.-b). *NIFTY 50*. NSE Indices. Retrieved November 19, 2026, from https://www.niftyindices.com/indices/equity/broad-based-indices/NIFTY--50
 
+Reserve Bank of India. (2025, August 29). *Handbook of statistics on the Indian economy 2024-25* (Table 43: Policy rates). https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217
+
 Reserve Bank of India. (2026a, October 7). *Monetary policy statement, 2026-27: Resolution of the Monetary Policy Committee, October 5 to 7, 2026* (Press Release 2026-2027/1264). https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63742
 
 Reserve Bank of India. (2026b, October 21). *Minutes of the Monetary Policy Committee meeting, October 5 to 7, 2026*. https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63839
