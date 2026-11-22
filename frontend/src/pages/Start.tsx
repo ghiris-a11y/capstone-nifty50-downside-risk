@@ -39,6 +39,7 @@ export default function Start() {
   const esLow = ORDER.filter((m) => at(m).es_ratio > 1);
   const noRisk = at("XGBoost").norisk_days;
   const vixRows = s.data.summary.price_vixlevel;
+  const rateBase = s.data.summary.price_vixrel_fxchg, rateRows = s.data.summary.price_vixrel_fxchg_repo;
   const sec = f9.data ? sectorMedians(f9.data) : [];
   const top = gjr ? /^(\d{4}-\d{2}-\d{2}) (\d+)/.exec(gjr.top_days.split(";")[0].trim()) : null;
   const day = (iso: string) => new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -57,7 +58,7 @@ export default function Start() {
       why: `GJR-t passed the check on both the number of misses and misses in a row for ${pct(at("GJR-t").pass_cc, 0)} of stocks. It still had ${gjr.days_with_10plus_breaches} days when 10 or more stocks missed at once.` }] : []),
     ...(vixRows ? [{ who: "Product or fintech team", tone: "ml" as const,
       act: "Do not pay for extra inputs before they prove their worth.",
-      why: `Adding the fear gauge moved XGBoost from ${per100(r99("XGBoost"))} to ${per100(rowAt(vixRows, "XGBoost", 0.01).exc_rate)} days in 100. Interest rates were not tested.` }] : []),
+      why: `Adding the fear gauge moved XGBoost from ${per100(r99("XGBoost"))} to ${per100(rowAt(vixRows, "XGBoost", 0.01).exc_rate)} days in 100.${rateBase && rateRows ? ` Adding interest-rate changes moved XGBoost from ${per100(rowAt(rateBase, "XGBoost", 0.01).exc_rate)} to ${per100(rowAt(rateRows, "XGBoost", 0.01).exc_rate)}.` : ""}` }] : []),
   ];
 
   const findings: Finding[] = [
@@ -144,7 +145,7 @@ export default function Start() {
         <div className="flex flex-wrap gap-3 text-[15px]" data-read>
           {[["/overview", "Results at a glance"], ["/models", "Compare the models"], ["/regimes", "Calm vs stressed days"],
             ["/stock", "Look at one stock"], ["/glossary", "What the words mean"]].map(([to, label]) => (
-            <Link key={to} to={to} className="inline-flex min-h-[40px] items-center rounded-full border border-navy-900 bg-white px-4 py-2 font-semibold text-navy-900 hover:bg-navy-900 hover:text-white">
+            <Link key={to} to={to} className="inline-flex min-h-[40px] items-center rounded-full border border-navy-900 bg-paper px-4 py-2 font-semibold text-navy-900 hover:bg-navy-900 hover:text-white">
               {label} →
             </Link>
           ))}

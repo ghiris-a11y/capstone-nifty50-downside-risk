@@ -12,13 +12,21 @@ export default {
         garch: { 50: "#fff5f0", 100: "#fee0d2", 500: "#cb181d", 700: "#a50f15", 900: "#67000d" },
         ml: { 50: "#f7fbff", 100: "#deebf7", 500: "#3182bd", 700: "#08519c" },
         warn: { 100: "#fdf0d0", 500: "#d18f00", 700: "#8a5d00" },
-        // UI chrome: navy and charcoal only (blue means ML, orange/amber means warning)
-        navy: { 700: "#22304f", 800: "#18244a", 900: "#0f1b3d" },
-        page: "#F4F5F7",
-        line: "#E5E7EB",
+        // UI chrome: ink on warm paper ("risk ledger"); never blue (= ML) or orange (= warning).
+        // The token is still called navy so existing classes keep working; its values are now ink.
+        navy: { 700: "#4a453c", 800: "#2b2822", 900: "#1d1b16" },
+        page: "#F3EFE6",
+        paper: "#FFFDF8",
+        line: "#DCD4C3",
       },
-      fontFamily: { sans: ["Inter", "system-ui", "sans-serif"], serif: ["Inter", "system-ui", "sans-serif"] },
-      boxShadow: { card: "0 1px 2px rgba(16,24,40,0.04), 0 1px 3px rgba(16,24,40,0.04)" },
+      fontFamily: {
+        sans: ["'IBM Plex Sans'", "system-ui", "sans-serif"],
+        serif: ["Fraunces", "Georgia", "serif"],
+        display: ["Fraunces", "Georgia", "serif"],
+        mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
+      },
+      borderRadius: { lg: "4px", xl: "6px" },
+      boxShadow: { card: "none" },
     },
   },
   plugins: [],

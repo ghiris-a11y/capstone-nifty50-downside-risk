@@ -10,7 +10,7 @@ import Features from "./pages/Features";
 import Live from "./pages/Live";
 import About from "./pages/About";
 import Icon from "./components/icons";
-import { useJson, type Meta } from "./lib/data";
+import { COLOURS, ORDER, useJson, type Meta } from "./lib/data";
 import { useStore } from "./lib/store";
 
 // Tab names and routes are unchanged; the last two are the secondary group.
@@ -31,28 +31,55 @@ export const PROJECT_TITLE =
 export const REPO_URL = "https://github.com/ghiris-a11y/capstone-nifty50-downside-risk";
 interface StockInfo { ticker: string; name: string; sector: string }
 
+// Mark: a loss limit (dashed line) with a few days that broke through it, drawn as a ledger stamp.
 function Mark() {
   return (
-    <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0" aria-hidden>
-      <rect width="24" height="24" rx="6" fill="#0f1b3d" />
-      <path d="M5 8l5 6 3-3 6 7" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 28 28" className="h-7 w-7 shrink-0" aria-hidden>
+      <rect x="1" y="1" width="26" height="26" fill="#1d1b16" />
+      <path d="M5 18h18" stroke="#d18f00" strokeWidth="1.5" strokeDasharray="2 2" />
+      <path d="M6 13v3M10 11v5M14 14v2M18 9v7" stroke="#FFFDF8" strokeWidth="2" />
+      <path d="M22 16v6" stroke="#cb181d" strokeWidth="2" />
     </svg>
   );
 }
 
+// Model ribbon: the ten models in their chart colours (GARCH reds, benchmark grey, ML blues), a signature strip
+// that also teaches the colour code used in every chart.
+function Ribbon() {
+  return (
+    <div className="flex h-[5px] w-full" aria-hidden>
+      {ORDER.map((m) => <span key={m} className="flex-1" style={{ background: COLOURS[m] }} title={m} />)}
+    </div>
+  );
+}
+
+function Wordmark({ small = false }: { small?: boolean }) {
+  return (
+    <span className="flex items-center gap-2.5">
+      <Mark />
+      <span className="leading-none">
+        <span className={`display block whitespace-nowrap font-bold text-navy-900 ${small ? "text-[14px]" : "text-[15px]"}`}>Nifty 50 Downside Risk</span>
+        <span className="label mt-1 block whitespace-nowrap text-[10px] text-slate-500">Risk ledger</span>
+      </span>
+    </span>
+  );
+}
+
 function Nav({ onPick }: { onPick?: () => void }) {
-  const item = (to: string, label: string, icon: string) => (
+  // contents-page style: a running number, the label, and an ink bar on the open tab
+  const item = (to: string, label: string, n: number) => (
     <NavLink key={to} to={to} end={to === "/"} onClick={onPick}
       className={({ isActive }) =>
-        `flex min-h-[40px] items-center gap-3 rounded-lg px-3 py-2 text-[15px] ${isActive ? "bg-slate-100 font-semibold text-navy-900" : "text-slate-600 hover:bg-slate-50 hover:text-navy-900"}`}>
-      <Icon name={icon} />{label}
+        `group flex min-h-[40px] items-center gap-3 border-l-[3px] py-2 pl-3 pr-2 text-[15px] ${isActive ? "border-navy-900 bg-page font-semibold text-navy-900" : "border-transparent text-slate-600 hover:border-line hover:text-navy-900"}`}>
+      <span className="label w-6 shrink-0 text-[11px] text-slate-400 group-hover:text-navy-900">{String(n).padStart(2, "0")}</span>{label}
     </NavLink>
   );
+  const main = TABS.filter(([to]) => !SECONDARY.has(to)), more = TABS.filter(([to]) => SECONDARY.has(to));
   return (
-    <nav className="flex flex-col gap-1">
-      {TABS.filter(([to]) => !SECONDARY.has(to)).map(([to, l, i]) => item(to, l, i))}
-      <div className="mt-5 px-3 pb-1 text-xs font-medium uppercase tracking-wide text-slate-400">More</div>
-      {TABS.filter(([to]) => SECONDARY.has(to)).map(([to, l, i]) => item(to, l, i))}
+    <nav className="flex flex-col gap-0.5">
+      {main.map(([to, l], i) => item(to, l, i + 1))}
+      <div className="label mt-5 border-t border-line px-3 pb-1 pt-3 text-[11px] text-slate-400">More</div>
+      {more.map(([to, l], i) => item(to, l, main.length + i + 1))}
     </nav>
   );
 }
@@ -126,9 +153,9 @@ export default function App() {
   return (
     <div className="flex min-h-screen bg-page">
       {/* desktop sidebar: full-height white column, menu stays in view while scrolling */}
-      <aside className="hidden w-60 shrink-0 border-r border-line bg-white lg:block">
+      <aside className="hidden w-60 shrink-0 border-r border-line bg-paper lg:block">
         <div className="sticky top-0 px-4 py-5">
-          <div className="mb-6 flex items-center gap-2 px-2"><Mark /><span className="text-[15px] font-bold leading-tight text-navy-900">Nifty 50 Downside Risk</span></div>
+          <div className="mb-7 px-2"><Wordmark /></div>
           <Nav />
         </div>
       </aside>
@@ -136,9 +163,9 @@ export default function App() {
       {open && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <button className="absolute inset-0 bg-black/30" aria-label="Close menu" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] overflow-y-auto bg-white px-4 py-5 shadow-xl">
+          <div className="absolute inset-y-0 left-0 w-72 max-w-[85%] overflow-y-auto bg-paper px-4 py-5 shadow-xl">
             <div className="mb-6 flex items-center justify-between px-2">
-              <span className="flex items-center gap-2"><Mark /><span className="font-bold text-navy-900">Nifty 50 Downside Risk</span></span>
+              <Wordmark small />
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="flex h-10 w-10 items-center justify-center rounded text-slate-600"><Icon name="close" /></button>
             </div>
             <Nav onPick={() => setOpen(false)} />
@@ -147,21 +174,27 @@ export default function App() {
       )}
 
       <div className="min-w-0 flex-1">
-        <header className="border-b border-line bg-white">
+        <header className="border-b border-line bg-paper">
+          <Ribbon />
           <div className="flex items-center gap-3 px-4 py-3 lg:px-8">
-            <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-line text-navy-900 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
+            <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line text-navy-900 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
               <Icon name="menu" />
             </button>
-            <span className="flex items-center gap-2 lg:hidden"><Mark /><span className="hidden text-sm font-bold text-navy-900 xs:inline">Nifty 50 Downside Risk</span></span>
+            <span className="lg:hidden"><Wordmark small /></span>
             <div className="hidden flex-1 sm:block"><Search /></div>
             <span className="ml-auto whitespace-nowrap text-sm font-semibold text-navy-900">Ghiri S</span>
           </div>
           <div className="px-4 pb-3 sm:hidden"><Search /></div>
-          <div className={`px-4 pb-6 pt-5 lg:px-8 ${isStart ? "bg-gradient-to-br from-stone-100 via-white to-white" : ""}`}>
-            <div className="text-xs font-medium leading-snug text-slate-500" title={PROJECT_TITLE}>
+          <div className="border-t border-line px-4 pb-6 pt-4 lg:px-8">
+            <div className="label flex flex-wrap gap-x-4 gap-y-1 border-b border-line pb-2 text-[11px] text-slate-500">
+              <span>Research edition</span>
+              {meta.data?.snapshot_utc && <span>Locked data {meta.data.snapshot_utc.slice(0, 10)}</span>}
+              {meta.data?.live_as_of && <span>Daily example to {meta.data.live_as_of}</span>}
+            </div>
+            <div className="mt-3 text-xs leading-snug text-slate-500" title={PROJECT_TITLE}>
               {PROJECT_TITLE} · Ghiri S
             </div>
-            <h1 className="mt-2 text-[28px] font-bold leading-tight tracking-[-1px] text-navy-900 sm:text-[40px]">
+            <h1 className="mt-2 text-[30px] font-bold leading-[1.08] tracking-[-0.5px] text-navy-900 sm:text-[44px]">
               {isStart ? "How much could a big Indian stock lose tomorrow?" : tab}
             </h1>
             <p className="mt-1 text-[15px] text-slate-600">
@@ -177,7 +210,7 @@ export default function App() {
           </div>
         )}
         {meta.data?.macro_note && (
-          <div className="border-b border-line bg-white text-[13px] text-slate-600">
+          <div className="border-b border-line bg-paper text-[13px] text-slate-600">
             <div className="px-4 py-2 lg:px-8">
               {meta.data.macro_note} <Link to="/about" className="font-medium text-navy-900 underline underline-offset-2">About &amp; limits</Link>
             </div>

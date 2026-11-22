@@ -19,7 +19,7 @@ export default function BeatenChart({ rows, level }: { rows: SummaryRow[]; level
   const xMax = Math.max(...vals) * (phone ? 1.75 : 1.6);
   return (
     <figure className="card mb-10 p-4 sm:p-6">
-      <div className="text-[13px] font-medium text-slate-500">How often each model was beaten</div>
+      <div className="label text-[11.5px] text-slate-500">How often each model was beaten</div>
       <h3 className="mb-3 mt-1 text-[22px] font-bold leading-tight tracking-[-0.5px] text-navy-900 sm:text-[32px]" data-read>
         {best} came closest to the ideal of {IDEAL_TEXT[level]} ({per100(rowAt(rows, best, a).exc_rate)} days in 100)
       </h3>
@@ -33,8 +33,8 @@ export default function BeatenChart({ rows, level }: { rows: SummaryRow[]; level
           hovertemplate: "%{y}: beaten on %{x:.2f} days in 100<extra></extra>",
         }]}
         layout={{
-          autosize: true, height: 460, font: { family: "Inter, system-ui, sans-serif", size: phone ? 11 : 13 },
-          margin: { t: 30, l: phone ? 98 : 120, r: 10, b: phone ? 70 : 60 }, paper_bgcolor: "white", plot_bgcolor: "white",
+          autosize: true, height: 460, font: { family: "IBM Plex Sans, system-ui, sans-serif", size: phone ? 11 : 13 },
+          margin: { t: 30, l: phone ? 98 : 120, r: 10, b: phone ? 70 : 60 }, paper_bgcolor: "#FFFDF8", plot_bgcolor: "#FFFDF8",
           xaxis: {
             title: { text: phone ? `Days in 100 beaten<br>(${LEVEL_TEXT[level]} level)` : `Days in 100 the forecast was beaten (likely worst loss, ${LEVEL_TEXT[level]})`, standoff: 8 },
             range: [0, xMax], gridcolor: "#eef0f3", automargin: true,

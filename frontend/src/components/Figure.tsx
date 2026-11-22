@@ -31,7 +31,7 @@ export function minFonts<T>(obj: T, min = 11): T {
 }
 
 export function chartFont(layout: Partial<Layout>): Partial<Layout> {
-  return { ...layout, font: { ...(layout.font || {}), family: "Inter, system-ui, sans-serif", size: isPhone() ? 11 : 13 } };
+  return { ...layout, font: { ...(layout.font || {}), family: "IBM Plex Sans, system-ui, sans-serif", size: isPhone() ? 11 : 13 } };
 }
 
 // Story layout shared by every chart: small grey label, bold title, "How to read this", an optional lead number,
@@ -43,7 +43,7 @@ export function StoryCard({ label, title, how, lead, note, side, means, children
 }) {
   return (
     <figure className="card mb-10 p-4 sm:p-6">
-      {label && <div className="text-[13px] font-medium text-slate-500">{label}</div>}
+      {label && <div className="label text-[11.5px] text-slate-500">{label}</div>}
       {title && <h3 className="mt-1 text-[22px] font-bold leading-tight tracking-[-0.5px] text-navy-900 sm:text-[32px]" data-read>{title}</h3>}
       {how && <div className="mt-3"><HowToRead>{how}</HowToRead></div>}
       <div className={`mt-4 grid gap-6 ${side?.length ? "lg:grid-cols-[minmax(0,1fr)_230px]" : ""}`}>
@@ -63,7 +63,7 @@ export function StoryCard({ label, title, how, lead, note, side, means, children
             <div className="grid grid-cols-2 gap-5 lg:grid-cols-1">
               {side.map((s, i) => (
                 <div key={i} data-read>
-                  <div className="text-[32px] font-bold leading-none tracking-[-1px] text-navy-900">{s.value}</div>
+                  <div className="display text-[34px] font-bold leading-none text-navy-900">{s.value}</div>
                   <p className="mt-1 text-[13px] leading-snug text-slate-600">{s.text}</p>
                 </div>
               ))}
@@ -94,7 +94,7 @@ export default function Figure({ name, number, title, how, means, patch, annotat
   const h = Math.min((shown.layout.height as number) || 560, 1100);
   const plain = title !== undefined;
   const data = plain ? shown.data.map((t) => ({ ...t, name: plainText((t as { name?: string }).name) })) as Data[] : shown.data;
-  let layout: Partial<Layout> = { ...shown.layout, autosize: true, width: undefined, height: h, paper_bgcolor: "white", plot_bgcolor: "white" };
+  let layout: Partial<Layout> = { ...shown.layout, autosize: true, width: undefined, height: h, paper_bgcolor: "#FFFDF8", plot_bgcolor: "#FFFDF8" };
   if (plain) {
     const ann = (layout.annotations || []).map((a) => ({ ...a, text: plainText(a.text) }));
     layout = { ...layout, title: undefined, annotations: ann, margin: { ...(layout.margin || {}), t: 40 } };

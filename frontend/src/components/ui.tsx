@@ -10,7 +10,7 @@ export function ErrorBox({ error }: { error: string }) {
 }
 
 export function Empty({ children }: { children: ReactNode }) {
-  return <div className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-slate-500">{children}</div>;
+  return <div className="rounded-xl border border-dashed border-slate-300 bg-paper p-6 text-slate-500">{children}</div>;
 }
 
 // White card with a coloured top rule for model family cards (GARCH red, ML blue, warning amber).
@@ -29,7 +29,7 @@ export function Card({ title, children, tone = "plain" }: {
 export function Section({ title, children, note }: { title: string; children: ReactNode; note?: ReactNode }) {
   return (
     <section className="mb-10">
-      <h2 className="mb-3 text-xl font-bold tracking-[-0.3px] text-navy-900">{title}</h2>
+      <h2 className="mb-4 border-b-2 border-navy-900 pb-1.5 text-[22px] font-bold tracking-[-0.2px] text-navy-900">{title}</h2>
       {note && <p className="mb-4 max-w-4xl text-slate-600">{note}</p>}
       {children}
     </section>
@@ -41,7 +41,7 @@ export function Kpi({ value, caption, sub, tone }: { value: ReactNode; caption: 
   const dot = tone === "garch" ? "bg-garch-500" : tone === "ml" ? "bg-ml-500" : tone === "warn" ? "bg-warn-500" : "bg-slate-300";
   return (
     <div className="card flex flex-col p-5" data-read>
-      <div className="flex items-center gap-2 text-[13px] font-medium text-slate-500"><span className={`h-2 w-2 rounded-full ${dot}`} aria-hidden />{caption}</div>
+      <div className="label flex items-center gap-2 text-[11.5px] text-slate-500"><span className={`h-2.5 w-2.5 ${dot}`} aria-hidden />{caption}</div>
       <div className="kpi mt-3 text-navy-900">{value}</div>
       {sub && <div className="mt-2 text-[13px] text-slate-500">{sub}</div>}
     </div>
@@ -56,7 +56,7 @@ export function Pills<T extends string>({ options, value, onChange, label }: {
     <div className="flex flex-wrap gap-2" role="group" aria-label={label}>
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)} aria-pressed={value === o.value}
-          className={`min-h-[40px] min-w-[44px] rounded-full border px-3.5 py-2 text-[13px] font-medium ${value === o.value ? "border-navy-900 bg-navy-900 text-white" : "border-slate-300 bg-white text-slate-700 hover:border-navy-900"}`}>
+          className={`min-h-[40px] min-w-[44px] rounded-[3px] border px-3.5 py-2 font-mono text-[12.5px] font-medium ${value === o.value ? "border-navy-900 bg-navy-900 text-white" : "border-slate-300 bg-paper text-slate-700 hover:border-navy-900"}`}>
           {o.label}
         </button>
       ))}
@@ -79,7 +79,7 @@ export function Select<T extends string>({ label, value, options, onChange }: {
     <label className="flex min-w-0 max-w-full flex-col text-[13px] font-medium text-slate-600">
       {label}
       <select
-        className="mt-1 min-h-[42px] w-full max-w-full rounded-lg border border-line bg-white px-2 py-2 text-[15px] text-slate-900"
+        className="mt-1 min-h-[42px] w-full max-w-full rounded-lg border border-line bg-paper px-2 py-2 text-[15px] text-slate-900"
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
       >
@@ -95,7 +95,7 @@ export function Table({ head, rows, rowClass }: {
   head: string[]; rows: (string | number)[][]; rowClass?: (i: number) => string;
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-line bg-white">
+    <div className="overflow-x-auto rounded-xl border border-line bg-paper">
       <table className="w-full text-sm">
         <thead className="text-left text-[13px] text-slate-500">
           <tr>{head.map((h) => <th key={h} className="whitespace-nowrap font-medium">{h}</th>)}</tr>

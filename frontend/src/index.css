@@ -2,29 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+/* "Risk ledger" theme: ink on warm paper, serif headlines, mono figures, hairline rules instead of shadows. */
 html {
   font-size: 16px;
 }
 body {
-  font-family: Inter, system-ui, sans-serif;
-  background: #f4f5f7;
-  color: #111827;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  background: #f3efe6;
+  color: #1d1b16;
+  font-feature-settings: "tnum" 1;
+}
+h1,
+main h2,
+main h3,
+.display {
+  font-family: Fraunces, Georgia, serif;
+  font-variation-settings: "opsz" 72;
 }
 th,
 td {
   padding: 0.45rem 0.7rem;
 }
+th {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
 .card {
-  @apply rounded-xl border border-line bg-white shadow-card;
+  @apply rounded-xl border border-line bg-paper;
 }
 .kpi {
-  font-size: 44px;
-  line-height: 1.05;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 46px;
+  line-height: 1.02;
   font-weight: 700;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.label {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 @media (max-width: 480px) {
   .kpi {
-    font-size: 36px;
+    font-size: 38px;
   }
 }

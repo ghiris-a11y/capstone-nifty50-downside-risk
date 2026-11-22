@@ -5,9 +5,9 @@ import { COLOURS } from "../lib/data";
 // One-line takeaway shown at the top of every tab.
 export function Takeaway({ children }: { children: ReactNode }) {
   return (
-    <div className="card mb-8 border-l-4 border-l-navy-900 px-5 py-4" data-read>
-      <div className="text-[13px] font-medium uppercase tracking-wide text-slate-500">In one line</div>
-      <p className="mt-1 text-[20px] font-bold leading-snug tracking-[-0.3px] text-navy-900 sm:text-[24px]">{children}</p>
+    <div className="mb-9 border-y-2 border-navy-900 py-4" data-read>
+      <div className="label text-[11.5px] text-slate-500">In one line</div>
+      <p className="display mt-1.5 text-[22px] font-bold leading-snug text-navy-900 sm:text-[27px]">{children}</p>
     </div>
   );
 }
@@ -22,8 +22,8 @@ export function HowToRead({ children }: { children: ReactNode }) {
 
 export function Means({ children }: { children: ReactNode }) {
   return (
-    <div className="mt-4 rounded-lg bg-page px-4 py-3" data-read>
-      <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">What this means</div>
+    <div className="mt-4 border-l-[3px] border-navy-900 bg-page px-4 py-3" data-read>
+      <div className="label text-[11.5px] text-slate-500">What this means</div>
       <p className="mt-1 text-[15px] leading-relaxed text-slate-900">{children}</p>
     </div>
   );

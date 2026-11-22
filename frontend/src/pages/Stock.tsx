@@ -222,7 +222,7 @@ export default function Stock() {
             <div className="mt-2">
               <Plot data={traces} style={{ height: phone ? 440 : 500 }}
                 layout={chartFont({
-                  autosize: true, height: phone ? 440 : 500, paper_bgcolor: "white", plot_bgcolor: "white",
+                  autosize: true, height: phone ? 440 : 500, paper_bgcolor: "#FFFDF8", plot_bgcolor: "#FFFDF8",
                   xaxis: { title: { text: "Date" }, range: xr ?? undefined, gridcolor: "#eef0f3" },
                   yaxis: { title: { text: "Daily return (%)" }, range: yr, gridcolor: "#eef0f3", zerolinecolor: "#d1d5db" },
                   legend: { orientation: "h", y: phone ? -0.32 : -0.2 }, margin: { t: 10, l: phone ? 50 : 60, r: 15, b: phone ? 120 : 80 },

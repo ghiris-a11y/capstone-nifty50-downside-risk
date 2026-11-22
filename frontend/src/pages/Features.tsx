@@ -62,7 +62,7 @@ export default function Features() {
 
       <Experts title="ML results by input set, validation-window choice and feature ranges">
       <Section title="ML results by feature set (test window 2024-2026)"
-        note="Each set is named by what it contains. GARCH and historical simulation do not use these features. The models use market data only; interest rates, price rises and factory output were left out on purpose.">
+        note="Each set is named by what it contains. GARCH and historical simulation do not use these features. One set adds interest-rate changes. Price rises and factory output were left out on purpose.">
         {s.loading && <Loading />}
         {s.error && <ErrorBox error={s.error} />}
         {s.data && (

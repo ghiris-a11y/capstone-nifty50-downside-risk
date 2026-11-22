@@ -109,8 +109,9 @@ number with a short note) borrows ideas from two Figma Community files:
 [Minimal & modern report template for brand insights and marketing dashboards](https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/).
 No images, logos, brand names or text were copied. Figma Community files are usually shared under CC BY 4.0; the
 licence notes on the two pages could not be opened, so this is not yet checked. Reference screenshots are in
-`design/figma/`, and notes are in `design/figma_notes.md`. Font: Inter (bundled with `@fontsource/inter`, SIL Open
-Font License).
+`design/figma/`, and notes are in `design/figma_notes.md`. Fonts: Fraunces (headlines and big numbers), IBM Plex Sans (body) and IBM Plex Mono (labels), bundled with
+`@fontsource`, all under the SIL Open Font License. Visual identity ("risk ledger"): ink on warm paper, hairline
+rules, a numbered menu and a ribbon in the ten model colours.
 
 ## Phase 2 report (Word and PDF)
 

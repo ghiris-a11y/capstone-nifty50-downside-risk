@@ -5,9 +5,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.0,
-   "flesch_reading_ease": 86.7,
-   "words": 446,
+   "fk_grade": 3.1,
+   "flesch_reading_ease": 86.2,
+   "words": 450,
    "above_9": [
     "A student project at ITM Skills University.",
     "These follow the report's recommendations chapter."
@@ -93,12 +93,13 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.8,
-   "flesch_reading_ease": 84.7,
-   "words": 508,
+   "fk_grade": 4.0,
+   "flesch_reading_ease": 83.6,
+   "words": 515,
    "above_9": [
     "A student project at ITM Skills University.",
-    "Overall forecast quality score (lower is better)."
+    "Overall forecast quality score (lower is better).",
+    "Interest-rate changes were tested as an extra input: they did not bring the machine-learning models closer to expected."
    ],
    "overflow_px_projector": 0
   },
@@ -106,11 +107,12 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.5,
-   "flesch_reading_ease": 85.1,
-   "words": 242,
+   "fk_grade": 3.8,
+   "flesch_reading_ease": 82.9,
+   "words": 249,
    "above_9": [
-    "A student project at ITM Skills University."
+    "A student project at ITM Skills University.",
+    "Interest-rate changes were tested as an extra input: they did not bring the machine-learning models closer to expected."
    ],
    "overflow_px_projector": 0
   }

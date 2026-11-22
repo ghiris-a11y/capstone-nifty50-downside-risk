@@ -2,7 +2,7 @@
 
 ## 4.1 Type of data and sources
 
-All data are secondary, daily and numeric. No questionnaire was used (Appendix A). {{tab:sources}} lists each series and its use.
+All data are secondary, daily and numeric; prices come from Yahoo Finance (2026). No questionnaire was used (Appendix A). {{tab:sources}} lists each series and its use.
 
 [[MDTABLE:sources|Data sources|Author's compilation; access dates in report/chapters/sources.md]]
 | Data | Symbol | Source | Use |
