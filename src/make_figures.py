@@ -293,8 +293,10 @@ def fig_stress_share():
     base = 100 * s.share_of_days_stress.iloc[0]
     fig = go.Figure(go.Bar(x=ORDER, y=100 * s.share_of_breaches_on_stress_days, marker_color=[COL[m] for m in ORDER],
                            text=[f"{v:.1f}%" for v in 100 * s.share_of_breaches_on_stress_days], textposition="outside"))
-    fig.add_hline(y=base, line_dash="dash", line_color=AMBER, annotation_text=f"Share of test days that are stress days: {base:.1f}%",
-                  annotation_position="top left")
+    fig.add_hline(y=base, line_dash="dash", line_color=AMBER)
+    # label above the plot area (it sat on top of the bars when placed on the line)
+    fig.add_annotation(text=f"Share of test days that are stress days: {base:.1f}%", xref="paper", x=0, xanchor="left",
+                       yref="paper", y=1.0, yanchor="bottom", showarrow=False, font=dict(color="#8a5d00"))
     fig.update_yaxes(title_text="Share of 99% breaches on stress days (%)"); fig.update_xaxes(tickangle=-35)
     return style(fig, "Breaches concentrate on market-wide stress days (Nifty one-day fall of 2% or more)")
 

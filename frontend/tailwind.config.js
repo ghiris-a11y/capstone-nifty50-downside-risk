@@ -2,9 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
+    // Breakpoints in size order (custom ones under "extend" would be emitted after lg/xl and override them).
+    // mp = large phone (400 px+); xs = wider than the phone layout; ph = phone layout (480 px and below; the report
+    // screenshots are taken at 480 px).
+    screens: { mp: "400px", xs: "481px", sm: "640px", md: "768px", lg: "1024px", xl: "1280px", "2xl": "1536px", ph: { max: "480px" } },
     extend: {
-      // ph = phone layout (480 px and below; the report screenshots are taken at 480 px); xs = anything wider.
-      screens: { xs: "481px", ph: { max: "480px" } },
       colors: {
         // model palette (unchanged): GARCH = red, ML = blue, warnings = amber
         garch: { 50: "#fff5f0", 100: "#fee0d2", 500: "#cb181d", 700: "#a50f15", 900: "#67000d" },

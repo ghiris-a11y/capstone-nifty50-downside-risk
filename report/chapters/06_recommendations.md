@@ -24,7 +24,7 @@ Set position limits from each stock's GJR-t VaR rather than a single rule for al
 
 ### 6.1.4 Retail or fintech app
 
-Show the GJR-t "likely worst daily loss" for the next day in plain words, refreshed every evening. The project's GitHub Action and dashboard do this automatically at almost no cost (Appendix G), and the dashboard text scored between grade {{fk_min}} and {{fk_max}} on the Flesch-Kincaid scale across its tabs (outputs/dashboard_check/readability.json). Investors who see "on a bad day you could lose about ₹{{buffer_100cr}} on every ₹100 held" can size positions sensibly.
+Show the GJR-t "likely worst daily loss" for the next day in plain words, refreshed every evening. The project's GitHub Action and dashboard do this automatically at almost no cost, and the dashboard's Start here tab also shows the recommendations of this chapter as plain cards for each type of user (Appendix G), and the dashboard text scored between grade {{fk_min}} and {{fk_max}} on the Flesch-Kincaid scale across its tabs (outputs/dashboard_check/readability.json). Investors who see "on a bad day you could lose about ₹{{buffer_100cr}} on every ₹100 held" can size positions sensibly.
 
 ### 6.1.5 Exchange or regulator
 

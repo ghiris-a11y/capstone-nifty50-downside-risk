@@ -78,7 +78,7 @@ export default function Start() {
       </Takeaway>
 
       <Section title="Key numbers">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 mp:grid-cols-2 xl:grid-cols-4">
           <Kpi tone={family(closest[0]) === "GARCH" ? "garch" : family(closest[0]) === "ML" ? "ml" : undefined}
             caption="Closest to expected" value={<>{per100(r99(closest[0]))}<span className="ml-1 text-lg font-semibold tracking-normal text-slate-500">in 100</span></>}
             sub={`${closest[0]} was beaten on this many days in 100. The ideal is 1.`} />
