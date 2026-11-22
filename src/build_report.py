@@ -42,7 +42,7 @@ MAX_W, MAX_H = 15.5, 20.5  # cm
 COVER = dict(title="Comparative Predictive Analytics of Downside Risk in NSE Nifty 50 Stocks: Machine Learning vs. GARCH Models "
                    "Using Secondary Historical and Macroeconomic Data",
              guide="Dr. Aarti Pardeshi", designation="HoD BTech", student="Ghiri S", roll="021331025144", program="MBA",
-             spec="Business Analytics", batch="2025-27", semester="III")
+             spec="MBA Business Analytics", batch="2025-27", semester="III")
 
 
 # ------------------------------------------------------------------ docx helpers
@@ -149,7 +149,7 @@ def cover(doc):
         alt(doc.inline_shapes[-1], "ITM Skills University logo")
     line("Submitted by:", 13, space=8)
     rows = [("Name of Faculty Guide:", COVER["guide"], "Name of the Student:", COVER["student"]),
-            ("Designation:", COVER["designation"], "Roll No.:", COVER["roll"]),
+            ("Designation:", COVER["designation"] + " (pending guide confirmation)", "Roll No.:", COVER["roll"]),
             ("", "", "Program:", COVER["program"]),
             ("", "", "Specialisation:", COVER["spec"]),
             ("", "", "Batch:", COVER["batch"]),
