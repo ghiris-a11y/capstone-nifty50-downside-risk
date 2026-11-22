@@ -1,10 +1,10 @@
 # QA report (P10 final QA)
 
-Run on 2026-11-22 14:22 by src/qa_final.py.
+Run on 2026-11-22 20:57 by src/qa_final.py.
 
 ## 1. Tests
 
-- pytest -q: 25 passed, 14 warnings in 13.48s
+- pytest -q: 25 passed, 14 warnings in 9.08s
 - python nifty50_var_pipeline.py --demo: exit code 0
 
 ## 2. Frozen snapshot
@@ -43,15 +43,15 @@ Backtest and regime files (breaches, coverage tests, Basel shares, FZ0 by regime
 ## 5. GitHub Action
 
 - Last scheduled run: 44820066066 on 2026-11-20T21:24:39Z: failure.
-- Last push run: 45003956887 on 2026-11-22T08:41:09Z: success.
+- Last push run: 45037216094 on 2026-11-22T15:14:39Z: success.
 - Failing job `deploy`, step(s) ['Deploy to GitHub Pages']. Log lines: `Error: No artifacts named "github-pages" were found for this workflow run. Ensure artifacts are uploaded with actions/upload-artifact@v4 or later.` / `Error: No artifacts named "github-pages" were found for this workflow run. Ensure artifacts are uploaded with actions/upload-artifact@v4 or later.` / `Fetching artifact metadata failed. Is githubstatus.com reporting issues with API requests, Pages, or Actions? Please re-run the deployment at a later time.`
 - Cause and fix: GitHub's artifact service failed briefly after a successful update and upload (the update job passed). Fix already in place: .github/workflows/daily_update.yml retries the deploy once after 90 s (commit 1286f40, after this run). Every push deploy since then has succeeded; the next scheduled run (Monday) will confirm the retry path.
 
 ## 6. Numbers and references
 
-- outputs/tables/report/report_numbers.csv: 373 numbers, 0 without a source file.
-- Report build QA (report/qa_phase2.md): Placeholders filled: 162 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv); Unresolved placeholders: none; [FILL] / [UNVERIFIED] markers in printed text: none; Figures or tables never referenced in the text: none; Missing image files: none
-- References in Chapter 8: 29 entries (20 with a DOI); [UNVERIFIED] markers in the reference list: 0. Verification log: report/chapters/sources.md.
+- outputs/tables/report/report_numbers.csv: 397 numbers, 0 without a source file.
+- Report build QA (report/qa_phase2.md): Placeholders filled: 129 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv); Unresolved placeholders: none; [FILL] / [UNVERIFIED] markers in printed text: none; Figures or tables never referenced in the text: none; Missing image files: none
+- References in Chapter 8: 30 entries (20 with a DOI); [UNVERIFIED] markers in the reference list: 0. Verification log: report/chapters/sources.md.
 
 ## 7. Template
 

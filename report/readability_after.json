@@ -1,61 +1,61 @@
 {
  "01": {
   "sentences": 48,
-  "avg_words": 15.0,
+  "avg_words": 15.3,
   "max_words": 28,
   "over_30": 0,
-  "reading_ease": 65.1,
+  "reading_ease": 65.0,
   "banned": [],
   "longest": []
  },
  "02": {
   "sentences": 34,
-  "avg_words": 14.6,
+  "avg_words": 14.7,
   "max_words": 30,
   "over_30": 0,
-  "reading_ease": 66.7,
+  "reading_ease": 65.9,
   "banned": [],
   "longest": []
  },
  "03": {
-  "sentences": 34,
-  "avg_words": 14.1,
+  "sentences": 38,
+  "avg_words": 14.3,
   "max_words": 26,
   "over_30": 0,
-  "reading_ease": 67.6,
+  "reading_ease": 69.0,
   "banned": [],
   "longest": []
  },
  "04": {
-  "sentences": 21,
-  "avg_words": 13.0,
-  "max_words": 24,
+  "sentences": 15,
+  "avg_words": 14.4,
+  "max_words": 28,
   "over_30": 0,
-  "reading_ease": 73.4,
+  "reading_ease": 71.7,
   "banned": [],
   "longest": []
  },
  "05": {
-  "sentences": 73,
-  "avg_words": 14.7,
+  "sentences": 80,
+  "avg_words": 14.9,
   "max_words": 26,
   "over_30": 0,
-  "reading_ease": 76.3,
+  "reading_ease": 76.8,
   "banned": [],
   "longest": []
  },
  "06": {
-  "sentences": 43,
-  "avg_words": 14.2,
-  "max_words": 25,
+  "sentences": 44,
+  "avg_words": 14.6,
+  "max_words": 29,
   "over_30": 0,
-  "reading_ease": 71.3,
+  "reading_ease": 70.8,
   "banned": [],
   "longest": []
  },
  "07": {
-  "sentences": 32,
-  "avg_words": 8.7,
+  "sentences": 34,
+  "avg_words": 9.2,
   "max_words": 21,
   "over_30": 0,
   "reading_ease": 66.5,
@@ -63,11 +63,11 @@
   "longest": []
  },
  "09": {
-  "sentences": 28,
-  "avg_words": 12.4,
-  "max_words": 25,
+  "sentences": 30,
+  "avg_words": 12.2,
+  "max_words": 24,
   "over_30": 0,
-  "reading_ease": 67.6,
+  "reading_ease": 68.6,
   "banned": [],
   "longest": []
  }

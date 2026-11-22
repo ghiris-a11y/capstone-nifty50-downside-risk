@@ -1,6 +1,6 @@
 # Phase 2 report: build QA
 
-- Placeholders filled: 121 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv)
+- Placeholders filled: 129 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv)
 - Unresolved placeholders: none
 - [FILL] / [UNVERIFIED] markers in printed text: none
 - Figures or tables never referenced in the text: none
@@ -15,7 +15,7 @@
 | 2 | 0 | 1 |
 | 3 | 2 | 1 |
 | 4 | 3 | 2 |
-| 5 | 9 | 10 |
+| 5 | 9 | 12 |
 | 6 | 2 | 6 |
 | 7 | 0 | 0 |
 | 8 | 0 | 0 |
@@ -42,12 +42,12 @@
 | Figure 5.8 | outputs/figures/print/fig13_breaches_by_day.png | 1791x1540 | 12.8 | 356 |
 | Figure 5.9 | outputs/figures/print/fig09_sector_var.png | 1802x1644 | 12.1 | 380 |
 | Figure 6.1 | report/figures/v_decision_table.png | 2438x2587 | 10.4 | 597 |
-| Figure 6.2 | report/figures/dashboard/desk_start.png | 3264x1680 | 25.0 | 332 |
-| Figure 9.1 | report/figures/dashboard/desk_overview.png | 3264x1680 | 25.0 | 332 |
-| Figure 9.2 | report/figures/dashboard/desk_models.png | 3264x1680 | 25.0 | 332 |
-| Figure 9.3 | report/figures/dashboard/desk_regimes.png | 3264x1680 | 25.0 | 332 |
-| Figure 9.4 | report/figures/dashboard/desk_stock.png | 3264x1680 | 25.0 | 332 |
-| Figure 9.5 | report/figures/dashboard/desk_live.png | 3264x1680 | 25.0 | 332 |
+| Figure 6.2 | report/figures/dashboard/desk_start.png | 2580x1656 | 15.5 | 423 |
+| Figure 9.1 | report/figures/dashboard/desk_overview.png | 2580x1656 | 15.5 | 423 |
+| Figure 9.2 | report/figures/dashboard/desk_models.png | 2580x1656 | 15.5 | 423 |
+| Figure 9.3 | report/figures/dashboard/desk_regimes.png | 2580x1656 | 15.5 | 423 |
+| Figure 9.4 | report/figures/dashboard/desk_stock.png | 2580x1656 | 15.5 | 423 |
+| Figure 9.5 | report/figures/dashboard/desk_live.png | 2580x1656 | 15.5 | 423 |
 | Figure 9.6 | report/figures/dashboard/phone_start.png | 1170x2532 | 5.4 | 550 |
 | Figure 9.6 | report/figures/dashboard/phone_models.png | 1170x2532 | 5.4 | 550 |
 | Figure 9.6 | report/figures/dashboard/phone_live.png | 1170x2532 | 5.4 | 550 |

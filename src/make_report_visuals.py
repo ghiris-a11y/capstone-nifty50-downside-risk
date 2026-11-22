@@ -197,7 +197,7 @@ def techniques():
 def pipeline(N):
     fig, ax = canvas(10.6)
     H = 100 * 10.6 / 15.5
-    box(ax, 1, H - 22, 28, 20, "Yahoo Finance: 41 stocks, Nifty 50, India VIX, USD/INR\nNSE: index constituents\nRBI / MoSPI: repo, CPI, IIP (pending)",
+    box(ax, 1, H - 22, 28, 20, "Yahoo Finance: 41 stocks, Nifty 50, India VIX, USD/INR\nNSE: index constituents\nRBI: repo rate (verified)",
         fc=GREY_L, title="Sources", wrap=24)
     box(ax, 36, H - 22, 28, 20, "Hashes, gaps, zero-volume rows, corporate-action rule; failures logged", fc="white", title="Validation", wrap=27)
     box(ax, 71, H - 22, 28, 20, f"Read-only parquet files with SHA-256 hashes ({N['snapshot'][0]}); source of all report numbers", fc=RED_L, ec=RED,

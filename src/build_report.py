@@ -456,6 +456,8 @@ def add_figure(doc, number, path, caption, source, alt_text, qa, width_cm=None):
 
 def add_image(doc, path, width_cm, alt_text):
     full = os.path.join(ROOT, path)
+    if doc.paragraphs:   # keep the image (e.g. the QR code) on the same page as the line that introduces it
+        doc.paragraphs[-1].paragraph_format.keep_with_next = True
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.add_run().add_picture(full, width=Cm(float(width_cm)))
     alt(doc.inline_shapes[-1], alt_text)

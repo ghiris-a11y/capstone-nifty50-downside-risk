@@ -1,6 +1,6 @@
 # PROGRESS
 
-Last updated: 2026-11-22 (report restructured to 48 pages; interest-rate sections pending). Read this file, CLAUDE.md, PROJECT_PLAN.md and HANDOFF.md to resume in a fresh session.
+Last updated: 2026-11-22 (Path A done; report 47 pages, all portrait). Read this file, CLAUDE.md, PROJECT_PLAN.md and HANDOFF.md to resume in a fresh session.
 
 ## Status by phase (PROJECT_PLAN.md section 3)
 
@@ -51,15 +51,16 @@ Pages (restructure, 2026-11-22): 48 in total (front matter 6; chapters 1-9: 42).
     - the 2-ticker rerun matches (backtest and regime files byte-identical; daily and DM files within 1e-16; no decision changes);
     - manifest hashes match; no ticker has fewer than 500 test days and no fit failed.
 
-## Interest-rate (macro) sections still to write (once Path A is decided)
-They were left out of the restructured text on purpose, so the result can be written in once:
-- Chapter 1 scope: a bullet on interest rates.
-- Chapter 3.4: repo rate dated on the RBI announcement date (lag 0); `load_macro` skips unverified files.
-- Chapter 4.1 sources table: a repo-rate row citing RBI Handbook Table 43 (2025); add that reference to Chapter 8.
-- Chapter 5: a post-hike view per model (table `posthike` exists), plus the `price_vixrel_fxchg_repo` row in the input-set table.
-- Chapter 6.3 and 6.8: what the rate result means for the VIX alert and for rate-cycle risk.
-- Chapter 7: the RQ4 sentence and a limitation; H4 wording in `src/report_numbers.py`.
-- Dashboard: the macro note is written by `src/export_dashboard_json.py` and switches automatically once a verified repo run exists.
+## Path A (done 2026-11-22)
+- `data/raw/repo_rate.csv`: 28 rows, all VERIFIED by the student (RBI Handbook Table 43 and MPC releases); file check passed (bdfc3b9).
+  - Do not open and save it in Excel: Excel rewrote the dates as DD-MM-YYYY once.
+- Labelled set `price_vixrel_fxchg_repo` run on 41 stocks, 0 failed (log in `data/logs/run.log`). No new line in `macro_skipped.log`; all 2,846 existing output files byte-identical (7385d48).
+- Result: repo-rate changes moved every ML 99% miss rate further from 1%:
+  - XGBoost 1.54% to 1.58%; Random Forest 1.30% to 1.35%; MLP 1.20% to 1.58%;
+  - DM on FZ0: GARCH better 87 to 112, ML better 19 to 20.
+  - H4 is rejected for both the India VIX and the repo rate.
+- Written into the report (Chapters 1-7, post-hike table with small-sample warning, RBI Handbook reference) and the dashboard (new input set, macro note from the data).
+- Report: 47 pages; desktop screenshots now on portrait A4 (content area, 15.5 cm, two per page).
 
 ## Open items (need the user)
 1. **Interest rates.** Verify `data/raw/repo_rate.csv` row by row and fill the 13 blank rows, then set every status to VERIFIED.
