@@ -30,7 +30,7 @@ Three features of daily stock returns shape every model in this study. First, re
 
 ## 1.5 Macroeconomic context
 
-The test window ends shortly after a change in monetary policy. On 7 October 2026 the RBI's Monetary Policy Committee raised the policy repo rate by 25 basis points to 5.50% and moved its stance towards calibrated tightening (SCC Online, 2026). A rate rise can change how investors price risk, so the study reports results for the weeks after the hike separately (Chapter 5), while noting that the period is short.
+The test window ends shortly after a change in monetary policy. On 7 October 2026 the RBI's Monetary Policy Committee raised the policy repo rate by 25 basis points to 5.50% and moved its stance to calibrated tightening (Reserve Bank of India, 2026a, 2026b). A rate rise can change how investors price risk, so the study reports results for the weeks after the hike separately (Chapter 5), while noting that the period is short. The data used in this report end on {{data_last}}; the next MPC meeting, on 2 to 4 December 2026, falls after this cut-off and is not covered (Reserve Bank of India, 2026a).
 
 ## 1.6 SWOT of downside-risk management in Indian equities
 

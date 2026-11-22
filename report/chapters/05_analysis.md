@@ -102,7 +102,7 @@ All numbers in this chapter are read from files in outputs/ by src/report_number
 
 [[MEANS]] Loss was higher in the most fearful quartile than in the calmest for {{q4_worse_all}} models, so every model found stressed days harder. In the stressed quartile the lowest loss came from {{q4_best}} (GJR-t {{q4_gjrt}}, XGBoost {{q4_xgb}}). The hope that ML would pull ahead when markets are fearful is not supported by these results.
 
-{{tab:posthike}} reports the weeks after the RBI repo hike of 7 October 2026.
+{{tab:posthike}} reports the weeks after the RBI repo hike of 7 October 2026, when the repo rate rose to 5.50% and the stance moved to calibrated tightening (Reserve Bank of India, 2026a, 2026b).
 
 [[TABLE:posthike|posthike]]
 

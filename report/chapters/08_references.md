@@ -2,6 +2,8 @@
 
 ## Journal articles, books and working papers
 
+Ali, A., & Dembo, S. A.-S. (2025). *Volatility forecasting using GARCH models in emerging stock markets: A study of India* [Preprint, not peer reviewed]. Preprints.org. https://doi.org/10.20944/preprints202509.0997.v1
+
 Acerbi, C., & Tasche, D. (2002). On the coherence of expected shortfall. *Journal of Banking & Finance, 26*(7), 1487–1503. https://doi.org/10.1016/S0378-4266(02)00283-2
 
 Artzner, P., Delbaen, F., Eber, J.-M., & Heath, D. (1999). Coherent measures of risk. *Mathematical Finance, 9*(3), 203–228. https://doi.org/10.1111/1467-9965.00068
@@ -54,7 +56,9 @@ National Stock Exchange of India. (n.d.-a). *Equity market margins*. Retrieved N
 
 National Stock Exchange of India. (n.d.-b). *NIFTY 50*. NSE Indices. Retrieved November 19, 2026, from https://www.niftyindices.com/indices/equity/broad-based-indices/NIFTY--50
 
-SCC Online. (2026, October 9). *RBI repo rate hike: 25 bps to 5.50% in October 2026*. SCC Times. https://www.scconline.com/blog/post/2026/10/09/rbi-hikes-repo-rate-to-5-50-percent-october-2026/
+Reserve Bank of India. (2026a, October 7). *Monetary policy statement, 2026-27: Resolution of the Monetary Policy Committee, October 5 to 7, 2026* (Press Release 2026-2027/1264). https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63742
+
+Reserve Bank of India. (2026b, October 21). *Minutes of the Monetary Policy Committee meeting, October 5 to 7, 2026*. https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63839
 
 ## Data sources
 

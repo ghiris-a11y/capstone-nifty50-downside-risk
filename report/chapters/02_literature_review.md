@@ -10,7 +10,7 @@ Backtesting compares forecasts with what happened. Kupiec (1995) tests whether V
 
 ## 2.2 GARCH-family volatility models
 
-Bollerslev's (1986) GARCH model forecasts tomorrow's variance from recent squared returns and yesterday's variance, capturing volatility clustering with very few parameters. Nelson's (1991) EGARCH models the log of variance and lets negative shocks raise volatility more than positive ones; the GJR-GARCH model of Glosten et al. (1993) does the same with an extra term for negative returns. Combined with fat-tailed Student-t errors, these models remain the industry baseline for one-day VaR. Filtered historical simulation (Barone-Adesi et al., 1999) combines a volatility forecast with the empirical distribution of standardised returns, an idea this study uses for two of the machine-learning models.
+Bollerslev's (1986) GARCH model forecasts tomorrow's variance from recent squared returns and yesterday's variance, capturing volatility clustering with very few parameters. Nelson's (1991) EGARCH models the log of variance and lets negative shocks raise volatility more than positive ones; the GJR-GARCH model of Glosten et al. (1993) does the same with an extra term for negative returns. Combined with fat-tailed Student-t errors, these models remain the industry baseline for one-day VaR, and they continue to be applied to Indian stocks (Ali & Dembo, 2025, a non-peer-reviewed preprint). Filtered historical simulation (Barone-Adesi et al., 1999) combines a volatility forecast with the empirical distribution of standardised returns, an idea this study uses for two of the machine-learning models.
 
 ## 2.3 Machine-learning approaches
 

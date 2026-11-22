@@ -22,9 +22,11 @@ Lundberg & Lee 2017, arXiv:1705.07874; Xu, Liechty, Benthall, Skar-Gislinge & Mc
 - RBI repo hike of 7 October 2026 (+25 bp to 5.50%, stance "calibrated tightening"), secondary source:
   https://www.scconline.com/blog/post/2026/10/09/rbi-hikes-repo-rate-to-5-50-percent-october-2026/
 
+## Resolved on 2026-11-22 (now cited)
+- Ali & Dembo (2025): reference supplied by the student (DOI 10.20944/preprints202509.0997.v1); cited as a non-peer-reviewed preprint in Chapter 2.
+- RBI (2026a, 2026b): MPC resolution (prid=63742) and minutes (prid=63839) supplied by the student; replace SCC Online (2026) for the 7 Oct 2026 hike and the calibrated-tightening stance. Hike, stance and the 2-4 Dec 2026 next meeting confirmed in RBI search results on 2026-11-22.
+
 ## Awaiting the author's approval or a link (not cited in the text)
-- RBI primary Monetary Policy Statement of 7 October 2026: link to replace the secondary source above.
-- Ali & Dembo (2025): title and authors needed from the preprint page.
 - Mishra & Mishra (2024), Xu et al. (2024, LSTM-GARCH), Al-Najjar & Al-Najjar (2025), Susruth (2017), Tan (2025),
   Kumar et al. (2024), Patel & Kumar (2025): [UNVERIFIED]; findings not cited until a working DOI or link is supplied.
 - Event notes in the exclusion review (Hindenburg report, US indictment news, Tata Motors demerger date): appear only in the
