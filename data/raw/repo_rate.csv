@@ -1,29 +1,29 @@
 date,value,source_url,status,note
-2014-01-28,,,UNVERIFIED,Opening level for 2015 (rate in force on 1 Jan 2015). RBI January 2015 release says the cut was from 8.0 per cent; no RBI press-release URL found yet for the January 2014 change
-2015-01-15,,,UNVERIFIED,No confirmed RBI URL. Search snippet quoting RBI: cut by 25 bps from 8.0 to 7.75 per cent; candidate page https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=33012 not opened
-2015-03-04,7.50,https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=33372,UNVERIFIED,Off-cycle cut. Value taken from the release text as indexed (reverse repo 6.5 and MSF 8.5 per cent stated; repo 7.5 per cent confirmed by the April 7 2015 statement)
-2015-06-02,,,UNVERIFIED,No RBI press-release URL found. RBI annual report chronology (search snippet) reports 7.50 to 7.25 per cent
-2015-09-29,,,UNVERIFIED,No RBI press-release URL found. RBI annual report chronology (search snippet) reports 7.25 to 6.75 per cent
-2016-04-05,,,UNVERIFIED,No RBI press-release URL found. Search snippet quoting RBI: 6.75 to 6.5 per cent
-2016-10-04,6.25,https://www.rbi.org.in/commonman/Upload/English/Notification/PDFs/NT778A75BB8BEBFC474698B6DF545EE4644A.PDF,UNVERIFIED,RBI notification of 4 Oct 2016 (not a press release): repo reduced by 25 bps from 6.50 to 6.25 per cent
-2017-08-02,,,UNVERIFIED,No RBI press-release URL found. RBI text says repo reduced by 25 bps (from 6.25); October 2017 statement says unchanged at 6.0 per cent
-2018-06-06,,,UNVERIFIED,No RBI press-release URL found. Secondary sources report a 25 bps hike to 6.25 per cent
-2018-08-01,,,UNVERIFIED,No RBI press-release URL found. RBI annual report (search snippet) reports a 25 bps hike to 6.50 per cent
-2019-02-07,,,UNVERIFIED,No RBI press-release URL found. RBI bulletin snippet: 6.5 to 6.25 per cent
-2019-04-04,,,UNVERIFIED,No RBI press-release URL found. RBI snippet: 6.25 to 6.0 per cent
-2019-06-06,,,UNVERIFIED,No RBI press-release URL found. RBI snippet: 6.0 to 5.75 per cent
-2019-08-07,5.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=47941,UNVERIFIED,MPC resolution: cut by 35 bps from 5.75 to 5.40 per cent
-2019-10-04,5.15,https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=48319,UNVERIFIED,MPC resolution: cut by 25 bps from 5.40 to 5.15 per cent
-2020-03-27,4.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=49581,UNVERIFIED,MPC resolution (off-cycle): cut by 75 bps from 5.15 to 4.40 per cent
-2020-05-22,4.00,https://www.rbi.org.in/commonman/english/scripts/PressReleases.aspx?Id=3220,UNVERIFIED,MPC resolution (off-cycle): cut by 40 bps from 4.40 to 4.00 per cent
-2022-05-04,4.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=53652,UNVERIFIED,MPC resolution (off-cycle): hike by 40 bps to 4.40 per cent
-2022-06-08,4.90,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR3336416D60D22514022BC8C197A992D837C.PDF,UNVERIFIED,Monetary Policy Statement 2022-23 (PDF): hike by 50 bps to 4.90 per cent
-2022-08-05,5.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54148,UNVERIFIED,MPC resolution: hike by 50 bps to 5.40 per cent
-2022-09-30,5.90,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54465,UNVERIFIED,MPC resolution: hike by 50 bps to 5.90 per cent
-2022-12-07,6.25,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54818,UNVERIFIED,MPC resolution: hike by 35 bps to 6.25 per cent
-2023-02-08,6.50,https://www.rbi.org.in/scripts/bs_pressreleasedisplay.aspx?prid=55178,UNVERIFIED,MPC resolution: hike by 25 bps to 6.50 per cent
-2025-02-07,,,UNVERIFIED,No confirmed RBI URL. RBI snippet: cut by 25 bps to 6.25 per cent; candidate pages prid=60279 and prid=60604 not matched to this date
-2025-04-09,,,UNVERIFIED,No confirmed RBI URL. RBI snippet: 6.25 to 6.00 per cent (meeting date from secondary sources)
-2025-06-06,5.50,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR490F9F47F74F55146D48D4F15690DE513AE.PDF,UNVERIFIED,Governor's Statement 6 June 2025: cut by 50 bps to 5.50 per cent
-2025-12-05,5.25,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR16331051154700094ACFB40DE08AE141531C.PDF,UNVERIFIED,Monetary Policy Statement 2025-26 (5 Dec 2025): cut by 25 bps to 5.25 per cent
-2026-10-07,5.50,https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63742,UNVERIFIED,MPC resolution 5-7 Oct 2026: hike by 25 bps to 5.50 per cent; stance changed to calibrated tightening. Next MPC meeting 2-4 Dec 2026
+2014-01-28,8.00,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook of Statistics on the Indian Economy 2024-25 Table 43 (29 Aug 2025): repo 8.00 effective 28-01-2014; opening level in force on 1 Jan 2015
+2015-01-15,7.75,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 7.75 effective 15-01-2015
+2015-03-04,7.50,https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=33372,VERIFIED,Off-cycle cut to 7.50; cross-checked with RBI Handbook 2024-25 Table 43 (repo 7.50 effective 04-03-2015)
+2015-06-02,7.25,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 7.25 effective 02-06-2015
+2015-09-29,6.75,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.75 effective 29-09-2015
+2016-04-05,6.50,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.50 effective 05-04-2016
+2016-10-04,6.25,https://www.rbi.org.in/commonman/Upload/English/Notification/PDFs/NT778A75BB8BEBFC474698B6DF545EE4644A.PDF,VERIFIED,RBI notification 4 Oct 2016: repo 6.50 to 6.25; cross-checked with RBI Handbook 2024-25 Table 43
+2017-08-02,6.00,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.00 effective 02-08-2017
+2018-06-06,6.25,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.25 effective 06-06-2018
+2018-08-01,6.50,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.50 effective 01-08-2018
+2019-02-07,6.25,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.25 effective 07-02-2019
+2019-04-04,6.00,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.00 effective 04-04-2019
+2019-06-06,5.75,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 5.75 effective 06-06-2019
+2019-08-07,5.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=47941,VERIFIED,MPC resolution: cut by 35 bps from 5.75 to 5.40; cross-checked with RBI Handbook 2024-25 Table 43
+2019-10-04,5.15,https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=48319,VERIFIED,MPC resolution: cut by 25 bps from 5.40 to 5.15; cross-checked with RBI Handbook 2024-25 Table 43
+2020-03-27,4.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=49581,VERIFIED,MPC resolution (off-cycle): cut by 75 bps from 5.15 to 4.40; cross-checked with RBI Handbook 2024-25 Table 43
+2020-05-22,4.00,https://www.rbi.org.in/commonman/english/scripts/PressReleases.aspx?Id=3220,VERIFIED,MPC resolution (off-cycle): cut by 40 bps from 4.40 to 4.00; cross-checked with RBI Handbook 2024-25 Table 43
+2022-05-04,4.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=53652,VERIFIED,MPC resolution (off-cycle): hike by 40 bps to 4.40; cross-checked with RBI Handbook 2024-25 Table 43
+2022-06-08,4.90,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR3336416D60D22514022BC8C197A992D837C.PDF,VERIFIED,Monetary Policy Statement 2022-23: hike by 50 bps to 4.90; cross-checked with RBI Handbook 2024-25 Table 43
+2022-08-05,5.40,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54148,VERIFIED,MPC resolution: hike by 50 bps to 5.40; cross-checked with RBI Handbook 2024-25 Table 43
+2022-09-30,5.90,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54465,VERIFIED,MPC resolution: hike by 50 bps to 5.90; cross-checked with RBI Handbook 2024-25 Table 43
+2022-12-07,6.25,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=54818,VERIFIED,MPC resolution: hike by 35 bps to 6.25; cross-checked with RBI Handbook 2024-25 Table 43
+2023-02-08,6.50,https://www.rbi.org.in/scripts/bs_pressreleasedisplay.aspx?prid=55178,VERIFIED,MPC resolution: hike by 25 bps to 6.50; cross-checked with RBI Handbook 2024-25 Table 43
+2025-02-07,6.25,https://rbi.org.in/Scripts/PublicationsView.aspx?id=23217,VERIFIED,RBI Handbook 2024-25 Table 43: repo 6.25 effective 07-02-2025 (last row of the table)
+2025-04-09,6.00,https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=60279,VERIFIED,Minutes of the MPC meeting 7-9 Apr 2025: repo cut by 25 bps to 6.00 per cent
+2025-06-06,5.50,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR490F9F47F74F55146D48D4F15690DE513AE.PDF,VERIFIED,Governor's Statement 6 Jun 2025: cut by 50 bps to 5.50; also MPC resolution prid=60604
+2025-12-05,5.25,https://rbidocs.rbi.org.in/rdocs/PressRelease/PDFs/PR16331051154700094ACFB40DE08AE141531C.PDF,VERIFIED,MPC resolution 3-5 Dec 2025: repo reduced to 5.25 per cent; held at 5.25 in Feb and Aug 2026
+2026-10-07,5.50,https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63742,VERIFIED,MPC resolution 5-7 Oct 2026: hike by 25 bps to 5.50; stance changed to calibrated tightening; next MPC meeting 2-4 Dec 2026
