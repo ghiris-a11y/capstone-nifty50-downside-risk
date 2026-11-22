@@ -267,7 +267,7 @@ def trimmed(full, pad=12):
     return out
 
 
-def add_figure(doc, number, path, caption, source, alt_text, qa):
+def add_figure(doc, number, path, caption, source, alt_text, qa, width_cm=None):
     full = os.path.join(ROOT, path)
     if not os.path.exists(full):
         qa["missing_images"].append(path)
@@ -276,6 +276,8 @@ def add_figure(doc, number, path, caption, source, alt_text, qa):
     w, h = Image.open(full).size
     dpi_w = w / (MAX_W / 2.54)
     width = min(MAX_W, MAX_H * w / h)
+    if width_cm:  # fixed print width (dashboard screenshots: sized so the smallest text prints at 10 pt)
+        width = float(width_cm)
     qa["images"].append(dict(number=number, path=path, px=f"{w}x{h}", width_cm=round(width, 1), effective_dpi=round(w / (width / 2.54))))
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER; keep_next(p)
     p.paragraph_format.space_before = Pt(6)
@@ -325,7 +327,7 @@ def render(doc, f, N, T, reg, qa, used, refs):
             doc.add_heading(line[4:].strip(), level=3)
         elif line.startswith("[[FIG:"):
             a = line[6:-2].split("|")
-            add_figure(doc, reg[("fig", a[0])], a[1], a[2], a[3], a[4], qa)
+            add_figure(doc, reg[("fig", a[0])], a[1], a[2], a[3], a[4], qa, a[5] if len(a) > 5 else None)
             qa["placed"].add(("fig", a[0]))
         elif line.startswith("[[TABLE:"):
             key, tid = line[8:-2].split("|")

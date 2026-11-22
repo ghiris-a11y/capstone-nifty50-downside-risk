@@ -1,0 +1,42 @@
+{
+ "start": {
+  "css_w": 454,
+  "css_h": 625,
+  "print_w_cm": 14.56,
+  "print_h_cm": 20.1,
+  "pt_11px": 10.0,
+  "pt_17px": 15.5
+ },
+ "models": {
+  "css_w": 454,
+  "css_h": 602,
+  "print_w_cm": 14.56,
+  "print_h_cm": 19.3,
+  "pt_11px": 10.0,
+  "pt_17px": 15.5
+ },
+ "regimes": {
+  "css_w": 454,
+  "css_h": 568,
+  "print_w_cm": 14.56,
+  "print_h_cm": 18.2,
+  "pt_11px": 10.0,
+  "pt_17px": 15.5
+ },
+ "stock": {
+  "css_w": 454,
+  "css_h": 528,
+  "print_w_cm": 14.56,
+  "print_h_cm": 16.9,
+  "pt_11px": 10.0,
+  "pt_17px": 15.5
+ },
+ "live": {
+  "css_w": 454,
+  "css_h": 622,
+  "print_w_cm": 14.56,
+  "print_h_cm": 19.9,
+  "pt_11px": 10.0,
+  "pt_17px": 15.5
+ }
+}
