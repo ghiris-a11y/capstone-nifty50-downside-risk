@@ -77,6 +77,6 @@ The code and data pipeline are in the public repository github.com/ghiris-a11y/c
 
 [[MEANS]] Any user can see, stock by stock, the days on which each model's forecast was beaten.
 
-[[FIG:dash_live|report/figures/dashboard/app_live_table.png|Dashboard, Daily example: the banner and the top of the next-day table (the text between them is left out; the dashed line marks the break)|Live dashboard, captured with Playwright (src/report_screens.py)|Two stacked phone screenshots: an amber banner saying "Daily example only. This is not the report's results. It updates each weekday evening.", a dashed break, and the top of a table of next-day worst-loss estimates by stock.|14.6]]
+[[FIG:dash_live|report/figures/dashboard/app_live_table.png|Dashboard, Daily example: the banner and the top of the next-day table (the text between them is left out; the dashed line marks the break; on a phone the table scrolls sideways to more columns)|Live dashboard, captured with Playwright (src/report_screens.py)|Two stacked phone screenshots: an amber banner saying "Daily example only. This is not the report's results. It updates each weekday evening.", a dashed break, and the top of a table of next-day worst-loss estimates by stock.|14.6]]
 
 [[MEANS]] The daily example shows the recommended model running every evening; it is clearly labelled as separate from the frozen results in this report.

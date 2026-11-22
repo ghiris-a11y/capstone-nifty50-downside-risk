@@ -1,0 +1,5 @@
+group,stock_days,breach_rate,multiplier_for_1pct
+stress days (Nifty <= -2%),451,0.11529933481152993,2.7473552942358617
+other days,28616,0.0066745876432764886,0.8928841418727941
+previous-day India VIX above 15.6 (top quartile),7298,0.0089065497396547,0.9564347910771653
+previous-day India VIX in lower three quartiles,21769,0.008176765124718637,0.9484951291329972

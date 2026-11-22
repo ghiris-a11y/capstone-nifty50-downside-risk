@@ -223,10 +223,22 @@ dmp99_g,76,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_pr
 dmp99_m,18,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_g_xgb,31,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_m_xgb,1,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_g_xgb,28,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_m_xgb,0,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_g_xgb,17,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_m_xgb,5,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_g_rf,12,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_m_rf,1,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_g_rf,2,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_m_rf,11,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_g_rf,14,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_m_rf,10,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_g_mlp,47,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 dm_m_mlp,0,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_g_mlp,56,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp95_m_mlp,0,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_g_mlp,45,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
+dmp99_m_mlp,3,"outputs/tables/diebold_mariano_price.csv, diebold_mariano_pinball_price.csv"
 nr_stock,LT,outputs/tables/backtest_results_price.csv
 nr_fz0,1296.75,outputs/tables/backtest_results_price.csv
 nr_fz0med,-3.36,outputs/tables/backtest_results_price.csv
@@ -307,6 +319,8 @@ sec_low_var,3.51%,outputs/tables/report/sector_summary_price.csv
 sec_high,Services,outputs/tables/report/sector_summary_price.csv
 sec_high_var,6.03%,outputs/tables/report/sector_summary_price.csv
 sec_high_n,1,outputs/tables/report/sector_summary_price.csv
+n_sec,14,outputs/tables/report/sector_summary_price.csv
+sec_xgb_worse,14,outputs/tables/report/sector_summary_price.csv
 avg_var99,4.31%,outputs/tables/report/avg_var99_gjrt_by_stock.csv
 buffer_100cr,4.31,outputs/tables/report/avg_var99_gjrt_by_stock.csv
 avg_var99_min,3.35%,outputs/tables/report/avg_var99_gjrt_by_stock.csv
@@ -318,7 +332,43 @@ es_bias_max,6.3%,outputs/tables/xgb_es_approx_bias.csv
 sec_per_stock,130,data/logs/run.log
 min_per_set,8,data/logs/run_test_rerun.log
 n_jobs,8,data/logs/run_test_rerun.log
+fk_min,3.0,outputs/dashboard_check/readability.json
+fk_max,4.0,outputs/dashboard_check/readability.json
+n_tabs,9,outputs/dashboard_check/readability.json
+buf_garchn,3.76,outputs/tables/report/buffer_by_model.csv
+buf_garcht,4.28,outputs/tables/report/buffer_by_model.csv
+buf_egarchn,3.75,outputs/tables/report/buffer_by_model.csv
+buf_egarcht,4.26,outputs/tables/report/buffer_by_model.csv
+buf_gjrn,3.79,outputs/tables/report/buffer_by_model.csv
+buf_gjrt,4.31,outputs/tables/report/buffer_by_model.csv
+buf_hs,3.72,outputs/tables/report/buffer_by_model.csv
+buf_xgb,3.77,outputs/tables/report/buffer_by_model.csv
+buf_rf,3.87,outputs/tables/report/buffer_by_model.csv
+buf_mlp,4.28,outputs/tables/report/buffer_by_model.csv
+buf_tfam,4.28,outputs/tables/report/buffer_by_model.csv
+buf_mlfam,3.97,outputs/tables/report/buffer_by_model.csv
+buf_diff_ml_t,-0.31,outputs/tables/report/buffer_by_model.csv
+st_obs,451,outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv
+st_br_gjrt,11.5%,outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv
+ns_br_gjrt,0.67%,outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv
+st_mult99,2.75,outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv
+st_excess,2.86%,outputs/tables/by_ticker/price/*__daily.parquet; outputs/tables/breach_days_price.csv
+vix_q4_edge,15.6,data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet
+vix_q4_days,178,data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet
+br_q4_gjrt,0.89%,data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet
+br_q13_gjrt,0.82%,data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet
+mult_q4,0.96,data/frozen/_INDIAVIX.parquet; outputs/tables/by_ticker/price/*__daily.parquet
+basel_blocks,2,outputs/tables/report/basel_coverage.csv
+basel_cov_days,500,outputs/tables/report/basel_coverage.csv
+basel_uncov_min,208,outputs/tables/report/basel_coverage.csv
+basel_uncov_max,210,outputs/tables/report/basel_coverage.csv
+basel_last_cov,9 January 2026,outputs/tables/report/basel_coverage.csv
+basel_hike_outside,yes,outputs/tables/report/basel_coverage.csv
+basel_values,"0, 0.5, 1",outputs/tables/report/basel_coverage.csv
 h1,Rejected,derived from the tables above (src/report_numbers.py)
 h2,Rejected,derived from the tables above (src/report_numbers.py)
 h3,Rejected,derived from the tables above (src/report_numbers.py)
-h4,Rejected for India VIX; macro not yet tested,derived from the tables above (src/report_numbers.py)
+h4,"Rejected for India VIX; interest rates, CPI and IIP outside scope",derived from the tables above (src/report_numbers.py)
+gjrt_breaches_yr,2.1,outputs/tables/summary_price.csv
+ideal_yr,2.5,nominal 1% x 250 trading days
+gjrt_kupfail,2%,outputs/tables/summary_price.csv

@@ -1,6 +1,6 @@
 # Phase 2 report: build QA
 
-- Placeholders filled: 142 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv)
+- Placeholders filled: 162 distinct numbers, each traced to a file in outputs/ (outputs/tables/report/report_numbers.csv)
 - Unresolved placeholders: none
 - [FILL] / [UNVERIFIED] markers in printed text: none
 - Figures or tables never referenced in the text: none
@@ -12,13 +12,13 @@
 |---|---|---|
 | 1 | 2 | 0 |
 | 2 | 0 | 1 |
-| 3 | 3 | 0 |
+| 3 | 3 | 1 |
 | 4 | 4 | 3 |
-| 5 | 14 | 14 |
-| 6 | 3 | 1 |
+| 5 | 14 | 15 |
+| 6 | 3 | 6 |
 | 7 | 0 | 0 |
 | 8 | 0 | 0 |
-| 9 | 5 | 5 |
+| 9 | 6 | 5 |
 
 ## Images (width in the report and effective resolution)
 
@@ -50,11 +50,12 @@
 | Figure 6.1 | report/figures/v_decision_table.png | 2438x2587 | 15.5 | 400 |
 | Figure 6.2 | report/figures/v_model_flow.png | 2445x1918 | 15.5 | 401 |
 | Figure 6.3 | report/figures/v_roadmap.png | 1892x649 | 15.5 | 310 |
-| Figure 9.1 | report/figures/dashboard/phone_start.png | 908x1251 | 14.6 | 158 |
-| Figure 9.2 | report/figures/dashboard/phone_models.png | 908x1203 | 14.6 | 158 |
-| Figure 9.3 | report/figures/dashboard/phone_regimes.png | 908x1136 | 14.6 | 158 |
-| Figure 9.4 | report/figures/dashboard/phone_stock.png | 908x1056 | 14.6 | 158 |
-| Figure 9.5 | report/figures/dashboard/phone_live.png | 908x1244 | 14.6 | 158 |
+| Figure 9.1 | report/figures/dashboard/app_start_numbers.png | 1824x2632 | 14.6 | 317 |
+| Figure 9.2 | report/figures/dashboard/app_start_actions.png | 1824x2348 | 14.6 | 317 |
+| Figure 9.3 | report/figures/dashboard/app_models_beaten.png | 1428x1738 | 14.6 | 248 |
+| Figure 9.4 | report/figures/dashboard/app_regimes_fig14.png | 1591x1784 | 14.6 | 277 |
+| Figure 9.5 | report/figures/dashboard/app_stock_fig3.png | 1595x2024 | 14.6 | 277 |
+| Figure 9.6 | report/figures/dashboard/app_live_table.png | 1824x2479 | 14.6 | 317 |
 
 ## Literal numbers in Chapters 5-7 not filled from outputs (for review)
 

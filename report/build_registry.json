@@ -10,7 +10,7 @@
   },
   "3": {
    "figures": 3,
-   "tables": 0
+   "tables": 1
   },
   "4": {
    "figures": 4,
@@ -18,11 +18,11 @@
   },
   "5": {
    "figures": 14,
-   "tables": 14
+   "tables": 15
   },
   "6": {
    "figures": 3,
-   "tables": 1
+   "tables": 6
   },
   "7": {
    "figures": 0,
@@ -33,7 +33,7 @@
    "tables": 0
   },
   "9": {
-   "figures": 5,
+   "figures": 6,
    "tables": 5
   }
  },
@@ -43,6 +43,7 @@
   "tab:gap": "Table 2.1",
   "fig:method_flow": "Figure 3.1",
   "fig:timeline": "Figure 3.2",
+  "tab:changes": "Table 3.1",
   "fig:techniques": "Figure 3.3",
   "tab:sources": "Table 4.1",
   "fig:pipeline": "Figure 4.1",
@@ -79,20 +80,27 @@
   "fig:sector": "Figure 5.14",
   "tab:sector": "Table 5.13",
   "tab:hyp": "Table 5.14",
+  "tab:findings": "Table 5.15",
   "fig:decision": "Figure 6.1",
   "fig:flow": "Figure 6.2",
-  "tab:feas": "Table 6.1",
+  "tab:cushion": "Table 6.1",
+  "tab:buffers": "Table 6.2",
   "fig:roadmap": "Figure 6.3",
+  "tab:roadmap": "Table 6.3",
+  "tab:feas": "Table 6.4",
+  "tab:risks": "Table 6.5",
+  "tab:kpis": "Table 6.6",
   "tab:perstock": "Table 9.1",
   "tab:desc_stock": "Table 9.2",
   "tab:garch_stock": "Table 9.3",
   "tab:hyper": "Table 9.4",
   "tab:vars": "Table 9.5",
-  "fig:dash_start": "Figure 9.1",
-  "fig:dash_models": "Figure 9.2",
-  "fig:dash_regimes": "Figure 9.3",
-  "fig:dash_stock": "Figure 9.4",
-  "fig:dash_live": "Figure 9.5"
+  "fig:dash_numbers": "Figure 9.1",
+  "fig:dash_actions": "Figure 9.2",
+  "fig:dash_beaten": "Figure 9.3",
+  "fig:dash_fig14": "Figure 9.4",
+  "fig:dash_fig3": "Figure 9.5",
+  "fig:dash_live": "Figure 9.6"
  },
  "headings": [
   "CHAPTER 1: INTRODUCTION",

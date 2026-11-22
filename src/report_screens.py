@@ -18,7 +18,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VIEW_W = 480
 PRINT_CM = 14.6
 MAX_IMG_CM = 20.5   # image height that leaves room for the caption, source line and "What this means" box
-MAX_CM = {"start_numbers": 21.6}  # the Key numbers block needs slightly more; its caption and box are short
+MAX_CM = {"start_numbers": 21.6,  # the Key numbers block needs slightly more; its caption and box are short
+          "live_tabletop": 16.6}  # leaves room for the banner and the break above it, so the crop ends on a row
 PAD = 4
 
 # name, route, JS function of <main> returning [start element, element whose bottom ends the crop]

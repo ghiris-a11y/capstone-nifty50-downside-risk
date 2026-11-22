@@ -1,0 +1,79 @@
+{
+ "start_numbers": {
+  "css_w": 456,
+  "css_h": 658,
+  "print_w_cm": 14.6,
+  "print_h_cm": 21.1,
+  "smallest_px": 13,
+  "smallest_text": "In one line",
+  "smallest_pt": 11.8,
+  "cut_before_end": false
+ },
+ "start_actions": {
+  "css_w": 456,
+  "css_h": 587,
+  "print_w_cm": 14.6,
+  "print_h_cm": 18.8,
+  "smallest_px": 13,
+  "smallest_text": "For: Bank risk desk",
+  "smallest_pt": 11.8,
+  "cut_before_end": true
+ },
+ "models_beaten": {
+  "css_w": 422,
+  "css_h": 468,
+  "print_w_cm": 14.6,
+  "print_h_cm": 16.2,
+  "smallest_px": 11,
+  "smallest_text": "0",
+  "smallest_pt": 10.8,
+  "cut_before_end": false
+ },
+ "regimes_fig14": {
+  "css_w": 422,
+  "css_h": 568,
+  "print_w_cm": 14.6,
+  "print_h_cm": 19.7,
+  "smallest_px": 11,
+  "smallest_text": "20.2%",
+  "smallest_pt": 10.8,
+  "cut_before_end": false
+ },
+ "stock_fig3": {
+  "css_w": 422,
+  "css_h": 568,
+  "print_w_cm": 14.6,
+  "print_h_cm": 19.7,
+  "smallest_px": 11,
+  "smallest_text": "2024",
+  "smallest_pt": 10.8,
+  "cut_before_end": false
+ },
+ "live_banner": {
+  "css_w": 456,
+  "css_h": 92,
+  "print_w_cm": 14.6,
+  "print_h_cm": 2.9,
+  "smallest_px": 18,
+  "smallest_text": "Daily example only. This is no",
+  "smallest_pt": 16.3,
+  "cut_before_end": false
+ },
+ "live_tabletop": {
+  "css_w": 456,
+  "css_h": 504,
+  "print_w_cm": 14.6,
+  "print_h_cm": 16.1,
+  "smallest_px": 13,
+  "smallest_text": "Stock",
+  "smallest_pt": 11.8,
+  "cut_before_end": true
+ },
+ "live_table": {
+  "stacked": [
+   "live_banner",
+   "live_tabletop"
+  ],
+  "print_h_cm": 19.8
+ }
+}

@@ -123,3 +123,11 @@ Assumptions: one-day horizon; a position held equally in each stock; 250 trading
 | Over-reliance on one model | All results come from one test window | Keep a challenger model and the historical-simulation benchmark in the monthly report |
 
 [[MEANS]] None of these risks is a reason to delay. Each has a low-cost control, and most are already built into the daily pipeline and the dashboard.
+
+## 6.10 Monthly monitoring scorecard
+
+{{tab:kpis}} turns the findings into a short list of measures a risk committee can review each month, with the current value for the recommended model and the point at which to act.
+
+[[TABLE:kpis|kpis]]
+
+[[MEANS]] Each measure is cheap to compute from the daily run and each has a clear action. GJR-t had about {{gjrt_breaches_yr}} 99% breaches per stock per year against an ideal of {{ideal_yr}}, so in normal months the scorecard should show few alerts; when it does show one, the clustered-breach and stress-day rows say whether the cause is the model or the market.

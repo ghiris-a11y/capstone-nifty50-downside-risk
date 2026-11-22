@@ -514,6 +514,23 @@ def build():
                            f"Lowest mean FZ0 in Q4: {q4}; Q4 loss above Q1 loss for {'all' if (g['Q4 stressed'] > g['Q1 calm']).all() else 'some'} models", h3],
                           ["H4: India VIX and macro inputs improve ML forecasts over price/volume inputs",
                            f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo rate not used (file not fully verified); CPI and IIP excluded by design", h4]])
+    # ---------------------------------------------------------------- monthly monitoring scorecard (Chapter 6)
+    gr = s.loc[("GJR-t", 0.01)]
+    n("gjrt_breaches_yr", f"{gr.exc_rate * 250:.1f}", src_s)
+    n("ideal_yr", f"{0.01 * 250:.1f}", "nominal 1% x 250 trading days")
+    n("gjrt_kupfail", pct(1 - gr.pass_kupiec, 0), src_s)
+    T["kpis"] = dict(
+        caption="Monthly monitoring scorecard: what to track, its value for GJR-t in the test window, and when to act",
+        source="outputs/tables/summary_price.csv, breach_days_summary_price.csv, diag_feature_ranges_summary.csv (values as in Chapter 5)",
+        head=["Measure", "Value in the test window", "Act when"], widths=[5, 4, 6], family_col=None,
+        rows=[["99% breaches per stock per year (GJR-t)", f"{gr.exc_rate * 250:.1f} (ideal {N['ideal_yr'][0]})", "Five or more in the last 250 days for a stock (Basel amber zone): review that stock's model"],
+              ["Stocks failing the \u201ctoo often?\u201d check (Kupiec, 99%)", N["gjrt_kupfail"][0], "The share rises above this level: re-estimate and review"],
+              ["Days with 10 or more stocks breached together", N["d10_gjrt"][0] if "d10_gjrt" in N else str(int(bs.loc["GJR-t"].days_with_10plus_breaches)), "Any such day: stress review the same week; check the stress buffer"],
+              ["Share of breaches on market-wide stress days", N["stress_gjrt"][0], "Re-size the stress buffer each year from this share"],
+              ["Real loss on very bad days / forecast ES (99%)", N["es99_gjrt"][0], "Above 1: keep the prudence margin on ES"],
+              ["No-risk forecasts by any ML challenger (99%)", f"{N['norisk99_xgb'][0]} stock-days (XGBoost)", "Any: the challenger fails review"],
+              ["Inputs outside the range seen in training", f"USD/INR level {N['out_usdinr'][0]} of test days", "Above a few per cent: drop the input or refit"]])
+
     # ---------------------------------------------------------------- findings table (end of Chapter 5)
     v_ = lambda k: N[k][0]
     T["findings"] = dict(
