@@ -29,6 +29,8 @@ The sampling technique is purposive: the population is the fifty Nifty 50 consti
 
 Inputs for the machine-learning models are lagged returns, realised volatility over 10, 20 and 60 days, recent drawdown and volume changes, and, in labelled variants, the India VIX and the USD/INR exchange rate. Every input at day t uses information up to day t-1 only. Random seeds are fixed at 42.
 
+The inputs are market data only. CPI and IIP are excluded by design: they are monthly, released weeks late and revised afterwards, the pipeline has no stationary CPI feature, and they carry little information at a one-day horizon. The pipeline can add repo-rate changes over 21 and 63 days as a labelled input set; the repo-rate file dates each change on the RBI announcement date (lag 0). That file is not yet fully verified, and the loader skips any macro file with a blank or unverified row and records the skip in data/logs/macro_skipped.log, so no reported result uses it.
+
 ## 3.5 Evaluation
 
 Breach rates are compared with the nominal 5% and 1%. Kupiec and Christoffersen tests are applied per stock at the 5% significance level. Basel traffic-light zones are reported for 99% VaR only, as the share of non-overlapping 250-day windows with four or fewer breaches. Forecast quality is scored with FZ0 (VaR and ES together) and pinball loss (VaR), and Diebold-Mariano tests with a five-lag long-run variance compare each machine-learning model with each GARCH model, stock by stock. Results are also split by quartile of the previous day's India VIX and by market-wide stress days, defined in advance as days on which the Nifty 50 fell 2% or more.

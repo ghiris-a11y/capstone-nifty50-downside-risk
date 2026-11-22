@@ -12,7 +12,7 @@ export function Limits() {
         <li>We have only about 710 test days per stock. That is enough to see broad patterns. It is small for one stock alone.</li>
         <li>We used only {meta.data?.n_stocks ?? "the"} stocks: those with prices since 2015. Newer firms are left out.</li>
         <li>Past data does not promise the future. A new kind of crisis could change these results.</li>
-        <li>The models do not yet use interest rates, price rises or factory output.</li>
+        {meta.data?.macro_note && <li>{meta.data.macro_note}</li>}
         <li>Prices come from Yahoo Finance. It is free, but it is not an official source.</li>
         <li>These are draft results. Our project guide has not yet approved them.</li>
       </ul>

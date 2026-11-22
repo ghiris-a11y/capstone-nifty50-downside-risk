@@ -73,6 +73,8 @@ def update_meta(live):
     if live:
         meta["live_as_of"], meta["live_generated_utc"] = live
     meta["exported_utc"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    meta["macro_note"] = macro_note()  # also refreshed by the daily --live-only run
+    meta["approval_note"] = "Draft results: our project guide has not yet approved them."
     write("meta.json", meta)
 
 
@@ -150,11 +152,27 @@ def export_full():
     meta = {"snapshot_utc": man.snapshot_utc.iloc[0], "data_first": man.first_date.min(), "data_last": man.last_date.max(),
             "test_start": "2024-01-01", "n_stocks": int(len(uni)), "n_excluded": int(len(exc)),
             "train_end": "2021-12-31", "val_end": "2023-12-31", "hike_date": "2026-10-07",
-            "macro_note": "Repo rate, CPI and IIP not yet included (official files not supplied).",
-            "approval_note": "Guide approval of the balanced panel and the Nov 2026 window is pending.",
+            "macro_note": macro_note(),
+            "approval_note": "Draft results: our project guide has not yet approved them.",
             "results_generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
     write("meta.json", meta)
     print(f"exported {len(files)} daily files and {len(figs)} figures to {OUT}")
+
+
+def macro_note():
+    """Scope sentence for the dashboard. Interest rates count as tested only when a verified repo-rate file exists and a
+    labelled run with the ratechg features is in outputs/ (CPI and IIP are excluded by design: monthly, late, revised)."""
+    path = os.path.join(ROOT, "data", "raw", "repo_rate.csv")
+    verified = False
+    if os.path.exists(path):
+        rr = pd.read_csv(path)
+        verified = not rr["value"].isna().any() and (rr.get("status", pd.Series(["VERIFIED"])).astype(str).str.strip().str.upper() == "VERIFIED").all()
+    tested = verified and any("repo" in f for f in os.listdir(T) if f.startswith("summary_"))
+    if tested:
+        return ("Interest-rate changes were tested as an extra input. Price rises and factory output were left out on purpose: "
+                "they come monthly and late.")
+    return ("The models use market data only. Interest rates, price rises and factory output were left out on purpose: "
+            "they change rarely or come monthly and late.")
 
 
 def main():

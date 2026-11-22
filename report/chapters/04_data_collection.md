@@ -16,7 +16,8 @@ All data are secondary, daily and quantitative. No primary data were collected, 
 | India VIX | ^INDIAVIX | Yahoo Finance | Feature, regimes |
 | USD/INR exchange rate | INR=X | Yahoo Finance | Feature (labelled variants) |
 | Index constituents, December 2025 | Nifty 50 list | NSE | Population for sampling |
-| Repo rate, CPI, IIP | Official releases | RBI, MoSPI | Planned features (not yet supplied) |
+| Repo rate | Monetary policy press releases | RBI | Prepared in data/raw/repo_rate.csv; not used, because not every row is verified |
+| CPI, IIP | Monthly releases | MoSPI | Excluded by design (monthly, released late, revised) |
 
 ## 4.3 Data pipeline
 

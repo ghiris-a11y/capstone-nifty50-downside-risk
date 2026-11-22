@@ -50,4 +50,4 @@ Risk teams in India can choose between well-understood statistical models and ne
 - One-day horizon, 95% and 99% VaR and ES, reported as positive loss numbers.
 - Secondary data only; no questionnaire or primary survey.
 - Training 2015 to 2021, validation 2022 to 2023, test 1 January 2024 to {{data_last}}.
-- Macroeconomic series from the RBI and MoSPI (repo rate, CPI, IIP) are part of the design but had not been supplied when these results were produced; their effect is therefore not yet measured.
+- Inputs are market data only: prices, volume, the India VIX and the USD/INR rate. Interest rates, price rises (CPI) and factory output (IIP) were left out on purpose: the repo rate changes only a few times a year, and CPI and IIP are monthly, released late and later revised, so they carry little information for a one-day forecast. A repo-rate file was prepared from RBI releases but is not yet fully verified, so it was not used.

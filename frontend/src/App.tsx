@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Overview from "./pages/Overview";
 import Start from "./pages/Start";
 import Glossary from "./pages/Glossary";
@@ -172,8 +172,14 @@ export default function App() {
         {meta.data && (
           <div className="border-b border-warn-500 bg-warn-100 text-sm text-warn-700">
             <div className="px-4 py-2 lg:px-8">
-              Draft results: our project guide has not yet approved them. The models do not yet use interest rates, price rises or
-              factory output.
+              {meta.data.approval_note}
+            </div>
+          </div>
+        )}
+        {meta.data?.macro_note && (
+          <div className="border-b border-line bg-white text-[13px] text-slate-600">
+            <div className="px-4 py-2 lg:px-8">
+              {meta.data.macro_note} <Link to="/about" className="font-medium text-navy-900 underline underline-offset-2">About &amp; limits</Link>
             </div>
           </div>
         )}

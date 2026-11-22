@@ -431,7 +431,7 @@ def build():
     h3 = "Supported" if q4 in ML else "Rejected"
     vix_better = [abs(rd("summary_price_vixlevel.csv").set_index(["model", "alpha"]).loc[(m, 0.01)].exc_rate - 0.01) < abs(s.loc[(m, 0.01)].exc_rate - 0.01) for m in ML]
     h4 = "Supported" if all(vix_better) else "Partly supported" if any(vix_better) or flip < len(rows) else "Rejected"
-    h4 = "Rejected for India VIX; macro not yet tested" if not any(vix_better) else h4 + "; macro not yet tested"
+    h4 = "Rejected for India VIX; interest rates, CPI and IIP outside scope" if not any(vix_better) else h4 + "; interest rates, CPI and IIP outside scope"
     for k_, v_ in (("h1", h1), ("h2", h2), ("h3", h3), ("h4", h4)):
         n(k_, v_, "derived from the tables above (src/report_numbers.py)")
     T["hyp"] = dict(caption="Hypotheses and decisions", source="src/report_numbers.py (decision rules applied to the tables in this chapter)",
@@ -443,7 +443,7 @@ def build():
                           ["H3: Any ML advantage is larger when the India VIX is high (Q4)",
                            f"Lowest mean FZ0 in Q4: {q4}; Q4 loss above Q1 loss for {'all' if (g['Q4 stressed'] > g['Q1 calm']).all() else 'some'} models", h3],
                           ["H4: India VIX and macro inputs improve ML forecasts over price/volume inputs",
-                           f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo, CPI and IIP not yet available", h4]])
+                           f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo rate not used (file not fully verified); CPI and IIP excluded by design", h4]])
     return N, T
 
 
