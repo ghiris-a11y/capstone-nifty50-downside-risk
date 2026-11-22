@@ -1,0 +1,121 @@
+{
+ "01": {
+  "sentences": 49,
+  "avg_words": 24.2,
+  "max_words": 44,
+  "over_30": 14,
+  "reading_ease": 50.8,
+  "banned": [],
+  "longest": [
+   "Interest rates, price rises (CPI) and factory output (IIP) were left out on purpose: the repo rate changes only a few times a year, and CPI ",
+   "The Nifty 50 is the NSE's flagship index of fifty large, liquid companies across the main sectors of the economy; it is the reference point ",
+   "This study therefore asks, for individual Nifty 50 stocks: which approach gives more reliable one-day VaR and ES forecasts, does the answer ",
+   "The recommendations in Chapter 6 therefore keep GARCH-t models as the default for margins, limits and capital, add a stress buffer for marke",
+   "A broker must decide how much margin to collect, a fund manager how large a position may be, a bank how much capital to hold, and a retail i"
+  ]
+ },
+ "02": {
+  "sentences": 45,
+  "avg_words": 18.2,
+  "max_words": 54,
+  "over_30": 6,
+  "reading_ease": 46.6,
+  "banned": [
+   "elicitab"
+  ],
+  "longest": [
+   "To forecast one-day VaR and ES for each stock with ten models; to backtest every forecast with the tests regulators use; to test whether dif",
+   "Macroeconomic variables such as the repo rate, inflation and industrial production change slowly and are released with a lag; this study inc",
+   "It is easy to explain, but it says nothing about how bad a loss is once the threshold is crossed, and it is not always sub-additive, so a di",
+   "Because ES on its own cannot be backtested with a simple scoring function, Fissler and Ziegel (2016) showed that VaR and ES are jointly elic",
+   "Random Forests average many decision trees grown on resampled data (Breiman, 2001); XGBoost builds trees one after another, each correcting "
+  ]
+ },
+ "03": {
+  "sentences": 41,
+  "avg_words": 20.9,
+  "max_words": 43,
+  "over_30": 12,
+  "reading_ease": 57.0,
+  "banned": [],
+  "longest": [
+   "The sampling technique is purposive: the population is the fifty Nifty 50 constituents in December 2025, and the sample keeps every stock wi",
+   "To choose which market inputs the machine-learning models should use, a separate protocol trains on 2015 to 2019, calibrates on 2020 to 2021",
+   "Six quantiles are forecast for each level (the VaR quantile and five deeper quantiles); VaR is the level quantile and ES is the mean of the ",
+   "It is designed as a forecasting competition that mirrors how a risk desk works: each model is fitted on past data only, it forecasts the nex",
+   "Every forecast is made the way it would have been made in real time, so the results show what a desk would actually have experienced, not wh"
+  ]
+ },
+ "04": {
+  "sentences": 24,
+  "avg_words": 20.1,
+  "max_words": 44,
+  "over_30": 5,
+  "reading_ease": 62.1,
+  "banned": [],
+  "longest": [
+   "The India VIX never reached the extremes of earlier years in the test window (its highest level was about 27.9 points, against 83.6 in the f",
+   "Fat tails (median excess kurtosis 3.7) and negative skew in 24 of 41 stocks mean that a bell-curve model will understate how often big losse",
+   "A separate GitHub Action runs each weekday at 13:30 UTC (7:00 PM IST), adds the new day's prices to a live file, recomputes a next-day GJR-t",
+   "At 99%, a well-calibrated model should therefore be breached about 7.1 times per stock over the test window, which is why single-stock tests",
+   "On 84% of stock-days the price moved by less than 2% either way, but every stock had rare large moves, and the worst single day in the sampl"
+  ]
+ },
+ "05": {
+  "sentences": 112,
+  "avg_words": 21.0,
+  "max_words": 49,
+  "over_30": 17,
+  "reading_ease": 70.3,
+  "banned": [],
+  "longest": [
+   "For one-day loss limits on large Indian stocks, the classic Student-t GARCH models are the reliable choice, the machine-learning models we t",
+   "The main issue was 95 placeholder rows with zero volume that Yahoo Finance inserts on some holidays; left in, they would create fake zero re",
+   "Every ML model was breached more often than 1% (XGBoost 1.64%, Random Forest 1.35%, MLP 1.20%), as were the Normal GARCH models and historic",
+   "Run separately from June 2015 with those crashes kept, its 99% breach rates were 0.56% for GJR-t, 0.56% for XGBoost and 1.41% for historical",
+   "For a risk team the message is about timing: forecasting gets harder for every model when the market is nervous, and the choice of model mat"
+  ]
+ },
+ "06": {
+  "sentences": 71,
+  "avg_words": 21.9,
+  "max_words": 64,
+  "over_30": 14,
+  "reading_ease": 69.4,
+  "banned": [],
+  "longest": [
+   "At 99% they were breached more often than nominal (XGBoost 1.64%, Random Forest 1.35%, MLP 1.20%, against 0.84% for GJR-t), they set aside l",
+   "The project's GitHub Action and dashboard do this automatically at almost no cost, and the dashboard's Start here tab also shows the recomme",
+   "Any ML model used should be refitted regularly (in this study it was fitted once), screened for \"no-risk\" forecasts, and restricted to input",
+   "GJR-t had about 2.1 99% breaches per stock per year against an ideal of 2.5, so in normal months the scorecard should show few alerts; when ",
+   "Running the new model in parallel with the existing one for a month before switching lets a desk see real breaches and margin changes withou"
+  ]
+ },
+ "07": {
+  "sentences": 27,
+  "avg_words": 15.9,
+  "max_words": 54,
+  "over_30": 3,
+  "reading_ease": 59.1,
+  "banned": [],
+  "longest": [
+   "Refit ML models on a rolling basis and compare again; add a fully verified repo-rate series as one extra labelled input set (the pipeline al",
+   "The India VIX had the largest effect on XGBoost's forecasts but did not bring any ML model closer to the nominal breach rate; interest rates",
+   "A repo-rate file was prepared but not every row is verified against RBI releases, so interest rates were not tested; CPI and IIP were exclud"
+  ]
+ },
+ "09": {
+  "sentences": 21,
+  "avg_words": 21.1,
+  "max_words": 48,
+  "over_30": 4,
+  "reading_ease": 60.4,
+  "banned": [],
+  "longest": [
+   "Its layout takes ideas from two Figma Community files, the Trading Stock Market Dashboard Platform UI Kit (link and the Minimal & modern rep",
+   "The GitHub Action in .github/workflows/daily_update.yml runs each weekday at 13:30 UTC (7:00 PM IST): it downloads the new day's prices, val",
+   "The main pipeline is nifty50_var_pipeline.py; scripts in src/ build the universe, freeze and validate the data, make the figures, export the",
+   "Each is cropped to one element of a tab and printed at 14.6 cm wide; the smallest text in each crop prints at 10 pt or more (src/report_scre"
+  ]
+ }
+}

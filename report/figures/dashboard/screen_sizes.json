@@ -1,0 +1,44 @@
+{
+ "desk_start": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 24,
+  "body_pt": 15.5
+ },
+ "desk_overview": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 24,
+  "body_pt": 15.5
+ },
+ "desk_models": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 24,
+  "body_pt": 15.5
+ },
+ "desk_regimes": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 24,
+  "body_pt": 15.5
+ },
+ "desk_stock": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 24,
+  "body_pt": 15.5
+ },
+ "desk_live": {
+  "viewport": "1100x700",
+  "scale": 3,
+  "print_cm": 25.0,
+  "body_px": 15,
+  "body_pt": 9.7
+ }
+}

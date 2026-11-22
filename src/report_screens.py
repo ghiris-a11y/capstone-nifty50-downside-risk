@@ -5,8 +5,13 @@ factor 4. Each shot is cropped to one element's box on a tab, ending at the last
 report page. The report prints every shot at 14.6 cm wide, so 1 CSS px = 14.6 / (crop width) cm; the smallest text in
 each crop (HTML and chart text) is measured and its printed size logged. It must be at least 10 pt.
 
-  python src/report_screens.py [--url https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/]
-  -> report/figures/dashboard/app_<name>.png and report/figures/dashboard/app_sizes.json
+  python src/report_screens.py [--url https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/] [--mode all|desktop|phone|crops]
+  -> report/figures/dashboard/app_<name>.png and report/figures/dashboard/app_sizes.json   (crops: element crops)
+  -> report/figures/dashboard/desk_<tab>.png  (desktop: first screen of each tab, 1100 x 700, device scale 3, cropped
+     at the bottom to 1100 x 560 so a 25 cm wide image plus caption fits a landscape A4 page)
+  -> report/figures/dashboard/phone_<tab>.png (phone: first screen at 390 x 844, device scale 3)
+  -> report/figures/dashboard/qr_dashboard.png (QR code of the live dashboard URL)
+  -> report/figures/dashboard/screen_sizes.json (printed size of the body text in each image)
 """
 import argparse
 import json
@@ -64,12 +69,60 @@ JS_BOX = """([pick, budgetCm, printCm, pad]) => {
 }"""
 
 
+DESK_TABS = [("start", "#/"), ("overview", "#/overview"), ("models", "#/models"), ("regimes", "#/regimes"),
+             ("stock", "#/stock"), ("live", "#/live")]
+PHONE_TABS = [("start", "#/"), ("models", "#/models"), ("live", "#/live")]
+DESK_PRINT_CM, DESK_CROP_H = 25.0, 560
+PHONE_PRINT_CM = 5.4
+BODY_JS = """() => { const fs = [...document.querySelectorAll('main p')].filter(e => e.getBoundingClientRect().top < innerHeight && e.getBoundingClientRect().width)
+  .map(e => parseFloat(getComputedStyle(e).fontSize)).sort((a, b) => a - b); return fs.length ? fs[Math.floor(fs.length / 2)] : 0; }"""
+
+
+def first_screens(url, out, tabs, w, h, scale, prefix, print_cm, crop_h=None):
+    from PIL import Image
+    sizes = {}
+    with sync_playwright() as p:
+        br = p.chromium.launch(channel="msedge")
+        page = br.new_page(viewport={"width": w, "height": h}, device_scale_factor=scale)
+        for name, frag in tabs:
+            page.goto(url + frag, wait_until="load")
+            page.wait_for_function("!document.body.innerText.includes('Loading')", timeout=90000)
+            page.wait_for_timeout(3500)
+            body_px = page.evaluate(BODY_JS)
+            path = os.path.join(out, f"{prefix}_{name}.png")
+            page.screenshot(path=path)
+            if crop_h:
+                im = Image.open(path); im.crop((0, 0, im.width, crop_h * scale)).save(path)
+            sizes[f"{prefix}_{name}"] = dict(viewport=f"{w}x{h}", scale=scale, print_cm=print_cm, body_px=body_px,
+                                             body_pt=round(body_px * print_cm / w / 0.03528, 1))
+            print(prefix, name, sizes[f"{prefix}_{name}"], flush=True)
+        br.close()
+    return sizes
+
+
+def qr(url, out):
+    import qrcode
+    img = qrcode.make(url, box_size=20, border=2)
+    img.save(os.path.join(out, "qr_dashboard.png"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/")
     ap.add_argument("--out", default=os.path.join(ROOT, "report", "figures", "dashboard"))
+    ap.add_argument("--mode", default="all", choices=["all", "desktop", "phone", "crops"])
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
+    if a.mode in ("all", "desktop", "phone"):
+        sizes = {}
+        if a.mode in ("all", "desktop"):
+            sizes.update(first_screens(a.url, a.out, DESK_TABS, 1100, 700, 3, "desk", DESK_PRINT_CM, DESK_CROP_H))
+        if a.mode in ("all", "phone"):
+            sizes.update(first_screens(a.url, a.out, PHONE_TABS, 390, 844, 3, "phone", PHONE_PRINT_CM))
+        qr(a.url, a.out)
+        json.dump(sizes, open(os.path.join(a.out, "screen_sizes.json"), "w"), indent=1)
+        if a.mode != "all":
+            return
     info, ok = {}, True
     with sync_playwright() as p:
         br = p.chromium.launch(channel="msedge")

@@ -1,82 +1,119 @@
 # CHAPTER 9: APPENDICES
 
+## Key terms
+
+{{tab:terms}} explains each technical term in plain words.
+
+[[MDTABLE:terms|Key terms used in this report|Author's definitions]]
+| Term | Plain meaning |
+|---|---|
+| VaR (Value-at-Risk), 99% | Loss limit for 99 of 100 days: the loss a position should not exceed on 99 days out of 100 |
+| VaR, 95% | Loss limit for 19 of 20 days |
+| ES (Expected Shortfall) | Average loss on the worst days, beyond the loss limit |
+| Miss (breach, exception) | A day on which the real loss was bigger than the loss limit |
+| Miss rate | Share of days with a miss; ideal 1% at 99% and 5% at 95% |
+| Kupiec test | Test of whether misses are too frequent (or too rare) |
+| Christoffersen test | Test of whether misses come in clusters |
+| Basel green zone | Four or fewer 99% misses in 250 days: the zone banks aim for |
+| FZ0 score | Score for the loss limit and the worst-day average together; lower is better |
+| Pinball score | Score for the loss limit alone; lower is better |
+| Diebold-Mariano test | Test of whether one model's average score is really lower, or the gap could be luck |
+| GARCH, EGARCH, GJR-GARCH | Classic models of changing volatility; EGARCH and GJR let bad news count more |
+| Normal / Student-t errors | Bell-curve tails / fatter tails that allow more extreme days |
+| XGBoost, Random Forest, MLP | The machine-learning models we tested: boosted trees, averaged trees, a small neural network |
+| Historical simulation | Benchmark that uses the last 250 days as the forecast |
+| India VIX | The market "fear gauge" read from option prices |
+| Market-wide fall day | A day the Nifty 50 fell 2% or more |
+| SHAP value | How much each input moved a tree model's forecast |
+
 ## Appendix A: Questionnaire
 
-Not applicable. The study uses secondary data only (daily market prices and index levels); no survey, interview or questionnaire was used.
+Not applicable. The study uses secondary market data only; no survey, interview or questionnaire was used.
 
-## Appendix B: Results by stock
+## Appendix B: Backtest detail and results by stock
 
-{{tab:perstock}} gives the 99% VaR breach rate for every stock and the main models.
+[[TABLE:bt_extra|bt_extra]]
 
-[[TABLE:perstock|perstock]]
+[[TABLE:perstock_compact|perstock_compact]]
 
-## Appendix C: Descriptive statistics by stock
+{{tab:bt_extra}} adds the measures not shown in Chapter 5; {{tab:perstock_compact}} summarises the stocks. XGBoost's mean FZ0 score at 99% is pulled up by its zero-risk days (Section 5.5). Full per-stock results: [backtest_results_price.csv](https://github.com/ghiris-a11y/capstone-nifty50-downside-risk/blob/main/outputs/tables/backtest_results_price.csv)
 
-{{tab:desc_stock}} gives the test-window return statistics for each stock.
+## Appendix C: Return statistics by sector
 
-[[TABLE:desc_stock|desc_stock]]
+[[TABLE:desc_sector|desc_sector]]
 
-## Appendix D: GARCH estimates by stock
+{{tab:desc_sector}} groups the stocks by sector. Full statistics by stock: [descriptive_test_returns.csv](https://github.com/ghiris-a11y/capstone-nifty50-downside-risk/blob/main/outputs/tables/report/descriptive_test_returns.csv)
 
-{{tab:garch_stock}} gives the GJR-GARCH-t estimates for each stock at the start of the test window.
+## Appendix D: GARCH estimates
 
-[[TABLE:garch_stock|garch_stock]]
+[[TABLE:garch_compact|garch_compact]]
 
-## Appendix E: Model settings (hyperparameters)
+{{tab:garch_compact}} shows the spread of GJR-t estimates across stocks. Full estimates for all six models: [garch_params_teststart.csv](https://github.com/ghiris-a11y/capstone-nifty50-downside-risk/blob/main/outputs/tables/garch_params_teststart.csv)
 
-{{tab:hyper}} lists the fixed settings of every model.
+## Appendix E: Model settings
 
-[[MDTABLE:hyper|Model settings used in nifty50_var_pipeline.py (fixed in advance; not tuned on the test window)|nifty50_var_pipeline.py]]
+[[MDTABLE:hyper|Model settings (fixed in advance; not tuned on the test window)|nifty50_var_pipeline.py]]
 | Model | Settings |
 |---|---|
-| GARCH, EGARCH, GJR-GARCH | Constant mean; p = 1, q = 1 (o = 1 for EGARCH and GJR); Normal or Student-t errors; re-estimated every 20 trading days on all past data |
+| GARCH, EGARCH, GJR-GARCH | Constant mean; p = 1, q = 1 (o = 1 for EGARCH and GJR); Normal or Student-t errors; refit every 20 trading days |
 | XGBoost | Quantile loss; 300 trees, depth 3, learning rate 0.03, subsample 0.8, column sample 0.8, L2 penalty 5; six quantiles per level |
 | Random Forest | 300 trees, depth 6, at least 20 observations per leaf, half the inputs per split; predicts the absolute return |
 | MLP | Two hidden layers (64 and 32 units), ReLU, Adam, L2 penalty 0.001, early stopping on 15% of the training data, up to 300 iterations |
-| Historical simulation | Empirical quantile and tail mean of the last 250 returns |
-| All models | Random seed 42; inputs at day t use data up to t-1 |
+| Historical simulation | Quantile and tail mean of the last 250 returns |
+| All models | Random seed 42; inputs for day t use data up to t-1 |
+
+{{tab:hyper}} lists every setting.
 
 ## Appendix F: Variable dictionary
-
-{{tab:vars}} defines every input used by the machine-learning models.
 
 [[MDTABLE:vars|Variable dictionary|nifty50_var_pipeline.py (build_features)]]
 | Variable | Definition | Set |
 |---|---|---|
 | ret_l1, ret_l2, ret_l5, ret_l10, ret_l20 | Daily log return 1, 2, 5, 10 and 20 trading days before the forecast day | Price/volume |
 | abs_ret, neg_ret | Size of yesterday's return; yesterday's fall (zero if positive) | Price/volume |
-| rv_10, rv_20, rv_60 | Realised volatility over 10, 20 and 60 days | Price/volume |
-| mdd_60 | Current fall of the cumulative return from its 60-day high | Price/volume |
+| rv_10, rv_20, rv_60 | Volatility over the last 10, 20 and 60 days | Price/volume |
+| mdd_60 | Fall of the cumulative return from its 60-day high | Price/volume |
 | vol_chg_5, vol_chg_20 | Change in log volume over 5 and 20 days | Price/volume |
-| vix, vix_chg, rv_x_vix | India VIX level, its daily change, and realised volatility times VIX | VIX level |
+| vix, vix_chg, rv_x_vix | India VIX level, its daily change, and volatility times VIX | VIX level |
 | vix_rel60, vix_rel60_chg | VIX relative to its 60-day mean, and its change | VIX relative |
 | usdinr_ret1, usdinr_ret21 | One-day and 21-day change in USD/INR | USD/INR changes |
-| VaR, ES | One-day loss forecasts at 95% and 99%, positive numbers | Outputs |
 
-## Appendix G: Code, GitHub Action and dashboard
+{{tab:vars}} defines every machine-learning input.
 
-The code and data pipeline are in the public repository github.com/ghiris-a11y/capstone-nifty50-downside-risk. The main pipeline is nifty50_var_pipeline.py; scripts in src/ build the universe, freeze and validate the data, make the figures, export the dashboard data and compute every number in this report (src/report_numbers.py). The GitHub Action in .github/workflows/daily_update.yml runs each weekday at 13:30 UTC (7:00 PM IST): it downloads the new day's prices, validates them, recomputes a next-day GJR-t VaR and ES for every stock, commits only the live data folders and redeploys the dashboard to GitHub Pages at ghiris-a11y.github.io/capstone-nifty50-downside-risk. Its layout takes ideas from two Figma Community files, the Trading Stock Market Dashboard Platform UI Kit (https://www.figma.com/design/3c5zWpbNciVkRL6YMIsbgg/) and the Minimal & modern report template for brand insights and marketing dashboards (https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/): layout ideas only, no assets copied; the licence on the two Community pages was not checked. The dashboard text was written for non-specialist readers and scored between grade {{fk_min}} and {{fk_max}} on the Flesch-Kincaid scale across its {{n_tabs}} tabs. The six screenshots below were captured from the live site at phone layout (480 pixels wide, at four times the screen resolution). Each is cropped to one element of a tab and printed at 14.6 cm wide; the smallest text in each crop prints at 10 pt or more (src/report_screens.py logs the size). A full desktop screen shrunk to page width would print its text at about 6 pt.
+## Appendix G: Code, daily update and dashboard
 
-[[FIG:dash_numbers|report/figures/dashboard/app_start_numbers.png|Dashboard, Start here: the one-line answer and the key numbers|Live dashboard, captured with Playwright (src/report_screens.py)|Phone screenshot of the Start here tab: an "In one line" card saying the classic statistics models stayed closest to the expected loss limits, and four number cards for the closest breach rate, the share of stocks passing the check, the comparisons that could be luck and the misses on market-wide bad days.|14.6]]
+Live dashboard: [https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/](https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/)
 
-[[MEANS]] A reader who sees only the first screen gets the answer and the four numbers behind it, each with a one-line explanation.
+Code and data: [https://github.com/ghiris-a11y/capstone-nifty50-downside-risk](https://github.com/ghiris-a11y/capstone-nifty50-downside-risk)
 
-[[FIG:dash_actions|report/figures/dashboard/app_start_actions.png|Dashboard, Start here: "What a firm should do" (first three of five cards)|Live dashboard, captured with Playwright (src/report_screens.py)|Phone screenshot of recommendation cards, each naming the user (bank risk desk, broker margin team, portfolio manager), the action and the number from the study that supports it.|14.6]]
+The main pipeline is nifty50_var_pipeline.py; scripts in src/ build every number and figure in this report. A GitHub Action runs each weekday at 7:00 PM IST. It downloads the day's prices, checks them, recomputes a next-day GJR-t VaR and ES for every stock and updates the dashboard. The dashboard text scored grade {{fk_min}} to {{fk_max}} on the Flesch-Kincaid scale across its {{n_tabs}} tabs. Its layout borrows ideas from two Figma Community files, the [Trading Stock Market Dashboard Platform UI Kit](https://www.figma.com/design/3c5zWpbNciVkRL6YMIsbgg/) and the [Minimal & modern report template](https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/). Only layout ideas were used and no assets were copied; the licence on the two Community pages was not checked.
 
-[[MEANS]] The dashboard carries the Chapter 6 recommendations to the people who would act on them, with the supporting number on each card.
+The pages that follow show the first screen of six tabs on a desktop (1,100 by 700 pixels), then the same dashboard on a phone.
 
-[[FIG:dash_beaten|report/figures/dashboard/app_models_beaten.png|Dashboard, Model comparison: how often each model's forecast was beaten (chart of the "How often each model was beaten" card)|Live dashboard, captured with Playwright (src/report_screens.py)|Phone screenshot of a horizontal bar chart of breaches per 100 days for each model, with a dashed ideal line at 1 and good, caution and poor labels with icons in a column to the right.|14.6]]
+[[LANDSCAPE]]
 
-[[MEANS]] Plain labels and icons, not only colour, show which models were beaten too often; the value labels sit in their own column so the ideal line never crosses them.
+[[FIG:desk_overview|report/figures/dashboard/desk_overview.png|Dashboard, Results at a glance tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Results at a glance tab with the one-line answer, input and level selectors, and summary cards.|25]]
 
-[[FIG:dash_fig14|report/figures/dashboard/app_regimes_fig14.png|Dashboard, Calm vs stressed days: share of each model's beaten days that fell on market-wide bad days (chart of the Figure 14 card)|Live dashboard, captured with Playwright (src/report_screens.py)|Phone screenshot of a bar chart of the share of beaten days on market-wide bad days for each model, all around a fifth, with the share of all days that were bad days labelled above the plot.|14.6]]
+[[SHOWS]] One screen with the headline numbers for any input set and level, for a manager who has two minutes.
 
-[[MEANS]] The chart that supports the stress-day cushion in Section 6.4 is the same one a risk committee sees on the dashboard.
+[[FIG:desk_models|report/figures/dashboard/desk_models.png|Dashboard, Model comparison tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Model comparison tab with the one-line answer and the top of the chart of how often each model was beaten.|25]]
 
-[[FIG:dash_fig3|report/figures/dashboard/app_stock_fig3.png|Dashboard, One stock up close: Reliance Industries, daily return against the GJR-t and XGBoost likely worst daily loss (chart of the Figure 3 card)|Live dashboard, captured with Playwright (src/report_screens.py)|Phone screenshot of a line chart of Reliance daily returns with two forecast lines below them, beaten days marked with crosses and triangles, and a dashed line at the 7 October 2026 rate rise.|14.6]]
+[[SHOWS]] How often each model was beaten, with good, caution and poor labels; the basis for choosing the model.
 
-[[MEANS]] Any user can see, stock by stock, the days on which each model's forecast was beaten.
+[[FIG:desk_regimes|report/figures/dashboard/desk_regimes.png|Dashboard, Calm vs stressed days tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Calm vs stressed days tab with the one-line answer and the market context chart.|25]]
 
-[[FIG:dash_live|report/figures/dashboard/app_live_table.png|Dashboard, Daily example: the banner and the top of the next-day table (the text between them is left out; the dashed line marks the break; on a phone the table scrolls sideways to more columns)|Live dashboard, captured with Playwright (src/report_screens.py)|Two stacked phone screenshots: an amber banner saying "Daily example only. This is not the report's results. It updates each weekday evening.", a dashed break, and the top of a table of next-day worst-loss estimates by stock.|14.6]]
+[[SHOWS]] When the models fail: on market-wide fall days, the case for the stress buffer.
 
-[[MEANS]] The daily example shows the recommended model running every evening; it is clearly labelled as separate from the frozen results in this report.
+[[FIG:desk_stock|report/figures/dashboard/desk_stock.png|Dashboard, One stock up close tab on a desktop screen|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the stock tab with selectors for stock, two models and level, time-range buttons and the stocks-to-watch list.|25]]
+
+[[SHOWS]] Any stock and two models, day by day, before a position limit is changed.
+
+[[FIG:desk_live|report/figures/dashboard/desk_live.png|Dashboard, Daily example tab on a desktop screen (live extension, not the report's results)|Live dashboard, captured with Playwright (src/report_screens.py)|Desktop screenshot of the Daily example tab with an amber banner saying it is not the report's results and the table of next-day worst-loss estimates by stock.|25]]
+
+[[SHOWS]] Tomorrow's likely worst loss for each stock, updated every weekday evening and clearly marked as separate from the report's frozen results.
+
+[[PORTRAIT]]
+
+[[PHONES:phones|report/figures/dashboard/phone_start.png|report/figures/dashboard/phone_models.png|report/figures/dashboard/phone_live.png|The same dashboard on a phone: Start here, Model comparison and Daily example|Live dashboard, captured with Playwright (src/report_screens.py)|Three phone screenshots side by side showing the first screen of the Start here, Model comparison and Daily example tabs, each with a menu button at the top.]]
+
+[[MEANS]] {{fig:phones}} shows the same tabs on a phone, with the menu folded behind a button. A manager can check tomorrow's limits from anywhere.

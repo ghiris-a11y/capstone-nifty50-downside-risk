@@ -514,6 +514,44 @@ def build():
                            f"Lowest mean FZ0 in Q4: {q4}; Q4 loss above Q1 loss for {'all' if (g['Q4 stressed'] > g['Q1 calm']).all() else 'some'} models", h3],
                           ["H4: India VIX and macro inputs improve ML forecasts over price/volume inputs",
                            f"Adding the VIX level moved 99% breach rates of {sum(not x for x in vix_better)} of 3 ML models further from 1%; helped on validation but not on test in {flip} of {len(rows)} cases; repo rate not used (file not fully verified); CPI and IIP excluded by design", h4]])
+    # ---------------------------------------------------------------- compact tables for the restructured report
+    FAMS = {"GARCH": "GARCH", "ML": "ML", "Benchmark": "Bench."}
+    T["bt"] = dict(caption="Backtest summary across 41 stocks. Breach = share of days the loss exceeded VaR (ideal 5% and 1%); pass and green = share of stocks",
+                   source="outputs/tables/summary_price.csv", family_col=0,
+                   head=["Model", "Family", "Breach 95%", "Breach 99%", "Kupiec pass 99%", "Basel green 99%", "Median FZ0 99%"],
+                   rows=[[m, FAMS[fam(m)], pct(s.loc[(m, 0.05)].exc_rate), pct(s.loc[(m, 0.01)].exc_rate), pct(s.loc[(m, 0.01)].pass_kupiec, 0),
+                          pct(s.loc[(m, 0.01)].green99, 0), f"{s.loc[(m, 0.01)].fz0_median_stocks:.3f}"] for m in ORDER])
+    for k_ in ("bt99", "bt95"):  # appendix versions with short labels
+        T[k_]["head"] = [{"Breach rate": "Breach", "Christ. CC pass": "Christ. pass", "Basel Green": "Basel green", "Mean FZ0": "Mean FZ0",
+                          "Median FZ0": "Median FZ0", "Actual/forecast ES": "ES ratio"}.get(h, h) for h in T[k_]["head"]]
+        T[k_]["rows"] = [[r_[0], FAMS.get(r_[1], r_[1])] + r_[2:] for r_ in T[k_]["rows"]]
+    # Appendix B: the backtest columns not shown in Chapter 5's summary table
+    T["bt_extra"] = dict(caption="Further backtest measures across 41 stocks (pass = share of stocks; ES ratio = real loss on miss days over forecast ES)",
+                         source="outputs/tables/summary_price.csv", family_col=0,
+                         head=["Model", "Kupiec pass 95%", "Christ. pass 95%", "Christ. pass 99%", "Mean FZ0 95%", "Mean FZ0 99%", "ES ratio 95%", "ES ratio 99%"],
+                         rows=[[m, pct(s.loc[(m, 0.05)].pass_kupiec, 0), pct(s.loc[(m, 0.05)].pass_cc, 0), pct(s.loc[(m, 0.01)].pass_cc, 0),
+                                f"{s.loc[(m, 0.05)].fz0:.3f}", f"{s.loc[(m, 0.01)].fz0:.2f}", f"{s.loc[(m, 0.05)].es_ratio:.3f}", f"{s.loc[(m, 0.01)].es_ratio:.3f}"]
+                               for m in ORDER])
+    # Appendix B: per-stock 99% breach rates summarised by model (full file linked in the text)
+    pb = b99.groupby("model").agg(med=("exc_rate", "median"), lo=("exc_rate", "min"), hi=("exc_rate", "max"),
+                                  above=("exc_rate", lambda x: int((x > 0.01).sum())), kfail=("kupiec_p", lambda x: int((x <= 0.05).sum()))).reindex(ORDER)
+    T["perstock_compact"] = dict(caption="99% breach rate per stock, summarised by model (41 stocks)", source="outputs/tables/backtest_results_price.csv",
+                                 family_col=0, head=["Model", "Median", "Lowest", "Highest", "Stocks above 1%", "Kupiec fails"],
+                                 rows=[[m, pct(r_.med), pct(r_.lo), pct(r_.hi), int(r_.above), int(r_.kfail)] for m, r_ in pb.iterrows()])
+    # Appendix C: return statistics by sector
+    ds = desc.groupby("sector").agg(stocks=("ticker", "count"), sd=("sd", "median"), skew=("skew", "median"), kurt=("kurt", "median"),
+                                    worst=("min", "min")).reset_index().sort_values("sd")
+    T["desc_sector"] = dict(caption="Daily return statistics by sector, test window (medians across the sector's stocks; worst day is the sector minimum)",
+                            source=src_desc, family_col=None, head=["Sector", "Stocks", "SD", "Skew", "Excess kurtosis", "Worst day"],
+                            rows=[[x.sector, int(x.stocks), pct(x.sd), f"{x.skew + 0.0:.2f}".replace("-0.00", "0.00"), f"{x.kurt:.1f}", pct(x.worst, 1)] for x in ds.itertuples()])
+    # Appendix D: GJR-t estimates across stocks
+    gq = gp[gp.model == "GJR-t"][["alpha", "gamma", "beta", "nu", "persistence"]].describe(percentiles=[0.25, 0.5, 0.75]).T
+    T["garch_compact"] = dict(caption="GJR-GARCH(1,1) with Student-t errors: estimates across the 41 stocks at the start of the test window",
+                              source=src_gp, family_col=None, head=["Parameter", "Lowest", "25th pct.", "Median", "75th pct.", "Highest"],
+                              rows=[[{"alpha": "alpha (reaction)", "gamma": "gamma (bad-news extra)", "beta": "beta (memory)", "nu": "nu (tail thickness)",
+                                      "persistence": "Persistence"}[k_], f"{v['min']:.3f}", f"{v['25%']:.3f}", f"{v['50%']:.3f}", f"{v['75%']:.3f}", f"{v['max']:.3f}"]
+                                    for k_, v in gq.iterrows()])
+
     # ---------------------------------------------------------------- monthly monitoring scorecard (Chapter 6)
     gr = s.loc[("GJR-t", 0.01)]
     n("gjrt_breaches_yr", f"{gr.exc_rate * 250:.1f}", src_s)
@@ -538,16 +576,16 @@ def build():
         source="src/report_numbers.py; the source file of each number is listed in outputs/tables/report/report_numbers.csv",
         head=["Finding", "Number (source)", "Business implication", "Chapter 6"], widths=[4, 5, 5, 1.6], small=True, family_col=None,
         rows=[
-            ["Student-t GARCH models were closest to the 1% breach rate", f"{v_('closest1')} {v_('closest1_exc')}, {v_('closest2')} {v_('closest2_exc')}, {v_('closest3')} {v_('closest3_exc')} (summary_price.csv)", "Use them for 99% limits, margins and capital", "6.1, 6.2"],
-            ["The ML models we tested were breached more often", f"XGBoost {v_('exc99_xgb')}, Random Forest {v_('exc99_rf')}, MLP {v_('exc99_mlp')}; about {v_('gap_xgb_gjrt_panel')} extra breaches a year across {v_('n_stocks')} stocks for XGBoost (summary_price.csv)", "Switching to ML would leave more days uncovered", "6.3, 6.6"],
-            ["Most score gaps could be luck; real gaps favour GARCH", f"GARCH better {v_('dm_g')}, ML better {v_('dm_m')}, no difference {v_('dm_n')} of {v_('dm_total')} pairs (diebold_mariano_price.csv)", "No case for replacing GARCH; ML only as a challenger", "6.3"],
-            ["XGBoost sometimes forecast no risk", f"{v_('norisk99_xgb')} stock-days at 99%; {v_('nr_stock')} mean FZ0 {v_('nr_fz0')} against median {v_('nr_fz0med')} (backtest_results_price.csv)", "Screen any ML model for zero-risk forecasts before use", "6.1.5, 6.9"],
-            ["Losses on the very bad days were bigger than forecast", f"Actual/forecast ES above 1 for {v_('n_es_above1')} of {v_('n_models')} models (summary_price.csv)", "Add a prudence margin to ES", "6.1.1"],
-            ["Breaches cluster on market-wide stress days", f"{v_('stress_share_days')} of days held {v_('stress_gjrt')} of GJR-t breaches; stress-day breach rate {v_('st_br_gjrt')} against {v_('ns_br_gjrt')}; 1% coverage needs about {v_('st_mult99')} times VaR (breach_days_price.csv, daily files)", "Keep a stress add-on sized from stress days", "6.4"],
-            ["A high India VIX the day before did not predict breaches", f"Top-quartile VIX (above {v_('vix_q4_edge')}) breach rate {v_('br_q4_gjrt')} against {v_('br_q13_gjrt')}; VIX inputs moved ML further from 1% (summary_price_vixlevel.csv)", "Use the VIX as an alert, not as a margin multiplier or paid input", "6.3, 6.4"],
-            ["Risk differs widely by sector", f"Median average 99% VaR from {v_('sec_low_var')} ({v_('sec_low')}) to {v_('sec_high_var')} ({v_('sec_high')}) (sector_summary_price.csv)", "Set margins and limits by sector, not one rate", "6.5"],
-            ["The money at stake is large", f"Average 99% VaR {v_('avg_var99')}: about Rs {v_('buffer_100cr')} crore per Rs 100 crore; ML family Rs {v_('buf_mlfam')} crore against Rs {v_('buf_tfam')} crore for Student-t GARCH (buffer_by_model.csv)", "ML sets aside less money and is breached more often", "6.6"],
-            ["The weeks after the October 2026 rate rise were calm for the models", f"{v_('ph_days')} trading days; 99% breach rate GJR-t {v_('ph_gjrt')}, XGBoost {v_('ph_xgb')} (post_hike_breaches_99.csv)", "Too short to judge; keep monthly monitoring", "6.7"],
+            ["Student-t GARCH models were closest to the 1% breach rate", f"{v_('closest1')} {v_('closest1_exc')}, {v_('closest2')} {v_('closest2_exc')}, {v_('closest3')} {v_('closest3_exc')} (summary_price.csv)", "Use them for 99% limits, margins and capital", "6.1"],
+            ["The ML models we tested were breached more often", f"XGBoost {v_('exc99_xgb')}, Random Forest {v_('exc99_rf')}, MLP {v_('exc99_mlp')}; about {v_('gap_xgb_gjrt_panel')} extra breaches a year across {v_('n_stocks')} stocks for XGBoost (summary_price.csv)", "Switching to ML would leave more days uncovered", "6.2, 6.5"],
+            ["Most score gaps could be luck; real gaps favour GARCH", f"GARCH better {v_('dm_g')}, ML better {v_('dm_m')}, no difference {v_('dm_n')} of {v_('dm_total')} pairs (diebold_mariano_price.csv)", "No case for replacing GARCH; ML only as a challenger", "6.2"],
+            ["XGBoost sometimes forecast no risk", f"{v_('norisk99_xgb')} stock-days at 99%; {v_('nr_stock')} mean FZ0 {v_('nr_fz0')} against median {v_('nr_fz0med')} (backtest_results_price.csv)", "Screen any ML model for zero-risk forecasts before use", "6.2, 6.8"],
+            ["Losses on the very bad days were bigger than forecast", f"Actual/forecast ES above 1 for {v_('n_es_above1')} of {v_('n_models')} models (summary_price.csv)", "Add a prudence margin to ES", "6.8"],
+            ["Breaches cluster on market-wide stress days", f"{v_('stress_share_days')} of days held {v_('stress_gjrt')} of GJR-t breaches; stress-day breach rate {v_('st_br_gjrt')} against {v_('ns_br_gjrt')}; 1% coverage needs about {v_('st_mult99')} times VaR (breach_days_price.csv, daily files)", "Keep a stress add-on sized from stress days", "6.3"],
+            ["A high India VIX the day before did not predict breaches", f"Top-quartile VIX (above {v_('vix_q4_edge')}) breach rate {v_('br_q4_gjrt')} against {v_('br_q13_gjrt')}; VIX inputs moved ML further from 1% (summary_price_vixlevel.csv)", "Use the VIX as an alert, not as a margin multiplier or paid input", "6.3"],
+            ["Risk differs widely by sector", f"Median average 99% VaR from {v_('sec_low_var')} ({v_('sec_low')}) to {v_('sec_high_var')} ({v_('sec_high')}) (sector_summary_price.csv)", "Set margins and limits by sector, not one rate", "6.4"],
+            ["The money at stake is large", f"Average 99% VaR {v_('avg_var99')}: about Rs {v_('buffer_100cr')} crore per Rs 100 crore; ML family Rs {v_('buf_mlfam')} crore against Rs {v_('buf_tfam')} crore for Student-t GARCH (buffer_by_model.csv)", "ML sets aside less money and is breached more often", "6.5"],
+            ["The weeks after the October 2026 rate rise were calm for the models", f"{v_('ph_days')} trading days; 99% breach rate GJR-t {v_('ph_gjrt')}, XGBoost {v_('ph_xgb')} (post_hike_breaches_99.csv)", "Too short to judge; keep monthly monitoring", "6.9"],
         ])
     return N, T
 

@@ -2,66 +2,63 @@
 
 ## 3.1 Research design
 
-The study is quantitative, empirical and ex post. It is designed as a forecasting competition that mirrors how a risk desk works: each model is fitted on past data only, it forecasts the next day's VaR and ES, and the forecast is later compared with what actually happened. The unit of analysis is a stock-day. {{fig:method_flow}} shows the seven stages, which follow the flowchart planned in Phase 1 (Appendix C of that report).
+The study is quantitative and uses past data only. It works like a forecasting contest that mirrors a risk desk. Each evening every model uses only what is known that day to forecast the next day's VaR and ES. The forecast is then compared with what happened. The unit of analysis is one stock on one day.
 
-[[FIG:method_flow|report/figures/v_method_flow.png|Research methodology flowchart|Author's design; implemented in nifty50_var_pipeline.py|Flowchart of seven stages from data acquisition through cleaning, feature engineering, GARCH modelling, ML modelling, backtesting and visualisation, with a feedback loop from evaluation to feature selection on the validation window.]]
+## 3.2 Sampling
 
-[[MEANS]] Every forecast is made the way it would have been made in real time, so the results show what a desk would actually have experienced, not what a model can explain after the fact.
+The population is the fifty Nifty 50 stocks of December 2025. The sample is purposive: it keeps every stock with daily prices since January 2015, so all models are judged on the same days (a balanced panel). Rules set before any model was run removed later listings and suspected price errors. The final sample is {{n_stocks}} stocks from {{n_sectors}} sectors. The panel keeps only firms that survived, so results describe established large caps.
 
-## 3.2 Sampling technique and sample size
+## 3.3 Time windows
 
-The sampling technique is purposive: the population is the fifty Nifty 50 constituents in December 2025, and the sample keeps every stock with a complete daily history from January 2015, so that all models are judged on the same days (a balanced panel). Stocks listed later, or whose price history showed a suspected unadjusted corporate action, were excluded by rules set before any model was run. The final sample is N = {{n_stocks}} stocks from {{n_sectors}} sectors (Chapter 4 gives the selection funnel). A balanced panel has a known bias: it keeps only firms that survived and stayed in the index, so results describe established large caps.
-
-## 3.3 Training, validation and test windows
-
-{{fig:timeline}} shows the time split. Models are trained on 2015 to 2021 and validated on 2022 to 2023; the test window, from 1 January 2024 to {{data_last}}, is never used for any choice. GARCH models are re-estimated every 20 trading days on all data up to that point; the machine-learning models are fitted once on 2015 to 2023 and then forecast the whole test window. To choose which market inputs the machine-learning models should use, a separate protocol trains on 2015 to 2019, calibrates on 2020 to 2021 and evaluates on 2022 to 2023; the choice was recorded on {{sel_time}} UTC, before the test results were produced. There is no shuffling across the train, validation and test periods; the only random split is the MLP's early-stopping holdout, a random 15% of the training block.
+{{fig:timeline}} shows the split. GARCH models are re-estimated every 20 trading days on all earlier data. The machine-learning models are fitted once on 2015 to 2023. The extra-input sets were chosen on 2022 to 2023 and the choice was recorded on {{sel_time}} UTC, before any test result existed. Nothing is shuffled across the three periods; the only random split is the MLP's 15% early-stopping sample inside the training years.
 
 [[FIG:timeline|report/figures/v_timeline.png|Train, validation and test windows, with the 7 October 2026 repo hike marked|Author's design; dates from the pipeline configuration and outputs/tables/validation/selected_variant.json|Timeline from 2015 to 2026 with training, validation and test bars for the main study and a second row for the feature-choice protocol; a dashed line marks the RBI repo hike on 7 October 2026.]]
 
-[[MEANS]] Because the test years were never used to tune anything, the results are an honest preview of how each model would behave going forward. The price of this honesty is that the machine-learning models are not refitted during the test, which Chapter 7 lists as a limitation.
+[[MEANS]] The test years were never used to tune anything. The results therefore preview how each model would behave in real use.
 
-## 3.4 Models
+## 3.4 Models and inputs
 
-- **GARCH family (six models).** GARCH(1,1), EGARCH(1,1) and GJR-GARCH(1,1), each with Normal and Student-t errors and a constant mean, estimated on percentage log returns.
-- **XGBoost quantile regression.** Six quantiles are forecast for each level (the VaR quantile and five deeper quantiles); VaR is the level quantile and ES is the mean of the deeper ones, with VaR floored at a tiny positive number and ES never below VaR.
-- **Random Forest and MLP.** Each forecasts the size of the next day's return; standardised validation residuals then give VaR and ES by filtered historical simulation.
-- **Historical simulation (benchmark).** The empirical quantile and tail mean of the last 250 returns.
+- **Six GARCH models:** GARCH, EGARCH and GJR-GARCH, each with Normal or Student-t errors.
+- **XGBoost:** forecasts the loss limit directly, plus five deeper points whose average gives ES.
+- **Random Forest and MLP:** forecast the size of tomorrow's move; past forecast errors then give VaR and ES (filtered historical simulation).
+- **Benchmark:** the loss limit and worst-day average of the last 250 days (historical simulation).
 
-Inputs for the machine-learning models are lagged returns, realised volatility over 10, 20 and 60 days, recent drawdown and volume changes, and, in labelled variants, the India VIX and the USD/INR exchange rate. Every input at day t uses information up to day t-1 only. Random seeds are fixed at 42.
+The machine-learning inputs are past returns, recent volatility, recent falls and volume changes. Labelled sets add the India VIX or USD/INR changes. Every input for day t uses data up to day t-1 only, and random seeds are fixed at 42.
 
-The inputs are market data only. CPI and IIP are excluded by design: they are monthly, released weeks late and revised afterwards, the pipeline has no stationary CPI feature, and they carry little information at a one-day horizon. The pipeline can add repo-rate changes over 21 and 63 days as a labelled input set; the repo-rate file dates each change on the RBI announcement date (lag 0). That file is not yet fully verified, and the loader skips any macro file with a blank or unverified row and records the skip in data/logs/macro_skipped.log, so no reported result uses it.
+## 3.5 How the forecasts are judged
 
-## 3.5 Evaluation
+- Miss rate: the share of days the loss exceeded VaR (ideal 5% at 95% and 1% at 99%).
+- Test of whether misses are too frequent (Kupiec test) and whether they come in clusters (Christoffersen test), per stock, at the 5% level.
+- Basel green zone, for 99% VaR only: the share of 250-day blocks with four or fewer misses.
+- Score for loss limit and worst-day loss together (FZ0 score), and a score for the loss limit alone (pinball score); lower is better.
+- Diebold-Mariano test: is one model's average score really lower, or could the gap be luck?
+- Splits by the previous day's India VIX and by market-wide fall days (Nifty 50 down 2% or more).
 
-Breach rates are compared with the nominal 5% and 1%. Kupiec's (1995) unconditional coverage test and Christoffersen's (1998) independence and conditional coverage tests are applied per stock at the 5% significance level. Basel traffic-light zones are reported for 99% VaR only, as the share of non-overlapping 250-day windows with four or fewer breaches. Forecast quality is scored with FZ0 (VaR and ES together) and pinball loss (VaR), and Diebold-Mariano tests with a five-lag long-run variance compare each machine-learning model with each GARCH model, stock by stock. Results are also split by quartile of the previous day's India VIX and by market-wide stress days, defined in advance as days on which the Nifty 50 fell 2% or more.
-
-## 3.6 Changes from the Phase 1 plan
-
-{{tab:changes}} lists every change from the Phase 1 plan, each checked against the code, with the reason.
-
-[[MDTABLE:changes|Changes from the Phase 1 plan|nifty50_var_pipeline.py, config/universe.csv, src/, frontend/]]
-| Area | Phase 1 plan | Phase 2 (as built) | Reason |
-|---|---|---|---|
-| Sample | All {{n_cand}} Nifty 50 stocks | {{n_stocks}}-stock balanced panel | {{n_excl_late}} later listings and {{n_excl_ca}} suspected corporate-action errors removed so every stock has the same history |
-| Test window | Shorter window | 1 January 2024 to {{data_last}} | Extended to cover the 7 October 2026 repo hike |
-| ML target | Rolling-quantile target | Next-day return; 250-day historical simulation as a benchmark | A rolling quantile is itself a model; the real return is what VaR must cover |
-| Basel zones | 95% and 99% | 99% only | The traffic light is defined for 99% VaR |
-| Inputs | Technical indicators, Nifty lags, return × repo-rate interaction | Not built; labelled input sets instead | Keeps each input set small and testable; no verified repo-rate series |
-| ML task and scoring | Classifiers; RMSE and MAE | Quantile and volatility models; pinball and FZ0 losses | VaR and ES are tail measures, which RMSE and MAE do not score |
-| Tuning and selection | Cross-validated tuning; AIC/BIC choice of GARCH | Fixed hyperparameters; all six GARCH specifications reported | Avoids tuning on shuffled folds and shows every specification |
-| MLP regularisation | Dropout | L2 penalty | The scikit-learn MLP has no dropout; the L2 penalty plays the same role |
-| GARCH re-estimation | Quarterly | Every 20 trading days | Closer to desk practice and cheap to run |
-| Deep learning | LSTM | Not done | Simpler ML models did not beat GARCH, so a costlier model was not justified in the time available |
-| Dashboard | Power BI | Static React site on GitHub Pages, updated each weekday | Free, public and automated |
-| Macro inputs | CPI and IIP | Excluded by design | Monthly, released late and revised; little information at a one-day horizon |
-| Exchange rate | Not specified | USD/INR from Yahoo Finance (INR=X) | Same source and calendar as the stock prices |
-
-[[MEANS]] Every change keeps the comparison fair and closer to how a risk desk works. None was made after seeing the test results.
-
-## 3.7 Techniques and why they were chosen
-
-{{fig:techniques}} lists every technique, why it was chosen and which question it answers.
+## 3.6 Techniques and why they were chosen
 
 [[FIG:techniques|report/figures/v_techniques.png|Techniques used in the study, why they were chosen and what they answer|Author's design|Table-style graphic with three columns: technique, reason for choosing it, and the research question it answers, for ten techniques from GARCH models to SHAP values.]]
 
-[[MEANS]] Each test answers a question a risk manager would ask: does the model fail too often, do failures bunch together, would a regulator accept it, and is any advantage real or luck.
+{{fig:techniques}} links each technique to the question it answers.
+
+## 3.7 Changes from the Phase 1 plan
+
+{{tab:changes}} lists each change, checked against the code.
+
+[[MDTABLE:changes|Changes from the Phase 1 plan|nifty50_var_pipeline.py, config/universe.csv, src/, frontend/]]
+| Area | Phase 1 plan | As built | Reason |
+|---|---|---|---|
+| Sample | All {{n_cand}} stocks | {{n_stocks}}-stock balanced panel | {{n_excl_late}} later listings, {{n_excl_ca}} price errors removed |
+| Test window | Shorter | To {{data_last}} | Covers the October 2026 hike |
+| ML target | Rolling quantile | Next-day return; historical simulation as benchmark | VaR must cover the real return |
+| Basel zones | 95% and 99% | 99% only | The traffic light is defined at 99% |
+| Inputs | Indicators, Nifty lags, return × repo term | Not built; labelled input sets | Small, testable input sets |
+| Scoring | Classifiers; RMSE, MAE | Quantile and volatility models; pinball, FZ0 | VaR and ES are tail measures |
+| Tuning | Cross-validation; AIC/BIC choice | Fixed settings; all six GARCH reported | No tuning on shuffled data |
+| MLP | Dropout | L2 penalty | scikit-learn's MLP has no dropout |
+| GARCH refit | Quarterly | Every 20 trading days | Closer to desk practice |
+| Deep learning | LSTM | Not done | Simpler ML did not beat GARCH |
+| Dashboard | Power BI | React site on GitHub Pages | Free, public, updated daily |
+| Monthly data | CPI and IIP | Left out on purpose | Monthly, late and revised |
+| Exchange rate | Not specified | USD/INR from Yahoo Finance | Same source as prices |
+
+[[MEANS]] Every change keeps the contest fair and closer to how a desk works. None was made after seeing test results.
