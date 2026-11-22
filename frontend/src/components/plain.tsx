@@ -5,16 +5,16 @@ import { COLOURS } from "../lib/data";
 // One-line takeaway shown at the top of every tab.
 export function Takeaway({ children }: { children: ReactNode }) {
   return (
-    <div className="mb-6 rounded-lg border-l-8 border-slate-800 bg-slate-50 px-4 py-3" data-read>
-      <div className="text-sm font-semibold uppercase tracking-wide text-slate-500">In one line</div>
-      <p className="mt-1 font-serif text-2xl font-bold leading-snug text-slate-900">{children}</p>
+    <div className="card mb-8 border-l-4 border-l-navy-900 px-5 py-4" data-read>
+      <div className="text-[13px] font-medium uppercase tracking-wide text-slate-500">In one line</div>
+      <p className="mt-1 text-[20px] font-bold leading-snug tracking-[-0.3px] text-navy-900 sm:text-[24px]">{children}</p>
     </div>
   );
 }
 
 export function HowToRead({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-2 text-base text-slate-700" data-read>
+    <p className="mb-2 text-[15px] text-slate-700" data-read>
       <span className="font-semibold">How to read this: </span>{children}
     </p>
   );
@@ -22,9 +22,9 @@ export function HowToRead({ children }: { children: ReactNode }) {
 
 export function Means({ children }: { children: ReactNode }) {
   return (
-    <div className="mt-2 rounded-lg border border-slate-300 bg-white px-4 py-3" data-read>
-      <div className="text-sm font-semibold uppercase tracking-wide text-slate-600">What this means</div>
-      <p className="mt-1 text-base leading-relaxed text-slate-900">{children}</p>
+    <div className="mt-4 rounded-lg bg-page px-4 py-3" data-read>
+      <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">What this means</div>
+      <p className="mt-1 text-[15px] leading-relaxed text-slate-900">{children}</p>
     </div>
   );
 }
@@ -33,7 +33,7 @@ export function Means({ children }: { children: ReactNode }) {
 export function Tech({ k, children }: { k?: string; children?: ReactNode }) {
   const t = k ? term(k) : null;
   return (
-    <span className="mt-0.5 block text-xs text-slate-500" title={t?.define}>
+    <span className="mt-1 block text-xs text-slate-500" title={t?.define}>
       Technical term: {children ?? t?.tech}
     </span>
   );
@@ -54,9 +54,9 @@ export function Label({ k }: { k: string }) {
 // Technical detail kept out of the main view.
 export function Experts({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <details className="mb-6 rounded-lg border border-slate-300 bg-slate-50">
-      <summary className="cursor-pointer select-none px-4 py-2 font-semibold text-slate-700">For experts: {title}</summary>
-      <div className="border-t border-slate-200 bg-white p-3">{children}</div>
+    <details className="card mb-6">
+      <summary className="cursor-pointer select-none px-5 py-3 text-[15px] font-semibold text-navy-900">For experts: {title}</summary>
+      <div className="border-t border-line p-3">{children}</div>
     </details>
   );
 }

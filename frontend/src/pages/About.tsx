@@ -24,6 +24,16 @@ export default function About() {
         </ul>
       </Section>
       <Limits />
+      <Experts title="design credits">
+        <div className="max-w-3xl space-y-2 p-2 text-[15px]">
+          <p>The page layout borrows ideas from two free Figma Community files. We copied no images, logos, brand names or text.</p>
+          <ul className="list-disc space-y-1 pl-6">
+            <li><a className="font-medium text-navy-900 underline" href="https://www.figma.com/design/3c5zWpbNciVkRL6YMIsbgg/">Trading Stock Market Dashboard Platform UI Kit</a> (Figma Community): side menu, card rows, stock list and table.</li>
+            <li><a className="font-medium text-navy-900 underline" href="https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/">Minimal &amp; modern report template for brand insights and marketing dashboards</a> (Figma Community): chart cards with big numbers and notes.</li>
+          </ul>
+          <p className="text-sm text-slate-600">Figma Community files are usually shared under the CC BY 4.0 licence. We could not open the licence notes on the two pages, so this is not yet checked.</p>
+        </div>
+      </Experts>
       <Experts title="method in technical terms">
       <Section title="Method">
         <ul className="list-disc space-y-1 pl-6 text-slate-800">

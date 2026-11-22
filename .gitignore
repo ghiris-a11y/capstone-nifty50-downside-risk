@@ -50,3 +50,6 @@ report/page_previews/
 # Demo-mode outputs written to the outputs/ root by --demo
 outputs/*_vix_macro.csv
 report/figures/_trimmed/
+
+# third-party Figma reference screenshots (licence not confirmed): keep local only
+design/figma/*.png

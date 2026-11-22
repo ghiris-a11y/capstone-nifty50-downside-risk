@@ -2,6 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import App from "./App";
+import { StoreProvider } from "./lib/store";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/400-italic.css";
 import "./index.css";
 
 // HashRouter: GitHub Pages has no server-side routing, so page paths live after '#'
@@ -9,7 +15,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <HashRouter>
-      <App />
+      <StoreProvider>
+        <App />
+      </StoreProvider>
     </HashRouter>
   </React.StrictMode>,
 );

@@ -103,6 +103,15 @@ update, and whenever dashboard code is pushed. The Action never commits dashboar
 regenerated inside the build. The app uses `HashRouter` and relative `./data/...` paths, and Vite `base` is
 `/capstone-nifty50-downside-risk/`.
 
+**Design credits.** The dashboard layout (side menu, KPI card row, stock list and table, chart cards led by a big
+number with a short note) borrows ideas from two Figma Community files:
+[Trading Stock Market Dashboard Platform UI Kit](https://www.figma.com/design/3c5zWpbNciVkRL6YMIsbgg/) and
+[Minimal & modern report template for brand insights and marketing dashboards](https://www.figma.com/design/o8Yeuw8XFrj9Oxt2TkYOLt/).
+No images, logos, brand names or text were copied. Figma Community files are usually shared under CC BY 4.0; the
+licence notes on the two pages could not be opened, so this is not yet checked. Reference screenshots are in
+`design/figma/`, and notes are in `design/figma_notes.md`. Font: Inter (bundled with `@fontsource/inter`, SIL Open
+Font License).
+
 ## Phase 2 report (Word and PDF)
 
 Every number in the report is a `{{key}}` placeholder in `report/chapters/*.md`, filled from `outputs/` by

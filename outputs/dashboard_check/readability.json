@@ -5,9 +5,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.7,
-   "flesch_reading_ease": 82.3,
-   "words": 237,
+   "fk_grade": 3.6,
+   "flesch_reading_ease": 83.6,
+   "words": 268,
    "above_9": [
     "A student project at ITM Skills University."
    ],
@@ -17,9 +17,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 2.9,
-   "flesch_reading_ease": 88.3,
-   "words": 251,
+   "fk_grade": 4.0,
+   "flesch_reading_ease": 83.8,
+   "words": 166,
    "above_9": [
     "A student project at ITM Skills University.",
     "The machine-learning models were beaten more often."
@@ -30,9 +30,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 4.1,
-   "flesch_reading_ease": 86.0,
-   "words": 578,
+   "fk_grade": 4.0,
+   "flesch_reading_ease": 86.5,
+   "words": 568,
    "above_9": [
     "A student project at ITM Skills University."
    ],
@@ -42,9 +42,9 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 3.7,
-   "flesch_reading_ease": 88.5,
-   "words": 352,
+   "fk_grade": 3.2,
+   "flesch_reading_ease": 90.8,
+   "words": 393,
    "above_9": [
     "A student project at ITM Skills University."
    ],
@@ -54,12 +54,13 @@
    "overflow_px_phone": 0,
    "console_errors": [],
    "overflow_px_laptop": 0,
-   "fk_grade": 4.0,
-   "flesch_reading_ease": 84.2,
-   "words": 366,
+   "fk_grade": 3.8,
+   "flesch_reading_ease": 85.1,
+   "words": 410,
    "above_9": [
     "A student project at ITM Skills University.",
-    "Reliance Industries: forecast against real loss."
+    "Reliance Industries: forecast against real loss.",
+    "Average likely worst daily loss from GJR-t over the test period, and how often it was beaten."
    ],
    "overflow_px_projector": 0
   },
@@ -68,8 +69,8 @@
    "console_errors": [],
    "overflow_px_laptop": 0,
    "fk_grade": 3.6,
-   "flesch_reading_ease": 82.6,
-   "words": 228,
+   "flesch_reading_ease": 82.8,
+   "words": 226,
    "above_9": [
     "A student project at ITM Skills University."
    ],
