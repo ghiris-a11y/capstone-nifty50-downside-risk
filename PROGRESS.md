@@ -1,6 +1,6 @@
 # PROGRESS
 
-Last updated: 2026-11-22 (analysis-first report, actionable dashboard, P10 QA). Read this file, CLAUDE.md, PROJECT_PLAN.md and HANDOFF.md to resume in a fresh session.
+Last updated: 2026-11-22 (report restructured to 48 pages; interest-rate sections pending). Read this file, CLAUDE.md, PROJECT_PLAN.md and HANDOFF.md to resume in a fresh session.
 
 ## Status by phase (PROJECT_PLAN.md section 3)
 
@@ -10,19 +10,20 @@ Last updated: 2026-11-22 (analysis-first report, actionable dashboard, P10 QA). 
 | B Data, frozen snapshot, Action | P2, P3 | Done. 41-stock panel; `data/frozen/` hashed and untouched since P2; daily Action runs on weekdays at 13:30 UTC. |
 | C Full run | P4 | Done for 5 labelled market-data sets (price, VIX level, VIX relative, USD/INR changes, both). Interest rates not run, because `data/raw/repo_rate.csv` is not fully verified (Path B). CPI and IIP are excluded by design. |
 | D Figures, dashboard, chapters | P5-P8 | Done. Dashboard: https://ghiris-a11y.github.io/capstone-nifty50-downside-risk/ (redesign plus "What a firm should do" cards; mobile-checked in Chromium and WebKit at 360-480 px and in landscape; Flesch-Kincaid grade 3.0-4.0). |
-| E Assembly and QA | P9, P10 | Done. `report/Phase2_Report.docx` and `.pdf`: 73 pages, local only (ITM logo). `QA_report.md` is clean. |
+| E Assembly and QA | P9, P10 | Done. `report/Phase2_Report.docx` and `.pdf`: 48 pages after the restructure, local only (ITM logo). `QA_report.md` is clean. |
 
 ## Report build (in order; use `.venv\Scripts\python.exe`)
 1. `src/report_numbers.py`: 373 numbers and 23 tables, logged in `outputs/tables/report/report_numbers.csv`.
 2. `src/make_report_visuals.py`
-3. `src/report_screens.py`: Appendix G, from the live site, 480 px, device scale 4. It logs the smallest printed text (10.8-16.3 pt) to `report/figures/dashboard/app_sizes.json`.
+3. `src/report_screens.py --mode all`: desktop first screens (1100 x 700, scale 3, cropped to 560 px high), phone first screens (390 x 844, scale 3) and the QR code, from the live site. Printed body-text sizes go to `report/figures/dashboard/screen_sizes.json`.
 4. `src/build_report.py`: DOCX and `report/qa_phase2.md`.
 5. `src/export_pdf.py`
-6. `src/report_pages.py --pages 40,47,50,68,69,70,71,72,73`
+6. `src/report_pages.py`, `src/report_layout_check.py` (pages under 40% filled, words split in tables, PDF links) and `src/report_readability.py`.
 
-Pages: front matter 8; chapters 1-9: 65.
-- Chapters 5-6: 31 pages, 48% of chapters 1-9, or 61% of chapters 1-7.
-- Chapters 1-3: 12 pages, 18% of chapters 1-9.
+Pages (restructure, 2026-11-22): 48 in total (front matter 6; chapters 1-9: 42).
+- Chapters 5-6: 18 pages, 43% of chapters 1-9, or 60% of chapters 1-7. Chapters 1-3: 9 pages (21%).
+- Only one page is under 40% filled (page 4, the end of the contents). Words split in tables: 0. The dashboard link is clickable on pages 9, 35 and 42.
+- Readability: every chapter averages 9-15 words per sentence, with none over 30; reading ease is 65-76 (before: 47-70). See `report/readability_before.json` and `report/readability_after.json`.
 
 ## Checks
 - `python -m pytest -q`: 25 passed.
@@ -49,6 +50,16 @@ Pages: front matter 8; chapters 1-9: 65.
   - **P10 QA (3b0de80):**
     - the 2-ticker rerun matches (backtest and regime files byte-identical; daily and DM files within 1e-16; no decision changes);
     - manifest hashes match; no ticker has fewer than 500 test days and no fit failed.
+
+## Interest-rate (macro) sections still to write (once Path A is decided)
+They were left out of the restructured text on purpose, so the result can be written in once:
+- Chapter 1 scope: a bullet on interest rates.
+- Chapter 3.4: repo rate dated on the RBI announcement date (lag 0); `load_macro` skips unverified files.
+- Chapter 4.1 sources table: a repo-rate row citing RBI Handbook Table 43 (2025); add that reference to Chapter 8.
+- Chapter 5: a post-hike view per model (table `posthike` exists), plus the `price_vixrel_fxchg_repo` row in the input-set table.
+- Chapter 6.3 and 6.8: what the rate result means for the VIX alert and for rate-cycle risk.
+- Chapter 7: the RQ4 sentence and a limitation; H4 wording in `src/report_numbers.py`.
+- Dashboard: the macro note is written by `src/export_dashboard_json.py` and switches automatically once a verified repo run exists.
 
 ## Open items (need the user)
 1. **Interest rates.** Verify `data/raw/repo_rate.csv` row by row and fill the 13 blank rows, then set every status to VERIFIED.

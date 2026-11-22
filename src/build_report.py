@@ -200,7 +200,7 @@ def cover(doc):
     t = doc.add_table(rows=len(rows), cols=4); t.alignment = WD_TABLE_ALIGNMENT.CENTER
     for i, r in enumerate(rows):
         for j, v in enumerate(r):
-            c = t.cell(i, j); c.width = Cm([4.2, 4.0, 4.2, 4.0][j])
+            c = t.cell(i, j); c.width = Cm([3.6, 4.2, 3.4, 5.2][j])
             par = c.paragraphs[0]; par.paragraph_format.space_after = Pt(2)
             set_font(par.add_run(v), 12, bold=j in (0, 2))
     doc.add_paragraph()
@@ -292,6 +292,8 @@ def col_widths(head, rows, avail):
     tot_min = sum(mins)
     if tot_min > avail:
         return None, tot_min
+    if sum(prefs) <= avail:   # fits at natural width: no stretching, so columns stay even (table is centred)
+        return prefs, tot_min
     extra = avail - tot_min
     want = [max(p - m, 0) for p, m in zip(prefs, mins)]
     sw = sum(want)
@@ -318,7 +320,9 @@ def short_caption(cap):
     w = s.split()
     if len(w) > 12:
         s = " ".join(w[:12])
-        s = re.sub(r"[,;:(]+$", "", s) + "…"
+        if s.count("(") > s.count(")"):   # do not leave a bracket open in the list entry
+            s = s[:s.rfind("(")]
+        s = re.sub(r"[\s,;:(]+$", "", s) + "…"
     return s
 
 
@@ -397,6 +401,11 @@ def add_table(doc, number, caption, source, head, rows, widths=None, family_col=
     grid = tb._tbl.tblGrid
     for j, gc in enumerate(grid.findall(qn("w:gridCol"))):
         gc.set(qn("w:w"), str(int(w[j] / 2.54 * 1440)))
+    if len(rows) <= 16:   # short tables stay on one page with their caption (no orphaned first rows)
+        for row in tb.rows[:-1]:
+            for c in row.cells:
+                for par in c.paragraphs:
+                    keep_next(par)
     for row in tb.rows:
         cs = OxmlElement("w:cantSplit"); row._tr.get_or_add_trPr().append(cs)
         for j, c in enumerate(row.cells):

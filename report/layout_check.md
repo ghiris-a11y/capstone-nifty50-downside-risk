@@ -5,8 +5,6 @@
 | Page | Fill | Note |
 |---|---|---|
 | 4 | 11% | front matter |
-| 15 | 16% | chapter end |
-| 31 | 5% | chapter end |
 
 ## Words split across lines in tables: 0
 

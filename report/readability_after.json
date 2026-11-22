@@ -1,0 +1,74 @@
+{
+ "01": {
+  "sentences": 48,
+  "avg_words": 15.0,
+  "max_words": 28,
+  "over_30": 0,
+  "reading_ease": 65.1,
+  "banned": [],
+  "longest": []
+ },
+ "02": {
+  "sentences": 34,
+  "avg_words": 14.6,
+  "max_words": 30,
+  "over_30": 0,
+  "reading_ease": 66.7,
+  "banned": [],
+  "longest": []
+ },
+ "03": {
+  "sentences": 34,
+  "avg_words": 14.1,
+  "max_words": 26,
+  "over_30": 0,
+  "reading_ease": 67.6,
+  "banned": [],
+  "longest": []
+ },
+ "04": {
+  "sentences": 21,
+  "avg_words": 13.0,
+  "max_words": 24,
+  "over_30": 0,
+  "reading_ease": 73.4,
+  "banned": [],
+  "longest": []
+ },
+ "05": {
+  "sentences": 73,
+  "avg_words": 14.7,
+  "max_words": 26,
+  "over_30": 0,
+  "reading_ease": 76.3,
+  "banned": [],
+  "longest": []
+ },
+ "06": {
+  "sentences": 43,
+  "avg_words": 14.2,
+  "max_words": 25,
+  "over_30": 0,
+  "reading_ease": 71.3,
+  "banned": [],
+  "longest": []
+ },
+ "07": {
+  "sentences": 32,
+  "avg_words": 8.7,
+  "max_words": 21,
+  "over_30": 0,
+  "reading_ease": 66.5,
+  "banned": [],
+  "longest": []
+ },
+ "09": {
+  "sentences": 28,
+  "avg_words": 12.4,
+  "max_words": 25,
+  "over_30": 0,
+  "reading_ease": 67.6,
+  "banned": [],
+  "longest": []
+ }
+}
