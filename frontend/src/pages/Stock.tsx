@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Figure, { chartFont, isPhone, type FigJson } from "../components/Figure";
-import Plot from "../components/Plot";
+import Plot, { useNearScreen } from "../components/Plot";
 import { Empty, ErrorBox, Loading, Pills, Section, Select, StockBadge, Table } from "../components/ui";
 import { Experts, HowToRead, Means, ModelName, Status, Takeaway } from "../components/plain";
 import { COLOURS, fetchJson, GARCH, ML, num, ORDER, pct, useJson, type BacktestRow, type Meta } from "../lib/data";
@@ -77,6 +77,7 @@ function useAllDaily(tickers: string[]) {
         part.forEach((d, j) => { if (d) out[tickers[i + j]] = d; });
         if (!alive) return;
         setState({ ...out });
+        await new Promise((r) => setTimeout(r, 30));   // let clicks and scrolling through between batches
       }
     })();
     return () => { alive = false; };
@@ -95,7 +96,9 @@ export default function Stock() {
   const [range, setRange] = useState<Range>("All");
   const [sector, setSector] = useState("all");
   const daily = useJson<Daily>(file(ticker));
-  const allDaily = useAllDaily(useMemo(() => (stocks.data || []).map((s) => s.ticker), [stocks.data]));
+  // the all-stocks table needs every stock's daily file (about 3 MB): load them only when the table comes into view
+  const [tableRef, tableNear] = useNearScreen<HTMLDivElement>();
+  const allDaily = useAllDaily(useMemo(() => (tableNear ? (stocks.data || []).map((s) => s.ticker) : []), [stocks.data, tableNear]));
   const phone = isPhone();
 
   const hike = meta.data?.hike_date;
@@ -291,13 +294,13 @@ export default function Stock() {
       </Experts>
 
       <Section title="All stocks">
-        <div className="card p-4 sm:p-6">
+        <div ref={tableRef} className="card p-4 sm:p-6">
           <p className="mb-3 text-[15px] text-slate-700" data-read>
             Average likely worst daily loss from {mA} over the test period, and how often it was beaten. Click a row to see that stock.
           </p>
           <Pills label="Sector" value={sector} onChange={setSector}
             options={[{ value: "all", label: "All sectors" }, ...sectors.map((s) => ({ value: s, label: s }))]} />
-          {!loadedAll && <div className="mt-4"><Loading what="stock table" /></div>}
+          {!loadedAll && <div className="card mt-4 p-6 text-slate-500">The table fills in as you scroll here ({Object.keys(allDaily).length} of {stocks.data?.length ?? 0} stocks ready).</div>}
           {loadedAll && (
             <div className="mt-4 overflow-x-auto">
               <table className="w-full text-sm">

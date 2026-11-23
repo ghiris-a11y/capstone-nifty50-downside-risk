@@ -119,6 +119,9 @@ def main():
                 for name, frag in tabs:
                     page.goto(a.url + frag, wait_until="load")
                     page.wait_for_function("!document.body.innerText.includes('Loading')", timeout=90000)
+                    # charts draw only when scrolled near the screen: scroll through the page first, then check
+                    page.evaluate("""async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) {
+                        window.scrollTo(0, y); await new Promise(r => setTimeout(r, 120)); } window.scrollTo(0, 0); }""")
                     page.wait_for_timeout(2500)
                     r = page.evaluate(CHECK)
                     if a.shots == "all" or a.shots == eng:
