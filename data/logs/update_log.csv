@@ -1845,3 +1845,91 @@ run_utc,ticker,level,new_rows,message
 2026-11-24 01:07:18,^INDIAVIX,ok,0,stored 1600 rows to 2026-11-20; appended 0
 2026-11-24 01:07:18,INR=X,flag,1,adj_close changed by more than 0.5% on overlap days (possible corporate action or re-adjustment): 2026-11-20 92.6600->93.2950
 2026-11-24 01:07:18,INR=X,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ADANIPORTS.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ADANIPORTS.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,APOLLOHOSP.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,APOLLOHOSP.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ASIANPAINT.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ASIANPAINT.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,AXISBANK.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,AXISBANK.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,BAJAJ-AUTO.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,BAJAJ-AUTO.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,BAJFINANCE.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,BAJFINANCE.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,BAJAJFINSV.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,BAJAJFINSV.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,BEL.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,BEL.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,BHARTIARTL.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,BHARTIARTL.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,CIPLA.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,CIPLA.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,COALINDIA.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,COALINDIA.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,DRREDDY.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,DRREDDY.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,EICHERMOT.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,EICHERMOT.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,GRASIM.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,GRASIM.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,HCLTECH.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,HCLTECH.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,HDFCBANK.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,HDFCBANK.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,HINDALCO.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,HINDALCO.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,HINDUNILVR.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,HINDUNILVR.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ICICIBANK.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ICICIBANK.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,INFY.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,INFY.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ITC.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ITC.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,JSWSTEEL.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,JSWSTEEL.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,KOTAKBANK.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,KOTAKBANK.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,LT.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,LT.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,M&M.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,M&M.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,MARUTI.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,MARUTI.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,NESTLEIND.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,NESTLEIND.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,NTPC.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,NTPC.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ONGC.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ONGC.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,POWERGRID.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,POWERGRID.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,RELIANCE.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,RELIANCE.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,SBIN.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,SBIN.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,SHRIRAMFIN.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,SHRIRAMFIN.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,SUNPHARMA.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,SUNPHARMA.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,TATACONSUM.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,TATACONSUM.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,TATASTEEL.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,TATASTEEL.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,TCS.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,TCS.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,TECHM.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,TECHM.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,TITAN.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,TITAN.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,ULTRACEMCO.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,ULTRACEMCO.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,WIPRO.NS,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,WIPRO.NS,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,^NSEI,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,^NSEI,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,^INDIAVIX,info,1,overlap check passed on 5 days
+2026-11-24 23:11:55,^INDIAVIX,ok,1,stored 1600 rows to 2026-11-20; appended 1
+2026-11-24 23:11:55,INR=X,flag,1,adj_close changed by more than 0.5% on overlap days (possible corporate action or re-adjustment): 2026-11-20 92.6600->93.2950
+2026-11-24 23:11:55,INR=X,ok,1,stored 1600 rows to 2026-11-23; appended 1
