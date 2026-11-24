@@ -18,7 +18,7 @@ India's shares trade on two national exchanges, the NSE and BSE, under the regul
 
 {{fig:market_structure}} shows where a one-day loss forecast is used. Clearing corporations set margins from a VaR-based charge (NSE, n.d.-a). Funds use it for position limits, and banks hold capital against market risk under Basel rules (Basel Committee on Banking Supervision [BCBS], 2019).
 
-[[FIG:market_structure|report/figures/v_market_structure.png|Indian equity market structure and the uses of VaR and Expected Shortfall|Author's diagram based on NSE (n.d.-a) and BCBS (2019)|Diagram showing SEBI and RBI at the top, NSE and NSE Clearing below them, four groups of market participants, and four uses of VaR and ES: margins, limits, capital and investor communication.]]
+[[FIG:market_structure|report/figures/redrawn/image2.png|Indian equity market structure and the uses of VaR and Expected Shortfall|Author's diagram based on NSE (n.d.-a) and BCBS (2019)|Diagram showing SEBI and RBI at the top, NSE and NSE Clearing below them, four groups of market participants, and four uses of VaR and ES: margins, limits, capital and investor communication.|15.5]]
 
 [[MEANS]] A loss forecast decides how much cash a broker collects, how large a fund's positions can be and how much capital a bank holds. Too low, and the firm is short on the worst days. Too high, and money sits idle.
 
@@ -34,7 +34,7 @@ On 7 October 2026 the RBI's Monetary Policy Committee raised the repo rate by 25
 
 {{fig:swot}} sums up the position of a firm that wants to manage the downside of Indian large caps.
 
-[[FIG:swot|report/figures/v_swot.png|SWOT analysis of downside-risk management in Indian equities|Author's analysis; the strength and threat items that refer to this study come from Chapter 5|Two-by-two grid of strengths, weaknesses, opportunities and threats for downside-risk management in Indian equities.]]
+[[FIG:swot|report/figures/redrawn/image3.png|SWOT analysis of downside-risk management in Indian equities|Author's analysis; the strength and threat items that refer to this study come from Chapter 5|Two-by-two grid of strengths, weaknesses, opportunities and threats for downside-risk management in Indian equities.|15.5]]
 
 [[MEANS]] The opportunity is a cheap daily risk process built on free data. The main threat is the day many stocks fall together. A firm should build the process and plan for those days.
 

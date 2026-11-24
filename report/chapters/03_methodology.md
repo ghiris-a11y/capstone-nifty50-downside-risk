@@ -12,7 +12,7 @@ The population is the fifty Nifty 50 stocks of December 2025. The sample is purp
 
 {{fig:timeline}} shows the split. GARCH models are re-estimated every 20 trading days on all earlier data. The machine-learning models are fitted once on 2015 to 2023. The extra-input sets were chosen on 2022 to 2023 and the choice was recorded on {{sel_time}} UTC, before any test result existed. Nothing is shuffled across the three periods; the only random split is the MLP's 15% early-stopping sample inside the training years.
 
-[[FIG:timeline|report/figures/v_timeline.png|Train, validation and test windows, with the 7 October 2026 repo hike marked|Author's design; dates from the pipeline configuration and outputs/tables/validation/selected_variant.json|Timeline from 2015 to 2026 with training, validation and test bars for the main study and a second row for the feature-choice protocol; a dashed line marks the RBI repo hike on 7 October 2026.]]
+[[FIG:timeline|report/figures/redrawn/image4.png|Train, validation and test windows, with the 7 October 2026 repo hike marked|Author's design; dates from the pipeline configuration and outputs/tables/validation/selected_variant.json|Timeline from 2015 to 2026 with training, validation and test bars for the main study and a second row for the feature-choice protocol; a dashed line marks the RBI repo hike on 7 October 2026.|15.5]]
 
 [[MEANS]] The test years were never used to tune anything. The results therefore preview how each model would behave in real use.
 
@@ -36,7 +36,7 @@ The machine-learning inputs are past returns, recent volatility, recent falls an
 
 ## 3.6 Techniques and why they were chosen
 
-[[FIG:techniques|report/figures/v_techniques.png|Techniques used in the study, why they were chosen and what they answer|Author's design|Table-style graphic with three columns: technique, reason for choosing it, and the research question it answers, for ten techniques from GARCH models to SHAP values.]]
+[[FIG:techniques|report/figures/redrawn/image5.png|Techniques used in the study, why they were chosen and what they answer|Author's design|Table-style graphic with three columns: technique, reason for choosing it, and the research question it answers, for ten techniques from GARCH models to SHAP values.|15.5]]
 
 {{fig:techniques}} links each technique to the question it answers.
 

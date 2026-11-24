@@ -15,8 +15,8 @@ Markup in the chapter files
   [[SHOWS]] text           one-line "What this shows" under a screenshot
   [text](https://...)      clickable hyperlink; bare https:// links are made clickable too
   - item / 1. item         lists;  **bold**, *italic*
-Captions: the lists of figures and tables show a short caption (first sentence, at most 12 words); the full caption is
-printed under the figure or above the table.
+Captions: the full caption is printed under the figure or above the table, and the same full caption is the entry in
+the lists of figures and tables (never shortened).
 
 QA (written to report/qa_phase2.md): unresolved placeholders, figures or tables never referenced in the text, missing
 image files, [FILL]/[UNVERIFIED] left in printed text, and literal numbers in Chapters 5-7 that do not come from a placeholder.
@@ -314,32 +314,13 @@ def cell_text(par, s, size, bold=False, color=None):
             set_font(par.add_run(piece), size, bold=bold, color=color)
 
 
-def short_caption(cap):
-    """First sentence of a caption, at most 12 words (for the lists of figures and tables)."""
-    s = re.split(r"(?<=[a-z0-9)])\. |; |: (?=[a-z])", cap.strip())[0].rstrip(".")
-    w = s.split()
-    if len(w) > 12:
-        s = " ".join(w[:12])
-        if s.count("(") > s.count(")"):   # do not leave a bracket open in the list entry
-            s = s[:s.rfind("(")]
-        s = re.sub(r"[\s,;:(]+$", "", s) + "…"
-    return s
-
-
 def caption_paras(doc, style, number, caption, keep=True):
-    short = short_caption(caption)
-    c = doc.add_paragraph(style=style); c.alignment = WD_ALIGN_PARAGRAPH.CENTER; keep_next(c) if keep else None
-    set_font(c.add_run(f"{number}: "), 11, bold=True); set_font(c.add_run(short), 11)
-    if short.rstrip("…") != caption.strip().rstrip("."):
-        rest = caption.strip()
-        if rest.startswith(short.rstrip("…")):
-            rest = rest[len(short.rstrip("…")):].lstrip(" .;:,")
-        if rest:
-            d = doc.add_paragraph(); d.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            d.paragraph_format.space_before = Pt(0); d.paragraph_format.space_after = Pt(2)
-            set_font(d.add_run(rest[0].upper() + rest[1:]), 10)
-            if keep:
-                keep_next(d)
+    """One caption paragraph with the full caption: it prints under the figure (above the table) and is the entry in
+    the list of figures or tables. Captions are never shortened or split."""
+    c = doc.add_paragraph(style=style); c.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    if keep:
+        keep_next(c)
+    set_font(c.add_run(f"{number}: "), 11, bold=True); set_font(c.add_run(caption.strip()), 11)
     return c
 
 

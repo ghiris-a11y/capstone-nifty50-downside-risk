@@ -4,7 +4,7 @@ Every recommendation follows from Chapter 5. The central finding is that the mac
 
 ## 6.1 Decision table by user
 
-[[FIG:decision|report/figures/v_decision_table.png|Recommendation decision table: user, recommended approach, evidence, expected benefit and viability|Author's recommendations; evidence from outputs/tables/summary_price.csv, diebold_mariano_price.csv, breach_days_summary_price.csv and outputs/tables/report/sector_summary_price.csv|Table graphic with five rows (bank market-risk desk, broker margin team, portfolio manager, retail or fintech app, exchange or regulator) and columns for approach, evidence, expected benefit and viability.]]
+[[FIG:decision|report/figures/redrawn/image18.png|Recommendation decision table: user, recommended approach, evidence, expected benefit and viability|Author's recommendations; evidence from outputs/tables/summary_price.csv, diebold_mariano_price.csv, breach_days_summary_price.csv and outputs/tables/report/sector_summary_price.csv|Table graphic with five rows (bank market-risk desk, broker margin team, portfolio manager, retail or fintech app, exchange or regulator) and columns for approach, evidence, expected benefit and viability.|15.5]]
 
 [[MEANS]] {{fig:decision}} gives every user the same core model, a Student-t GARCH forecast, because it was the most reliable on every test. What differs is the add-on: a stress buffer for brokers, sector limits for fund managers, plain words for apps and cross-stock monitoring for the exchange.
 

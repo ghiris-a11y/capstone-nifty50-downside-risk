@@ -19,7 +19,7 @@ All data are secondary, daily and numeric; prices come from Yahoo Finance (2026)
 
 {{fig:pipeline}} shows the path from sources to report and dashboard. The research data were frozen on {{snapshot}} into {{n_frozen_files}} read-only files with SHA-256 hashes. A GitHub Action adds each weekday's prices to a separate live file and updates the dashboard; only derived numbers are published.
 
-[[FIG:pipeline|report/figures/v_pipeline.png|Data pipeline from sources to the frozen snapshot, the daily GitHub Action and the dashboard|Author's design; implemented in src/ and .github/workflows/daily_update.yml|Diagram with sources, validation and frozen snapshot in the top row, live files, GitHub Action and research run in the middle row, and the dashboard at the bottom.]]
+[[FIG:pipeline|report/figures/redrawn/image6.png|Data pipeline from sources to the frozen snapshot, the daily GitHub Action and the dashboard|Author's design; implemented in src/ and .github/workflows/daily_update.yml|Diagram with sources, validation and frozen snapshot in the top row, live files, GitHub Action and research run in the middle row, and the dashboard at the bottom.|15.5]]
 
 [[MEANS]] Anyone with the code and the frozen files gets the same numbers, and the recommended model can run daily at almost no cost.
 
@@ -27,7 +27,7 @@ All data are secondary, daily and numeric; prices come from Yahoo Finance (2026)
 
 {{fig:funnel}} shows how {{n_cand}} index members became the {{n_stocks}}-stock panel.
 
-[[FIG:funnel|report/figures/v_funnel.png|Sample selection funnel from 50 constituents to the 41-stock balanced panel|config/nifty50_dec2025_candidates.csv, config/universe.csv, config/universe_excluded.csv|Funnel showing 50 constituents, 44 with full history after removing 6 later listings, and 41 after removing 3 suspected corporate-action errors.]]
+[[FIG:funnel|report/figures/redrawn/image7.png|Sample selection funnel from 50 constituents to the 41-stock balanced panel|config/nifty50_dec2025_candidates.csv, config/universe.csv, config/universe_excluded.csv|Funnel showing 50 constituents, 44 with full history after removing 6 later listings, and 41 after removing 3 suspected corporate-action errors.|15.5]]
 
 [[MEANS]] Every model sees the same years, and falls caused by data errors are not counted as real losses.
 
