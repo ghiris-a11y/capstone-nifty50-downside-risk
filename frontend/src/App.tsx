@@ -188,6 +188,7 @@ export default function App() {
           <div className="border-t border-line px-4 pb-6 pt-4 lg:px-8">
             <div className="label flex flex-wrap gap-x-4 gap-y-1 border-b border-line pb-2 text-[11px] text-slate-500">
               <span>Research edition</span>
+              {meta.data?.approval_note && !/^draft/i.test(meta.data.approval_note) && <span>Approved by project guide</span>}
               {meta.data?.snapshot_utc && <span>Locked data {meta.data.snapshot_utc.slice(0, 10)}</span>}
               {meta.data?.live_as_of && <span>Daily example to {meta.data.live_as_of}</span>}
             </div>
@@ -202,7 +203,7 @@ export default function App() {
             </p>
           </div>
         </header>
-        {meta.data && (
+        {meta.data && /^draft/i.test(meta.data.approval_note ?? "") && (
           <div className="border-b border-warn-500 bg-warn-100 text-sm text-warn-700">
             <div className="px-4 py-2 lg:px-8">
               {meta.data.approval_note}

@@ -68,6 +68,11 @@ def export_live():
     return str(r["as_of"].max()), str(r["generated_utc"].max())
 
 
+# Results approved by the project guide (Dr. Aarti Pardeshi), 2026-11. The dashboard shows the amber draft banner
+# only while this note starts with "Draft".
+APPROVAL_NOTE = "Final results: approved by our project guide, Dr. Aarti Pardeshi."
+
+
 def update_meta(live):
     path = os.path.join(OUT, "meta.json")
     meta = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
@@ -75,7 +80,7 @@ def update_meta(live):
         meta["live_as_of"], meta["live_generated_utc"] = live
     meta["exported_utc"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     meta["macro_note"] = macro_note()  # also refreshed by the daily --live-only run
-    meta["approval_note"] = "Draft results: our project guide has not yet approved them."
+    meta["approval_note"] = APPROVAL_NOTE
     write("meta.json", meta)
 
 
@@ -154,7 +159,7 @@ def export_full():
             "test_start": "2024-01-01", "n_stocks": int(len(uni)), "n_excluded": int(len(exc)),
             "train_end": "2021-12-31", "val_end": "2023-12-31", "hike_date": "2026-10-07",
             "macro_note": macro_note(),
-            "approval_note": "Draft results: our project guide has not yet approved them.",
+            "approval_note": APPROVAL_NOTE,
             "results_generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
     write("meta.json", meta)
     print(f"exported {len(files)} daily files and {len(figs)} figures to {OUT}")

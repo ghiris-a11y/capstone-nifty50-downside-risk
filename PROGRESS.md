@@ -91,3 +91,8 @@ Pages (restructure, 2026-11-22): 48 in total (front matter 6; chapters 1-9: 42).
 ## Next phases
 1. Final proofread with the guide's comments; viva preparation (PROJECT_PLAN.md section 7); submit the PDF.
 2. Optional, after the repo-rate file is verified: Path A run and the post-hike view per model.
+
+## 2026-11-28
+- Guide approval received; final report completed by the student. Dashboard: amber "Draft results" banner removed (shown again only if `approval_note` starts with "Draft"); masthead says "Approved by project guide"; Glossary and About updated. Note set in `src/export_dashboard_json.py` (`APPROVAL_NOTE`).
+- "Daily example to" shows the last day with final Yahoo prices: the 27 Nov run (started 22:13 IST) got no final prices for 27 Nov, held the row back and retries next run, as designed.
+- Project moved to user folder `C:\Users\BurmaBurma`; `.venv\pyvenv.cfg` repointed to this machine's Python 3.12.10. pytest 25 passed; demo exit 0.

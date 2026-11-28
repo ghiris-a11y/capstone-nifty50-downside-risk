@@ -14,7 +14,7 @@ export function Limits() {
         <li>Past data does not promise the future. A new kind of crisis could change these results.</li>
         {meta.data?.macro_note && <li>{meta.data.macro_note}</li>}
         <li>Prices come from Yahoo Finance. It is free, but it is not an official source.</li>
-        <li>These are draft results. Our project guide has not yet approved them.</li>
+        <li>These are final results. Our project guide has approved them.</li>
       </ul>
     </div>
   );

@@ -47,7 +47,7 @@ export default function About() {
       </Section>
       <Section title="Limitations">
         <ul className="list-disc space-y-1 pl-6 text-slate-800">
-          <li>{m?.approval_note}</li>
+          {m?.approval_note && /^draft/i.test(m.approval_note) && <li>{m.approval_note}</li>}
           <li>{m?.macro_note}</li>
           <li>About 710 test days per stock: a 99% backtest expects about 7 breaches per stock, so single-stock tests have low power.</li>
           <li>Survivorship: the balanced panel keeps only stocks listed since 2015 and in the index in December 2025.</li>
