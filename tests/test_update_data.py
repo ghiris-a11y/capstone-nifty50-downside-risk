@@ -113,3 +113,23 @@ def test_empty_newest_row_is_held_back_not_failed():
     assert not failed and len(quar) == 0
     assert list(new["date"].dt.strftime("%Y-%m-%d")) == ["2026-11-16"]
     assert any(level == "warning" and "not final" in m for level, m in logs)
+
+
+def test_newest_day_missing_only_adj_close_uses_close():
+    """Evening runs: Yahoo has the newest day's OHLC but not its adjusted close; that day is appended with adj = close."""
+    late = frame(["2026-11-17"], [102]).assign(adj_close=np.nan)
+    f = pd.concat([STORED, frame(["2026-11-16"], [101]), late])
+    new, quar, logs, failed = run(f)
+    assert not failed and len(quar) == 0
+    assert list(new["date"].dt.strftime("%Y-%m-%d")) == ["2026-11-16", "2026-11-17"]
+    assert new["adj_close"].iloc[-1] == new["close"].iloc[-1] == 102
+    assert any("set equal to close" in m for _, m in logs)
+
+
+def test_missing_adj_close_on_older_day_is_still_held_back():
+    """Only the newest day is filled; an older day without adjusted close still holds back itself and later rows."""
+    gap = frame(["2026-11-16"], [101]).assign(adj_close=np.nan)
+    f = pd.concat([STORED, gap, frame(["2026-11-17"], [102])])
+    new, _, logs, failed = run(f)
+    assert not failed and len(new) == 0
+    assert any("held back" in m and "adj_close" in m for _, m in logs)

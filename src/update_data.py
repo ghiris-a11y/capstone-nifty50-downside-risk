@@ -78,6 +78,17 @@ def validate_new_rows(stored, fetched, sym, today_ist, now_ist_hm):
         if intraday.any():
             logs.append(("info", f"skipped today's row ({today_ist}): market data not final before 16:30 IST"))
             f = f[~intraday]
+    # In the evening Yahoo often has the newest day's open/high/low/close but not yet its adjusted close.
+    # The newest day's adjusted close equals its close (adjustments only rescale earlier days), so it is
+    # filled from close on that day only, and only when open/high/low/close are all present. Any other
+    # empty price is still held back below. The fill is logged.
+    if len(f):
+        newest = f["date"].max()
+        fill = (f["date"] == newest) & f["adj_close"].isna() & f[["open", "high", "low", "close"]].notna().all(axis=1)
+        if fill.any():
+            f.loc[fill, "adj_close"] = f.loc[fill, "close"]
+            logs.append(("info", f"adjusted close not yet published for newest day {newest.date()}; "
+                         "set equal to close"))
     if f["date"].duplicated().any():
         logs.append(("error", "duplicate dates in fetched data: "
                      + ", ".join(str(d.date()) for d in f.loc[f["date"].duplicated(), "date"])))
@@ -107,8 +118,9 @@ def validate_new_rows(stored, fetched, sym, today_ist, now_ist_hm):
     empty = new[price_cols].isna().any(axis=1).to_numpy()
     if empty.any():
         k = int(np.argmax(empty))
-        logs.append(("warning", f"empty prices from {new['date'].iloc[k].date()} (Yahoo not final yet); "
-                     f"{len(new) - k} row(s) held back and retried next run"))
+        empty_cols = [c for c in price_cols if pd.isna(new[c].iloc[k])]
+        logs.append(("warning", f"empty prices from {new['date'].iloc[k].date()} (Yahoo not final yet; "
+                     f"empty: {'/'.join(empty_cols)}); {len(new) - k} row(s) held back and retried next run"))
         new = new.iloc[:k]
     if new[price_cols].isna().any().any():  # cannot happen after truncation; kept as a guard
         bad = new[new[price_cols].isna().any(axis=1)]
